@@ -8,6 +8,7 @@
    同步工作區內的 `liur.schema.yaml`、`rime.lua` 與 Lua 模組到使用者資料夾
    備份 `openxiami_CustomWord.dict.yaml`
    匯出 `custom_user` 與 `custom`
+   自定詞候選會依 `custom_user -> custom`、再依 `score` 排序
    匯出 `related` 成 `likeime_related.tsv`
    匯出 `emoji.db` 成 `likeime_emoji_tw.tsv`
    呼叫 `WeaselDeployer.exe /deploy`

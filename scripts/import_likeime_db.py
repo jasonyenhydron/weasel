@@ -33,10 +33,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_entries(db_path: Path) -> list[tuple[str, str]]:
+def load_entries(db_path: Path) -> list[tuple[str, str, str, int]]:
     # 先讀 custom_user，再讀 custom，並依分數由高到低輸出，讓使用者詞優先。
     sql = """
-    SELECT code, word
+    SELECT code, word, src, COALESCE(score, 0) AS score
     FROM (
       SELECT code, word, score, 0 AS src FROM custom_user
       UNION ALL
@@ -56,23 +56,24 @@ def load_entries(db_path: Path) -> list[tuple[str, str]]:
     finally:
       conn.close()
 
-    deduped: list[tuple[str, str]] = []
+    deduped: list[tuple[str, str, str, int]] = []
     seen: set[tuple[str, str]] = set()
-    for code, word in rows:
+    for code, word, src, score in rows:
         key = (str(code).strip().lower(), str(word).strip())
         if not key[0] or not key[1] or key in seen:
             continue
         seen.add(key)
-        deduped.append((key[0], key[1]))
+        source_name = "custom_user" if int(src) == 0 else "custom"
+        deduped.append((key[0], key[1], source_name, int(score or 0)))
     return deduped
 
 
-def write_yaml(entries: list[tuple[str, str]], out_path: Path) -> None:
+def write_yaml(entries: list[tuple[str, str, str, int]], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8", newline="\n") as fp:
         fp.write(HEADER)
-        for code, word in entries:
-            fp.write(f"{word}\t{code}\n")
+        for code, word, source_name, score in entries:
+            fp.write(f"{word}\t{code}\t{source_name}\t{score}\n")
 
 
 def main() -> int:

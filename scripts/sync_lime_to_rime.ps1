@@ -55,6 +55,7 @@ if (Test-Path -LiteralPath $rimeTemplateDir) {
     Copy-Item -LiteralPath (Join-Path $rimeTemplateDir "rime.lua") -Destination (Join-Path $RimeUserDir "rime.lua") -Force
     $targetLuaDir = Join-Path -Path $RimeUserDir -ChildPath "lua"
     New-Item -ItemType Directory -Path $targetLuaDir -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $rimeTemplateDir "lua\liu_custom_word_translator.lua") -Destination (Join-Path $targetLuaDir "liu_custom_word_translator.lua") -Force
     Copy-Item -LiteralPath (Join-Path $rimeTemplateDir "lua\liu_related_filter.lua") -Destination (Join-Path $targetLuaDir "liu_related_filter.lua") -Force
     Copy-Item -LiteralPath (Join-Path $rimeTemplateDir "lua\liu_emoji_translator.lua") -Destination (Join-Path $targetLuaDir "liu_emoji_translator.lua") -Force
 }
