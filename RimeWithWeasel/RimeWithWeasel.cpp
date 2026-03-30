@@ -24,6 +24,163 @@ typedef enum { COLOR_ABGR = 0, COLOR_ARGB, COLOR_RGBA } ColorFormat;
 using namespace weasel;
 
 static RimeApi* rime_api;
+
+namespace {
+
+struct sqlite3;
+struct sqlite3_stmt;
+
+using sqlite3_open_v2_fn =
+    int(__cdecl*)(const char* filename, sqlite3** ppDb, int flags,
+                  const char* zVfs);
+using sqlite3_close_fn = int(__cdecl*)(sqlite3*);
+using sqlite3_prepare_v2_fn =
+    int(__cdecl*)(sqlite3* db, const char* zSql, int nByte,
+                  sqlite3_stmt** ppStmt, const char** pzTail);
+using sqlite3_finalize_fn = int(__cdecl*)(sqlite3_stmt* pStmt);
+using sqlite3_step_fn = int(__cdecl*)(sqlite3_stmt*);
+using sqlite3_bind_text_fn =
+    int(__cdecl*)(sqlite3_stmt*, int, const char*, int, void(__cdecl*)(void*));
+using sqlite3_column_text_fn =
+    const unsigned char*(__cdecl*)(sqlite3_stmt*, int iCol);
+
+constexpr int kSqliteOk = 0;
+constexpr int kSqliteRow = 100;
+constexpr int kSqliteOpenReadOnly = 0x00000001;
+constexpr intptr_t kSqliteTransientValue = -1;
+static auto* const kSqliteTransient =
+    reinterpret_cast<void(__cdecl*)(void*)>(kSqliteTransientValue);
+
+class LimeDbLookup {
+ public:
+  std::vector<std::string> LookupWords(const std::string& code) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (code.empty()) {
+      return {};
+    }
+    if (!EnsureReady()) {
+      return {};
+    }
+
+    std::vector<std::string> words;
+    sqlite3_stmt* stmt = nullptr;
+    const char* sql =
+        "SELECT word FROM ("
+        "SELECT word, score, 0 AS src FROM custom_user WHERE code = ?1 "
+        "UNION ALL "
+        "SELECT word, score, 1 AS src FROM custom WHERE code = ?2"
+        ") ORDER BY src ASC, score DESC";
+    if (prepare_v2_(db_, sql, -1, &stmt, nullptr) != kSqliteOk) {
+      return {};
+    }
+
+    const auto finalize_stmt = [&]() {
+      if (stmt) {
+        finalize_(stmt);
+      }
+    };
+
+    if (bind_text_(stmt, 1, code.c_str(), -1, kSqliteTransient) != kSqliteOk ||
+        bind_text_(stmt, 2, code.c_str(), -1, kSqliteTransient) != kSqliteOk) {
+      finalize_stmt();
+      return {};
+    }
+
+    while (step_(stmt) == kSqliteRow) {
+      const auto* text = column_text_(stmt, 0);
+      if (!text) {
+        continue;
+      }
+      std::string word(reinterpret_cast<const char*>(text));
+      if (!word.empty() &&
+          std::find(words.begin(), words.end(), word) == words.end()) {
+        words.push_back(std::move(word));
+      }
+    }
+
+    finalize_stmt();
+    return words;
+  }
+
+  ~LimeDbLookup() {
+    if (db_ && close_) {
+      close_(db_);
+    }
+    if (module_) {
+      FreeLibrary(module_);
+    }
+  }
+
+ private:
+  bool EnsureReady() {
+    if (db_) {
+      return true;
+    }
+    if (!module_ && !LoadLibraryOnce()) {
+      return false;
+    }
+    if (!module_) {
+      return false;
+    }
+
+    const auto db_path = WeaselSharedDataPath() / "lime.db";
+    const auto db_path_u8 = wtou8(db_path.wstring());
+    sqlite3* db = nullptr;
+    if (open_v2_(db_path_u8.c_str(), &db, kSqliteOpenReadOnly, nullptr) !=
+        kSqliteOk) {
+      return false;
+    }
+    db_ = db;
+    return true;
+  }
+
+  bool LoadLibraryOnce() {
+    module_ = LoadLibraryW(L"winsqlite3.dll");
+    if (!module_) {
+      return false;
+    }
+
+    open_v2_ = reinterpret_cast<sqlite3_open_v2_fn>(
+        GetProcAddress(module_, "sqlite3_open_v2"));
+    close_ =
+        reinterpret_cast<sqlite3_close_fn>(GetProcAddress(module_, "sqlite3_close"));
+    prepare_v2_ = reinterpret_cast<sqlite3_prepare_v2_fn>(
+        GetProcAddress(module_, "sqlite3_prepare_v2"));
+    finalize_ = reinterpret_cast<sqlite3_finalize_fn>(
+        GetProcAddress(module_, "sqlite3_finalize"));
+    step_ =
+        reinterpret_cast<sqlite3_step_fn>(GetProcAddress(module_, "sqlite3_step"));
+    bind_text_ = reinterpret_cast<sqlite3_bind_text_fn>(
+        GetProcAddress(module_, "sqlite3_bind_text"));
+    column_text_ = reinterpret_cast<sqlite3_column_text_fn>(
+        GetProcAddress(module_, "sqlite3_column_text"));
+
+    const bool ready =
+        open_v2_ && close_ && prepare_v2_ && finalize_ && step_ && bind_text_ &&
+        column_text_;
+    if (!ready) {
+      FreeLibrary(module_);
+      module_ = nullptr;
+    }
+    return ready;
+  }
+
+  std::mutex mutex_;
+  HMODULE module_ = nullptr;
+  sqlite3* db_ = nullptr;
+  sqlite3_open_v2_fn open_v2_ = nullptr;
+  sqlite3_close_fn close_ = nullptr;
+  sqlite3_prepare_v2_fn prepare_v2_ = nullptr;
+  sqlite3_finalize_fn finalize_ = nullptr;
+  sqlite3_step_fn step_ = nullptr;
+  sqlite3_bind_text_fn bind_text_ = nullptr;
+  sqlite3_column_text_fn column_text_ = nullptr;
+};
+
+LimeDbLookup g_lime_db_lookup;
+
+}  // namespace
+
 WeaselSessionId _GenerateNewWeaselSessionId(SessionStatusMap sm, DWORD pid) {
   if (sm.empty())
     return (WeaselSessionId)(pid + 1);
@@ -448,12 +605,26 @@ void RimeWithWeaselHandler::_ReadClientInfo(WeaselSessionId ipc_id,
 }
 
 void RimeWithWeaselHandler::_GetCandidateInfo(CandidateInfo& cinfo,
-                                              RimeContext& ctx) {
+                                              RimeContext& ctx,
+                                              SessionStatus& session_status) {
   cinfo.candies.resize(ctx.menu.num_candidates);
   cinfo.comments.resize(ctx.menu.num_candidates);
   cinfo.labels.resize(ctx.menu.num_candidates);
+  session_status.lime_text_overrides.clear();
+  // 使用輸入碼查詢 lime.db，優先套用 custom_user，再回退到 custom。
+  const std::string code =
+      ctx.composition.preedit ? std::string(ctx.composition.preedit) : "";
+  const auto custom_words = g_lime_db_lookup.LookupWords(code);
   for (int i = 0; i < ctx.menu.num_candidates; ++i) {
-    cinfo.candies[i].str = escape_string(u8tow(ctx.menu.candidates[i].text));
+    const char* raw_text = ctx.menu.candidates[i].text;
+    std::string display_text = raw_text ? std::string(raw_text) : std::string();
+    if (i < custom_words.size() && !custom_words[i].empty()) {
+      display_text = custom_words[i];
+      if (raw_text && *raw_text) {
+        session_status.lime_text_overrides[raw_text] = display_text;
+      }
+    }
+    cinfo.candies[i].str = escape_string(u8tow(display_text));
     if (ctx.menu.candidates[i].comment) {
       cinfo.comments[i].str =
           escape_string(u8tow(ctx.menu.candidates[i].comment));
@@ -747,6 +918,12 @@ bool RimeWithWeaselHandler::_Respond(WeaselSessionId ipc_id, EatLine eat) {
   if (rime_api->get_commit(session_id, &commit)) {
     actions.push_back("commit");
     std::wstring commit_text_w = escape_string(u8tow(commit.text));
+    const auto override_it =
+        session_status.lime_text_overrides.find(commit.text ? commit.text : "");
+    if (override_it != session_status.lime_text_overrides.end()) {
+      // 候選字已經轉成中文時，上屏文字也必須同步維持一致。
+      commit_text_w = escape_string(u8tow(override_it->second));
+    }
     body.append(L"commit=").append(commit_text_w).append(L"\n");
     rime_api->free_commit(&commit);
   }
@@ -789,7 +966,7 @@ bool RimeWithWeaselHandler::_Respond(WeaselSessionId ipc_id, EatLine eat) {
     bool has_candidates = ctx.menu.num_candidates > 0;
     CandidateInfo cinfo;
     if (has_candidates) {
-      _GetCandidateInfo(cinfo, ctx);
+      _GetCandidateInfo(cinfo, ctx, session_status);
     }
     if (is_composing) {
       const auto& preedit = ctx.composition.preedit;
@@ -863,7 +1040,7 @@ bool RimeWithWeaselHandler::_Respond(WeaselSessionId ipc_id, EatLine eat) {
             body.append(L" ")
                 .append(prefix_w)
                 .append(escape_string(label_w))
-                .append(escape_string(u8tow(ctx.menu.candidates[i].text)))
+                .append(cinfo.candies.at(i).str)
                 .append(L" ")
                 .append(escape_string(comment_w));
           }
@@ -1492,7 +1669,15 @@ void RimeWithWeaselHandler::_GetContext(Context& weasel_context,
     }
     if (ctx.menu.num_candidates) {
       CandidateInfo& cinfo(weasel_context.cinfo);
-      _GetCandidateInfo(cinfo, ctx);
+      SessionStatus temp_status;
+      SessionStatus* target_status = &temp_status;
+      for (auto& pair : m_session_status_map) {
+        if (pair.second.session_id == session_id) {
+          target_status = &pair.second;
+          break;
+        }
+      }
+      _GetCandidateInfo(cinfo, ctx, *target_status);
     }
     rime_api->free_context(&ctx);
   }

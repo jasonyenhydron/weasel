@@ -1,3 +1,8 @@
+## Unreleased
+
+#### Bug Fixes
+fix(RimeWithWeasel): read `data/lime.db` `custom_user` and `custom` by code-to-word mapping, then output Chinese text in candidates and commit text
+
 <a name="0.17.4"></a>
 ## [0.17.4](https://github.com/rime/weasel/compare/0.17.3...0.17.4)(2025-06-04)
 
