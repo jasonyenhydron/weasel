@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>小企鵝嘸蝦米 — 最終 Demo</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #060b14;
+  font-family: -apple-system, 'Noto Sans TC', sans-serif;
+  padding: 24px 16px 48px;
+  display: flex; flex-direction: column; align-items: center; gap: 32px;
+}
+h1 { color: #34d399; font-size: 18px; letter-spacing: .06em; font-weight: 700; }
+.sub { color: #475569; font-size: 12px; margin-top: 4px; }
+
+/* ── 手機外框 ── */
+.phone {
+  width: 375px;
+  background: #0f1117;
+  border-radius: 36px;
+  border: 2px solid #1e2d3d;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+  flex-shrink: 0;
+}
+.status { background: #0f1117; display: flex; justify-content: space-between;
+  padding: 10px 18px 6px; color: #94a3b8; font-size: 12px; }
+.app-content { background: #1a1f2e; padding: 14px 16px 10px; min-height: 80px; }
+.app-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.app-dot { width: 26px; height: 26px; border-radius: 6px; background: #2563eb;
+  color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.app-name { color: #e2e8f0; font-size: 14px; }
+.cursor-line { color: #94a3b8; font-size: 15px; line-height: 1.6; }
+.cursor { display: inline-block; width: 2px; height: 14px; background: #34d399;
+  vertical-align: middle; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── 鍵盤 ── */
+.keyboard { padding: 6px 5px 4px; }
+.dark-kbd  { background: #17191f; }
+.light-kbd { background: #edf0f4; }
+.matcha-kbd{ background: #10231d; }
+
+/* 工具列 */
+.toolbar { display: flex; align-items: center; height: 40px; margin-bottom: 2px; }
+.tb-btn { width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; margin-right: 6px; flex-shrink: 0; }
+.dark-kbd  .tb-btn { background: #252830; }
+.light-kbd .tb-btn { background: #dde2eb; }
+.matcha-kbd .tb-btn { background: #1a3329; }
+.tb-btn svg { width: 15px; height: 15px; }
+.hint { flex: 1; text-align: right; font-size: 11px; padding-right: 2px; }
+.dark-kbd  .hint { color: #9aa1b2; }
+.light-kbd .hint { color: #4b5563; }
+.matcha-kbd .hint { color: #4d7a65; }
+
+/* 候選列 */
+.cand-bar { display: flex; align-items: center; height: 36px; margin-top: 3px; gap: 0; }
+.composing-txt { font-size: 13px; padding: 0 6px; white-space: nowrap; }
+.dark-kbd  .composing-txt { color: #9aa1b2; }
+.light-kbd .composing-txt { color: #374151; }
+.matcha-kbd .composing-txt { color: #6ee7b7; }
+.cand-divider { width: 1px; height: 18px; margin: 0 2px; }
+.dark-kbd  .cand-divider { background: #2d3a4a; }
+.light-kbd .cand-divider { background: #d1d5db; }
+.matcha-kbd .cand-divider { background: #1c3528; }
+.cand-scroll { display: flex; align-items: center; gap: 2px; flex: 1; overflow: hidden; }
+.cand-btn { border: none; border-radius: 6px; padding: 3px 10px; font-size: 13px;
+  cursor: pointer; white-space: nowrap; height: 28px; }
+.cand-btn:first-child { font-weight: 600; }
+.dark-kbd  .cand-btn { background: #252830; color: #f1f5f9; }
+.dark-kbd  .cand-btn:first-child { background: #0f3d2e; color: #34d399; }
+.light-kbd .cand-btn { background: #e2e8f0; color: #1f2937; }
+.light-kbd .cand-btn:first-child { background: #dbeafe; color: #1d4ed8; }
+.matcha-kbd .cand-btn { background: #1a3329; color: #e7f9ee; }
+.matcha-kbd .cand-btn:first-child { background: #064e3b; color: #34d399; }
+.expand-btn { width: 28px; font-size: 10px; background: transparent; border: none; cursor: pointer; }
+.dark-kbd  .expand-btn { color: #475569; }
+.light-kbd .expand-btn { color: #9ca3af; }
+.matcha-kbd .expand-btn { color: #4d7a65; }
+
+/* 按鍵列 */
+.row { display: flex; gap: 4px; margin-top: 4px; }
+.key { flex: 1; border: none; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: transform .08s; flex-direction: column; }
+.key:active { transform: scale(.94); }
+.dark-kbd  .key { background: #2a2d38; color: #f2f4fa; box-shadow: 0 2px 0 #1a1c22; }
+.light-kbd .key { background: #ffffff; color: #1f2937; box-shadow: 0 2px 0 #c8cdd6; }
+.matcha-kbd .key { background: #1a3329; color: #e7f9ee; box-shadow: 0 2px 0 #0a1410; }
+.key.h44 { height: 44px; }
+.key.h50 { height: 50px; font-size: 18px; }
+.key.func { opacity: .85; }
+.dark-kbd  .key.func { background: #1e2028; }
+.light-kbd .key.func { background: #dde2eb; }
+.matcha-kbd .key.func { background: #122519; }
+.key.space { flex: 4.4; font-size: 12px; }
+.dark-kbd  .key.space { color: #9aa1b2; }
+.light-kbd .key.space { color: #4b5563; }
+.matcha-kbd .key.space { color: #4d7a65; }
+.key.enter { flex: 1.2; font-size: 18px; }
+.dark-kbd  .key.enter { color: #8ed3ff; }
+.light-kbd .key.enter { color: #2563eb; }
+.matcha-kbd .key.enter { color: #34d399; }
+.key.bs { flex: 1.4; }
+.key.globe { flex: 0.9; font-size: 16px; }
+.key.punct { flex: 0.8; color: #cbd5e1; }
+.key.sym-toggle { flex: 1.1; font-size: 12px; }
+.spacer { flex: .6; }
+.sec { font-size: 9px; opacity: .55; margin-bottom: -2px; }
+
+/* ── 九宮格面板 ── */
+.numpad-panel { padding: 4px 6px 6px; }
+.panel-back { background: transparent; border: none; font-size: 12px; cursor: pointer;
+  padding: 6px 4px; width: 100%; text-align: left; }
+.dark-kbd .panel-back { color: #475569; }
+.light-kbd .panel-back { color: #9ca3af; }
+.matcha-kbd .panel-back { color: #4d7a65; }
+.np-row { display: flex; gap: 5px; margin-bottom: 5px; }
+.np-key { flex: 1; height: 58px; border-radius: 10px; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; }
+.dark-kbd  .np-key { background: #2a2d38; }
+.light-kbd .np-key { background: #ffffff; box-shadow: 0 2px 0 #c8cdd6; }
+.matcha-kbd .np-key { background: #1a3329; }
+.np-main { font-size: 26px; font-weight: 500; line-height: 1; margin-top: 4px; }
+.dark-kbd  .np-main { color: #f2f4fa; }
+.light-kbd .np-main { color: #1f2937; }
+.matcha-kbd .np-main { color: #e7f9ee; }
+.np-sec { font-size: 10px; position: absolute; bottom: 5px; right: 6px; }
+.dark-kbd  .np-sec { color: #6b7280; }
+.light-kbd .np-sec { color: #9ca3af; }
+.matcha-kbd .np-sec { color: #4d7a65; }
+.np-key.bs-key .np-main { font-size: 22px; color: #ef4444 !important; }
+
+/* ── 空白鍵選單 ── */
+.space-menu { padding: 4px 0; }
+.menu-item { height: 52px; border: none; background: transparent; width: 100%;
+  text-align: left; padding: 0 20px; font-size: 15px; cursor: pointer; display: flex; align-items: center; }
+.dark-kbd  .menu-item { color: #e2e8f0; }
+.light-kbd .menu-item { color: #1f2937; }
+.matcha-kbd .menu-item { color: #d1fae5; }
+.menu-item.danger { color: #ef4444 !important; }
+.menu-div { height: 1px; margin: 0 16px; }
+.dark-kbd  .menu-div { background: #262b35; }
+.light-kbd .menu-div { background: #e5e7eb; }
+.matcha-kbd .menu-div { background: #1c3528; }
+
+/* ── 設定頁 ── */
+.settings-phone .app-content { background: #0d1b2a; padding: 16px; min-height: 520px; }
+.setting-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.setting-icon { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; }
+.setting-title { color: #e2e8f0; font-size: 17px; font-weight: 700; }
+.setting-sub { color: #64748b; font-size: 12px; margin-top: 2px; }
+.s-label { color: #34d399; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 6px; }
+.s-card { background: #131f2e; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+.s-row { display: flex; align-items: center; padding: 13px 14px; gap: 10px; }
+.s-row + .s-row { border-top: 1px solid #1e2d3d; }
+.s-icon { font-size: 18px; width: 24px; text-align: center; }
+.s-text { flex: 1; color: #cbd5e1; font-size: 14px; }
+.s-arrow { color: #334155; font-size: 13px; }
+.s-toggle { width: 44px; height: 24px; background: #0f3d2e; border-radius: 12px;
+  position: relative; cursor: pointer; }
+.s-toggle::after { content: ''; position: absolute; top: 2px; right: 2px; width: 20px; height: 20px;
+  background: #34d399; border-radius: 10px; transition: right .2s; }
+.s-toggle.off { background: #1e2d3d; }
+.s-toggle.off::after { right: 22px; background: #475569; }
+.theme-row { display: flex; gap: 6px; padding: 8px 10px 10px; }
+.t-btn { flex: 1; height: 38px; border: none; border-radius: 7px; font-size: 12px;
+  cursor: pointer; background: #1e2d3d; color: #94a3b8; }
+.t-btn.active { background: #0f3d2e; color: #34d399; }
+
+/* ── 模式標示 ── */
+.mode-badge { display: inline-block; background: #0f3d2e; color: #34d399;
+  font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-left: 6px; }
+
+/* Grid */
+.screens-grid { display: grid; gap: 24px; }
+.screen-label { color: #64748b; font-size: 11px; text-align: center;
+  letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<h1>🐧 小企鵝嘸蝦米輸入法</h1>
+<div class="sub">com.penguinInput.androidime · v0.1.0 · 最終 Demo</div>
+
+<!-- ══ ROW 1：三主題鍵盤 ══ -->
+<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+
+  <!-- 深色 -->
+  <div>
+    <div class="screen-label">深色 Dark</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content">
+        <div class="app-bar"><div class="app-dot">M</div><span class="app-name">訊息</span></div>
+        <div class="cursor-line">今天下午有空嗎？<span class="cursor"></span></div>
+      </div>
+      <div class="keyboard dark-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"><svg viewBox="0 0 24 24" fill="none"><text x="3" y="11" font-size="9" fill="#ecebe0">A</text><rect x="13" y="3" width="8" height="7" fill="none" stroke="#34d399" stroke-width="1.5"/><line x1="17" y1="3" x2="17" y2="10" stroke="#34d399" stroke-width="1.5"/><line x1="13" y1="6.5" x2="21" y2="6.5" stroke="#34d399" stroke-width="1.5"/></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24"><text x="5" y="16" font-size="13" fill="#ecebe0">★</text></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24"><path d="M12,3 L13.6,10.4 L22,12 L13.6,13.6 L12,21 L10.4,13.6 L2,12 L10.4,10.4 Z" fill="#ecebe0"/><circle cx="12" cy="12" r="1.5" fill="#34d399"/></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#ecebe0" stroke-width="1.8"><rect x="8" y="3" width="12" height="16" rx="2"/><path d="M8 7H5a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-3"/></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24"><path fill="#ecebe0" d="M19.14,12.94a7.43,7.43 0 0,0 0,-1.88l2.03,-1.58a0.5,0.5 0 0,0 0.12,-0.64l-1.92,-3.32a0.5,0.5 0 0,0 -0.6,-0.22l-2.39,0.96a7.1,7.1 0 0,0 -1.62,-0.94l-0.36,-2.54A0.5,0.5 0 0,0 13.91,2h-3.82a0.5,0.5 0 0,0 -0.49,0.42L9.24,4.96a7.1,7.1 0 0,0 -1.62,0.94l-2.39,-0.96a0.5,0.5 0 0,0 -0.6,0.22L2.71,8.48a0.5,0.5 0 0,0 0.12,0.64l2.03,1.58a7.43,7.43 0 0,0 0,1.88l-2.03,1.58a0.5,0.5 0 0,0 -0.12,0.64l1.92,3.32a0.5,0.5 0 0,0 0.6,0.22l2.39,-0.96c0.5,0.39 1.04,0.7 1.62,0.94l0.36,2.54a0.5,0.5 0 0,0 0.49,0.42h3.82a0.5,0.5 0 0,0 0.49,-0.42l0.36,-2.54a7.1,7.1 0 0,0 1.62,-0.94l2.39,0.96a0.5,0.5 0 0,0 0.6,-0.22l1.92,-3.32a0.5,0.5 0 0,0 -0.12,-0.64z"/><circle cx="12" cy="12" r="3" fill="#252525"/></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#ecebe0" stroke-width="1.8"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/><line x1="12" y1="18" x2="12" y2="22"/></svg></button>
+          <button class="tb-btn"><svg viewBox="0 0 24 24" fill="#ecebe0"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="10" y="3" width="5" height="5" rx="1"/><rect x="17" y="3" width="5" height="5" rx="1"/><rect x="3" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/><rect x="17" y="10" width="5" height="5" rx="1"/><rect x="3" y="17" width="5" height="5" rx="1"/><rect x="10" y="17" width="5" height="5" rx="1"/><rect x="17" y="17" width="5" height="5" rx="1"/></svg></button>
+          <div class="hint">繁體中文</div>
+        </div>
+        <!-- 候選列 -->
+        <div class="cand-bar">
+          <span class="composing-txt">ca</span>
+          <div class="cand-divider"></div>
+          <div class="cand-scroll">
+            <button class="cand-btn">才</button>
+            <button class="cand-btn">查</button>
+            <button class="cand-btn">茶</button>
+            <button class="cand-btn">差</button>
+            <button class="cand-btn">察</button>
+            <button class="cand-btn">叉</button>
+          </div>
+          <button class="expand-btn">▼</button>
+        </div>
+        <!-- 數字列（含次要符號） -->
+        <div class="row">
+          <button class="key h50"><span class="sec">`</span>1</button>
+          <button class="key h50"><span class="sec">[</span>2</button>
+          <button class="key h50"><span class="sec">]</span>3</button>
+          <button class="key h50"><span class="sec">\</span>4</button>
+          <button class="key h50"><span class="sec">;</span>5</button>
+          <button class="key h50"><span class="sec">'</span>6</button>
+          <button class="key h50"><span class="sec">/</span>7</button>
+          <button class="key h50"><span class="sec">-</span>8</button>
+          <button class="key h50"><span class="sec">(</span>9</button>
+          <button class="key h50"><span class="sec">)</span>0</button>
+        </div>
+        <div class="row">
+          <button class="key h44">q</button><button class="key h44">w</button><button class="key h44">e</button><button class="key h44">r</button>
+          <button class="key h44" style="background:#34d399;color:#0f1117">t</button>
+          <button class="key h44">y</button><button class="key h44">u</button><button class="key h44">i</button><button class="key h44">o</button><button class="key h44">p</button>
+        </div>
+        <div class="row">
+          <div class="spacer"></div>
+          <button class="key h44">a</button><button class="key h44">s</button><button class="key h44">d</button><button class="key h44">f</button>
+          <button class="key h44">g</button><button class="key h44">h</button><button class="key h44">j</button><button class="key h44">k</button><button class="key h44">l</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="row">
+          <button class="key h44 func bs">⌫</button>
+          <button class="key h44">z</button><button class="key h44">x</button><button class="key h44">c</button><button class="key h44">v</button>
+          <button class="key h44">b</button><button class="key h44">n</button><button class="key h44">m</button>
+          <button class="key h44 func bs">⌫</button>
+        </div>
+        <div class="row">
+          <button class="key h44 func sym-toggle">!#1</button>
+          <button class="key h44 globe func">🌐</button>
+          <button class="key h44 punct">,</button>
+          <button class="key h44 space">嘸蝦米</button>
+          <button class="key h44 punct">.</button>
+          <button class="key h44 enter func">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 淺色 -->
+  <div>
+    <div class="screen-label">淺色 Light</div>
+    <div class="phone">
+      <div class="status" style="background:#edf0f4;color:#4b5563"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content" style="background:#f1f5fb">
+        <div class="app-bar"><div class="app-dot">M</div><span class="app-name" style="color:#1f2937">訊息</span></div>
+        <div class="cursor-line" style="color:#374151">今天下午有空嗎？<span class="cursor" style="background:#2563eb"></span></div>
+      </div>
+      <div class="keyboard light-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button>
+          <div class="hint">繁體中文</div>
+        </div>
+        <div class="cand-bar">
+          <span class="composing-txt">ca</span>
+          <div class="cand-divider"></div>
+          <div class="cand-scroll">
+            <button class="cand-btn">才</button><button class="cand-btn">查</button>
+            <button class="cand-btn">茶</button><button class="cand-btn">差</button>
+            <button class="cand-btn">察</button>
+          </div>
+          <button class="expand-btn">▼</button>
+        </div>
+        <div class="row"><button class="key h50"><span class="sec">`</span>1</button><button class="key h50"><span class="sec">[</span>2</button><button class="key h50"><span class="sec">]</span>3</button><button class="key h50"><span class="sec">\</span>4</button><button class="key h50"><span class="sec">;</span>5</button><button class="key h50"><span class="sec">'</span>6</button><button class="key h50"><span class="sec">/</span>7</button><button class="key h50"><span class="sec">-</span>8</button><button class="key h50"><span class="sec">(</span>9</button><button class="key h50"><span class="sec">)</span>0</button></div>
+        <div class="row"><button class="key h44">q</button><button class="key h44">w</button><button class="key h44">e</button><button class="key h44">r</button><button class="key h44" style="background:#bfdbfe;color:#1e40af">t</button><button class="key h44">y</button><button class="key h44">u</button><button class="key h44">i</button><button class="key h44">o</button><button class="key h44">p</button></div>
+        <div class="row"><div class="spacer"></div><button class="key h44">a</button><button class="key h44">s</button><button class="key h44">d</button><button class="key h44">f</button><button class="key h44">g</button><button class="key h44">h</button><button class="key h44">j</button><button class="key h44">k</button><button class="key h44">l</button><div class="spacer"></div></div>
+        <div class="row"><button class="key h44 func bs">⌫</button><button class="key h44">z</button><button class="key h44">x</button><button class="key h44">c</button><button class="key h44">v</button><button class="key h44">b</button><button class="key h44">n</button><button class="key h44">m</button><button class="key h44 func bs">⌫</button></div>
+        <div class="row"><button class="key h44 func sym-toggle">!#1</button><button class="key h44 globe func">🌐</button><button class="key h44 punct">,</button><button class="key h44 space">嘸蝦米</button><button class="key h44 punct">.</button><button class="key h44 enter func" style="color:#2563eb">↵</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 抹茶 -->
+  <div>
+    <div class="screen-label">抹茶 Matcha</div>
+    <div class="phone">
+      <div class="status" style="background:#0d1f19;color:#4d7a65"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content" style="background:#0d1f19">
+        <div class="app-bar"><div class="app-dot" style="background:#064e3b">M</div><span class="app-name" style="color:#e7f9ee">訊息</span></div>
+        <div class="cursor-line" style="color:#6ee7b7">今天下午有空嗎？<span class="cursor" style="background:#34d399"></span></div>
+      </div>
+      <div class="keyboard matcha-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button>
+          <div class="hint">繁體中文</div>
+        </div>
+        <div class="cand-bar">
+          <span class="composing-txt">ca</span>
+          <div class="cand-divider"></div>
+          <div class="cand-scroll">
+            <button class="cand-btn">才</button><button class="cand-btn">查</button>
+            <button class="cand-btn">茶</button><button class="cand-btn">差</button>
+            <button class="cand-btn">察</button>
+          </div>
+          <button class="expand-btn">▼</button>
+        </div>
+        <div class="row"><button class="key h50"><span class="sec">`</span>1</button><button class="key h50"><span class="sec">[</span>2</button><button class="key h50"><span class="sec">]</span>3</button><button class="key h50"><span class="sec">\</span>4</button><button class="key h50"><span class="sec">;</span>5</button><button class="key h50"><span class="sec">'</span>6</button><button class="key h50"><span class="sec">/</span>7</button><button class="key h50"><span class="sec">-</span>8</button><button class="key h50"><span class="sec">(</span>9</button><button class="key h50"><span class="sec">)</span>0</button></div>
+        <div class="row"><button class="key h44">q</button><button class="key h44">w</button><button class="key h44">e</button><button class="key h44">r</button><button class="key h44" style="background:#065f46;color:#34d399">t</button><button class="key h44">y</button><button class="key h44">u</button><button class="key h44">i</button><button class="key h44">o</button><button class="key h44">p</button></div>
+        <div class="row"><div class="spacer"></div><button class="key h44">a</button><button class="key h44">s</button><button class="key h44">d</button><button class="key h44">f</button><button class="key h44">g</button><button class="key h44">h</button><button class="key h44">j</button><button class="key h44">k</button><button class="key h44">l</button><div class="spacer"></div></div>
+        <div class="row"><button class="key h44 func bs">⌫</button><button class="key h44">z</button><button class="key h44">x</button><button class="key h44">c</button><button class="key h44">v</button><button class="key h44">b</button><button class="key h44">n</button><button class="key h44">m</button><button class="key h44 func bs">⌫</button></div>
+        <div class="row"><button class="key h44 func sym-toggle">!#1</button><button class="key h44 globe func">🌐</button><button class="key h44 punct">,</button><button class="key h44 space">嘸蝦米</button><button class="key h44 punct">.</button><button class="key h44 enter func">↵</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ROW 2：九宮格 + 空白鍵選單 + 日文模式 ══ -->
+<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+
+  <!-- 九宮格面板 -->
+  <div>
+    <div class="screen-label">數字九宮格（Phone 樣式）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content"><div class="cursor-line" style="color:#94a3b8">電話：09XX-XXX-XXX<span class="cursor"></span></div></div>
+      <div class="keyboard dark-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button>
+          <div class="hint"></div>
+        </div>
+        <div class="cand-bar"></div>
+        <div class="numpad-panel">
+          <button class="panel-back">← 返回鍵盤</button>
+          <div class="np-row">
+            <div class="np-key"><span class="np-main">7</span><span class="np-sec">pqrs</span></div>
+            <div class="np-key"><span class="np-main">8</span><span class="np-sec">tuv</span></div>
+            <div class="np-key"><span class="np-main">9</span><span class="np-sec">wxyz</span></div>
+          </div>
+          <div class="np-row">
+            <div class="np-key"><span class="np-main">4</span><span class="np-sec">ghi</span></div>
+            <div class="np-key"><span class="np-main">5</span><span class="np-sec">jkl</span></div>
+            <div class="np-key"><span class="np-main">6</span><span class="np-sec">mno</span></div>
+          </div>
+          <div class="np-row">
+            <div class="np-key"><span class="np-main">1</span><span class="np-sec">!@#</span></div>
+            <div class="np-key"><span class="np-main">2</span><span class="np-sec">abc</span></div>
+            <div class="np-key"><span class="np-main">3</span><span class="np-sec">def</span></div>
+          </div>
+          <div class="np-row">
+            <div class="np-key"><span class="np-main">*</span><span class="np-sec">×</span></div>
+            <div class="np-key"><span class="np-main">0</span><span class="np-sec">_</span></div>
+            <div class="np-key bs-key"><span class="np-main">⌫</span></div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="key h44 func sym-toggle">!#1</button>
+          <button class="key h44 globe func">🌐</button>
+          <button class="key h44 punct">,</button>
+          <button class="key h44 space">嘸蝦米</button>
+          <button class="key h44 punct">.</button>
+          <button class="key h44 enter func">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 空白鍵長按選單 -->
+  <div>
+    <div class="screen-label">長按空白鍵選單</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content"><div class="cursor-line" style="color:#94a3b8">Hello world<span class="cursor"></span></div></div>
+      <div class="keyboard dark-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><div class="hint"></div>
+        </div>
+        <div class="cand-bar"></div>
+        <div class="space-menu" style="background:#1a1d24;border-radius:8px;margin:4px 2px">
+          <button class="menu-item">✏️  加字加詞</button>
+          <div class="menu-div"></div>
+          <button class="menu-item">📋  剪貼簿</button>
+          <div class="menu-div"></div>
+          <button class="menu-item">⚙️  設定</button>
+          <div class="menu-div"></div>
+          <button class="menu-item danger">✕  關閉</button>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="key h44 func sym-toggle">!#1</button>
+          <button class="key h44 globe func">🌐</button>
+          <button class="key h44 punct">,</button>
+          <button class="key h44 space">嘸蝦米</button>
+          <button class="key h44 punct">.</button>
+          <button class="key h44 enter func">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 日文模式 -->
+  <div>
+    <div class="screen-label">日文模式（羅馬字→假名）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content"><div class="cursor-line" style="color:#94a3b8">こんにちは！<span class="cursor"></span></div></div>
+      <div class="keyboard dark-kbd">
+        <div class="toolbar">
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button><button class="tb-btn"></button><button class="tb-btn"></button>
+          <button class="tb-btn"></button>
+          <div class="hint">日本語（ローマ字）</div>
+        </div>
+        <div class="cand-bar">
+          <span class="composing-txt">kon</span>
+          <div class="cand-divider"></div>
+          <div style="flex:1;display:flex;align-items:center;padding-left:8px;color:#8ed3ff;font-size:14px;">こn → Space = こん</div>
+        </div>
+        <div class="row"><button class="key h50"><span class="sec">`</span>1</button><button class="key h50"><span class="sec">[</span>2</button><button class="key h50"><span class="sec">]</span>3</button><button class="key h50"><span class="sec">\</span>4</button><button class="key h50"><span class="sec">;</span>5</button><button class="key h50"><span class="sec">'</span>6</button><button class="key h50"><span class="sec">/</span>7</button><button class="key h50"><span class="sec">-</span>8</button><button class="key h50"><span class="sec">(</span>9</button><button class="key h50"><span class="sec">)</span>0</button></div>
+        <div class="row"><button class="key h44">q</button><button class="key h44">w</button><button class="key h44">e</button><button class="key h44">r</button><button class="key h44">t</button><button class="key h44">y</button><button class="key h44">u</button><button class="key h44">i</button><button class="key h44">o</button><button class="key h44">p</button></div>
+        <div class="row"><div class="spacer"></div><button class="key h44">a</button><button class="key h44">s</button><button class="key h44">d</button><button class="key h44">f</button><button class="key h44">g</button><button class="key h44">h</button><button class="key h44">j</button><button class="key h44">k</button><button class="key h44">l</button><div class="spacer"></div></div>
+        <div class="row"><button class="key h44 func bs">⌫</button><button class="key h44">z</button><button class="key h44">x</button><button class="key h44">c</button><button class="key h44">v</button><button class="key h44">b</button><button class="key h44">n</button><button class="key h44">m</button><button class="key h44 func bs">⌫</button></div>
+        <div class="row"><button class="key h44 func sym-toggle">!#1</button><button class="key h44 globe func" style="background:#0f3d2e;color:#34d399">🌐</button><button class="key h44 punct">,</button><button class="key h44 space">日本語</button><button class="key h44 punct">.</button><button class="key h44 enter func">↵</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ROW 3：設定頁 + 圖示 ══ -->
+<div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">
+
+  <!-- 設定頁 -->
+  <div>
+    <div class="screen-label">App 設定頁</div>
+    <div class="phone settings-phone">
+      <div class="status" style="background:#0d1b2a"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-content">
+        <div class="setting-header">
+          <div class="setting-icon">
+            <svg viewBox="0 0 108 108" width="48" height="48"><rect width="108" height="108" fill="#0D1B2A"/><path d="M0,0 Q54,0 54,54 Q54,0 108,0 L0,0 Z" fill="#0F3D2E" opacity=".6"/><ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/><ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/><ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/><ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/><circle cx="50" cy="31" r="2.5" fill="#1A2332"/><circle cx="58" cy="31" r="2.5" fill="#1A2332"/><circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/><circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/><polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/><path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/><path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/><path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/><path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/><rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/><rect x="26" y="91" width="5" height="4" rx="1" fill="#065f46"/><rect x="34" y="91" width="5" height="4" rx="1" fill="#065f46"/><rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/><rect x="61" y="91" width="5" height="4" rx="1" fill="#065f46"/><rect x="69" y="91" width="12" height="4" rx="1" fill="#065f46"/><path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/></svg>
+          </div>
+          <div>
+            <div class="setting-title">小企鵝嘸蝦米輸入法</div>
+            <div class="setting-sub">功能設定</div>
+          </div>
+        </div>
+
+        <div class="s-label">啟用輸入法</div>
+        <div class="s-card" style="margin-bottom:12px">
+          <div class="s-row"><span class="s-icon">⚙️</span><span class="s-text">① 前往系統設定開啟</span><span class="s-arrow">›</span></div>
+          <div class="s-row"><span class="s-icon">🌐</span><span class="s-text">② 切換至本輸入法</span><span class="s-arrow">›</span></div>
+        </div>
+
+        <div class="s-label">鍵盤外觀</div>
+        <div class="s-card" style="margin-bottom:12px">
+          <div class="s-row">
+            <span class="s-text" style="font-size:13px">顯示快捷鍵列</span>
+            <div class="s-toggle"></div>
+          </div>
+          <div style="padding:6px 10px 10px">
+            <div class="theme-row">
+              <button class="t-btn active">🌑 深色</button>
+              <button class="t-btn">☀️ 淺色</button>
+              <button class="t-btn">🍵 抹茶</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="s-label">詞庫管理</div>
+        <div class="s-card" style="margin-bottom:12px">
+          <div class="s-row"><span class="s-icon">✏️</span><span class="s-text">造詞 / 加字</span><span class="s-arrow">›</span></div>
+          <div class="s-row"><span class="s-icon">📤</span><span class="s-text">匯出備份</span></div>
+          <div class="s-row"><span class="s-icon">📥</span><span class="s-text">匯入備份</span></div>
+        </div>
+
+        <div class="s-label">AI 問答</div>
+        <div class="s-card">
+          <div class="s-row"><span class="s-icon">✦</span><span class="s-text">長按 AI 鍵開啟面板（支援附圖）</span></div>
+          <div class="s-row"><span class="s-icon">🔑</span><span class="s-text">Gemini API Key</span><span class="s-arrow">›</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Icon + 功能對照表 -->
+  <div style="display:flex;flex-direction:column;gap:20px;max-width:300px;">
+    <div>
+      <div class="screen-label">App Icon（三種裁切）</div>
+      <div style="display:flex;gap:16px;align-items:center;justify-content:center;padding:12px;background:#131f2e;border-radius:14px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:72px;height:72px;border-radius:18px;overflow:hidden"><svg viewBox="0 0 108 108" width="72" height="72"><rect width="108" height="108" fill="#0D1B2A"/><path d="M0,0 Q54,0 54,54 Q54,0 108,0 L0,0 Z" fill="#0F3D2E" opacity=".6"/><ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/><ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFF"/><ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/><ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFF"/><circle cx="50" cy="31" r="2.5" fill="#1A2332"/><circle cx="58" cy="31" r="2.5" fill="#1A2332"/><circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/><circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/><polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/><path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/><path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/><path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/><path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/><rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/><rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/><path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/></svg></div>
+          <span style="color:#64748b;font-size:10px">圓角方</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:72px;height:72px;border-radius:50%;overflow:hidden"><svg viewBox="0 0 108 108" width="72" height="72"><rect width="108" height="108" fill="#0D1B2A"/><ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/><ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFF"/><ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/><ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFF"/><circle cx="50" cy="31" r="2.5" fill="#1A2332"/><circle cx="58" cy="31" r="2.5" fill="#1A2332"/><polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/><rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/><path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/></svg></div>
+          <span style="color:#64748b;font-size:10px">圓形</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#0d1520;border-radius:12px;padding:14px;border:1px solid #1e2d3d;">
+      <div style="color:#34d399;font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:10px;">🌐 語言模式循環</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#34d399;border-radius:50%;"></div><span style="color:#cbd5e1;font-size:13px;">繁體中文</span><span style="color:#475569;font-size:11px;margin-left:auto">嘸蝦米 → 繁體</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#60a5fa;border-radius:50%;"></div><span style="color:#cbd5e1;font-size:13px;">简体中文</span><span style="color:#475569;font-size:11px;margin-left:auto">嘸蝦米 → 簡體</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#f59e0b;border-radius:50%;"></div><span style="color:#cbd5e1;font-size:13px;">日本語</span><span style="color:#475569;font-size:11px;margin-left:auto">羅馬字 → 假名</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#94a3b8;border-radius:50%;"></div><span style="color:#cbd5e1;font-size:13px;">English</span><span style="color:#475569;font-size:11px;margin-left:auto">英數直接輸入</span></div>
+      </div>
+    </div>
+
+    <div style="background:#0d1520;border-radius:12px;padding:14px;border:1px solid #1e2d3d;">
+      <div style="color:#34d399;font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:10px;">⌨️ 鍵盤快捷操作</div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;">
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">Enter</span><span style="color:#e2e8f0">輸出原始字根</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">Space</span><span style="color:#e2e8f0">選第一候選</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">長按 Space</span><span style="color:#e2e8f0">加字 / 剪貼簿 / 設定</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">長按 AI✦</span><span style="color:#e2e8f0">AI 問答面板（附圖）</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">長按 🌐</span><span style="color:#e2e8f0">系統輸入法選擇器</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">長按候選</span><span style="color:#e2e8f0">置頂</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">雙擊候選</span><span style="color:#e2e8f0">刪除</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">數字鍵長按</span><span style="color:#e2e8f0">次要符號（` [ ] \ ; ' / - ）</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8">▼ 展開</span><span style="color:#e2e8f0">顯示全部候選</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

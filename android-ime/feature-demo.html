@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>小企鵝嘸蝦米 — 功能展示</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #060b14;
+  font-family: -apple-system, 'Noto Sans TC', sans-serif;
+  padding: 20px 12px 48px;
+  display: flex; flex-direction: column; align-items: center; gap: 28px;
+}
+h1 { color: #34d399; font-size: 17px; font-weight: 700; letter-spacing: .05em; }
+.section-title {
+  color: #64748b; font-size: 11px; text-align: center;
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px;
+}
+.row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+
+/* ── 手機外框 ── */
+.phone {
+  width: 375px;
+  border-radius: 34px;
+  border: 2px solid #1e2d3d;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,.7);
+  background: #0f1117;
+}
+.status { background: #0f1117; display: flex; justify-content: space-between;
+  padding: 10px 18px 4px; color: #94a3b8; font-size: 12px; }
+.app-area { background: #1a1f2e; padding: 12px 16px 8px; min-height: 60px; }
+.app-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.app-dot { width: 24px; height: 24px; border-radius: 6px; background: #2563eb;
+  color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.app-name { color: #e2e8f0; font-size: 13px; }
+.text-field { color: #94a3b8; font-size: 14px; line-height: 1.5; }
+.cursor { display: inline-block; width: 2px; height: 14px; background: #34d399;
+  vertical-align: middle; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── 鍵盤共用 ── */
+.keyboard { background: #1b1e28; padding: 5px 5px 4px; }
+.toolbar { display: flex; align-items: center; height: 40px;
+  background: #1e2333; border-radius: 10px 10px 0 0; padding: 0 8px; }
+.tb-btn { width: 28px; height: 28px; border-radius: 50%; background: #252e42;
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  margin-right: 5px; font-size: 12px; color: #94a3b8; flex-shrink: 0; }
+.hint { flex: 1; text-align: right; color: #dde7ff; font-size: 11px; }
+
+/* 候選列 */
+.cand-bar { display: flex; align-items: center; height: 36px; margin: 4px 0; }
+.comp { color: #dde7ff; font-size: 13px; padding: 0 6px; }
+.divider { width: 1px; height: 18px; background: #2d3a4a; margin: 0 2px; }
+.cands { display: flex; gap: 3px; flex: 1; align-items: center; padding-left: 4px; }
+.cand { background: #1e2a3a; color: #e2e8f0; border: none; border-radius: 6px;
+  padding: 3px 10px; font-size: 13px; cursor: pointer; height: 28px; }
+.cand:first-child { background: #0f3d2e; color: #34d399; font-weight: 600; }
+
+/* Key row */
+.krow { display: flex; gap: 3px; margin-top: 5px; }
+.key { flex: 1; height: 48px; background: #fff; border-radius: 8px; border: none;
+  color: #1a2332; font-size: 15px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-family: inherit;
+  box-shadow: 0 2px 0 #b0bccb; transition: transform .08s; }
+.key:active { transform: translateY(1px); box-shadow: none; }
+.key.func { background: #aeb8ca; color: #2d3a4a; }
+.key.del  { background: #aeb8ca; color: #e53e3e; font-size: 18px; }
+.key.enter { background: #3b82f6; color: #fff; font-size: 20px; flex: 1.4; }
+.key.space { flex: 5; color: #8096b4; font-size: 12px;
+  background: linear-gradient(to bottom, #f0f4fa 0%, #e8edf5 100%); }
+.key.globe { flex: 1; }
+.key.sym   { flex: 1.2; font-size: 12px; }
+.key.bs { flex: 1.4; }
+.key.h46 { height: 46px; }
+.sec { font-size: 9px; color: #8090aa; margin-bottom: -2px; }
+.spacer { flex: .5; }
+.small-key { flex: .9; height: 46px; }
+/* panels */
+.panel { background: #121820; border-radius: 6px; margin: 4px 2px; }
+.p-item { display: flex; align-items: center; height: 50px;
+  padding: 0 18px; font-size: 14px; cursor: pointer; }
+.p-item:hover { background: #1a2230; }
+.p-item + .p-item { border-top: 1px solid #1e2840; }
+.p-text { flex: 1; color: #e2e8f0; }
+.p-text.danger { color: #ef4444; }
+/* add-word panel */
+.aw-panel { padding: 8px; }
+.aw-title { color: #34d399; font-size: 13px; font-weight: 600; padding: 4px 4px 8px; }
+.aw-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.aw-label { color: #64748b; font-size: 12px; width: 32px; flex-shrink: 0; }
+.aw-input { flex: 1; background: #1e2d3d; border: 1.5px solid #34d399;
+  border-radius: 6px; padding: 6px 10px; color: #e2e8f0; font-size: 14px; }
+.aw-input.inactive { border-color: #2d3a4a; color: #9aa1b2; }
+.aw-btn { background: #1e2d3d; border: none; border-radius: 6px; padding: 6px 12px;
+  color: #94a3b8; font-size: 12px; cursor: pointer; }
+.aw-result { color: #6ee7b7; font-size: 12px; padding: 4px 4px 6px; }
+.aw-actions { display: flex; gap: 6px; margin-top: 4px; }
+.aw-action { flex: 1; height: 36px; border: none; border-radius: 7px;
+  font-size: 13px; cursor: pointer; }
+.aw-action.add  { background: #0f3d2e; color: #34d399; }
+.aw-action.del  { background: #2d1a1a; color: #ef4444; }
+.aw-action.clr  { background: #1e2d3d; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<h1>🐧 小企鵝嘸蝦米輸入法 — 功能執行展示</h1>
+
+<!-- ══ ROW 1: 長按空白鍵選單（完整）+ 加字加詞面板 ══ -->
+<div class="row">
+
+  <!-- 長按空白鍵選單 -->
+  <div>
+    <div class="section-title">長按空白鍵選單（完整）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-area">
+        <div class="app-bar"><div class="app-dot">M</div><span class="app-name">訊息</span></div>
+        <div class="text-field">Hello world<span class="cursor"></span></div>
+      </div>
+      <div class="keyboard">
+        <div class="toolbar">
+          <button class="tb-btn">A中</button>
+          <button class="tb-btn">★</button>
+          <button class="tb-btn">✦</button>
+          <button class="tb-btn">⎘</button>
+          <button class="tb-btn">⚙</button>
+          <button class="tb-btn">♪</button>
+          <button class="tb-btn">⠿</button>
+          <div class="hint">繁體中文</div>
+        </div>
+        <div class="cand-bar"></div>
+        <!-- 選單 -->
+        <div class="panel">
+          <div class="p-item"><span class="p-text">☑️  全選</span></div>
+          <div class="p-item"><span class="p-text">✂️  剪下</span></div>
+          <div class="p-item"><span class="p-text">📄  複製</span></div>
+          <div class="p-item"><span class="p-text">📋  貼上</span></div>
+          <div class="p-item"><span class="p-text">🔍  搜尋（剪貼簿→Google）</span></div>
+          <div class="p-item" style="border-top:2px solid #1e2840">
+            <span class="p-text">✏️  加字加詞</span></div>
+          <div class="p-item"><span class="p-text">🎤  語音輸入</span></div>
+          <div class="p-item"><span class="p-text">📁  剪貼簿記錄</span></div>
+          <div class="p-item" style="border-top:2px solid #1e2840">
+            <span class="p-text">📥  匯入資料庫</span></div>
+          <div class="p-item"><span class="p-text">📤  匯出資料庫</span></div>
+          <div class="p-item" style="border-top:2px solid #1e2840">
+            <span class="p-text">⚙️  設定</span></div>
+          <div class="p-item"><span class="p-text danger">✕  關閉</span></div>
+        </div>
+        <!-- 底列保持可見 -->
+        <div class="krow" style="margin-top:6px">
+          <button class="key h46 sym">!#1</button>
+          <button class="key h46 globe">🌐</button>
+          <button class="key h46 small-key">,</button>
+          <button class="key h46 space" style="flex:5">嘸蝦米</button>
+          <button class="key h46 small-key">.</button>
+          <button class="key h46 enter">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 加字加詞面板 -->
+  <div>
+    <div class="section-title">加字加詞（內建面板）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-area">
+        <div class="app-bar"><div class="app-dot">M</div><span class="app-name">訊息</span></div>
+        <div class="text-field">新增自訂詞條<span class="cursor"></span></div>
+      </div>
+      <div class="keyboard">
+        <div class="toolbar">
+          <button class="tb-btn">A中</button>
+          <button class="tb-btn">★</button>
+          <button class="tb-btn">✦</button>
+          <button class="tb-btn">⎘</button>
+          <button class="tb-btn">⚙</button>
+          <button class="tb-btn">♪</button>
+          <button class="tb-btn">⠿</button>
+          <div class="hint">目前輸入：字根</div>
+        </div>
+        <!-- 加字加詞面板 -->
+        <div class="aw-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="aw-title">✏️  加字加詞</div>
+            <button class="aw-btn">✕ 關閉</button>
+          </div>
+          <div class="aw-row">
+            <div class="aw-label">字根</div>
+            <div class="aw-input">penguin▌</div>
+            <button class="aw-btn">查詢</button>
+          </div>
+          <div class="aw-result">查無「penguin」對應詞條</div>
+          <div class="aw-row">
+            <div class="aw-label">詞句</div>
+            <div class="aw-input inactive">…</div>
+          </div>
+          <div class="aw-actions">
+            <button class="aw-action clr">清除</button>
+            <button class="aw-action add">新增</button>
+            <button class="aw-action del">刪除</button>
+          </div>
+        </div>
+        <!-- 主鍵盤 -->
+        <div class="krow">
+          <button class="key"><div class="sec">~</div>q</button>
+          <button class="key"><div class="sec">!</div>w</button>
+          <button class="key"><div class="sec">@</div>e</button>
+          <button class="key"><div class="sec">#</div>r</button>
+          <button class="key"><div class="sec">$</div>t</button>
+          <button class="key"><div class="sec">%</div>y</button>
+          <button class="key"><div class="sec">^</div>u</button>
+          <button class="key"><div class="sec">&</div>i</button>
+          <button class="key"><div class="sec">*</div>o</button>
+          <button class="key"><div class="sec">+</div>p</button>
+        </div>
+        <div class="krow">
+          <div class="spacer"></div>
+          <button class="key"><div class="sec">=</div>a</button>
+          <button class="key"><div class="sec">-</div>s</button>
+          <button class="key"><div class="sec">_</div>d</button>
+          <button class="key"><div class="sec">/</div>f</button>
+          <button class="key"><div class="sec">|</div>g</button>
+          <button class="key"><div class="sec">:</div>h</button>
+          <button class="key"><div class="sec">"</div>j</button>
+          <button class="key"><div class="sec">?</div>k</button>
+          <button class="key"><div class="sec">!</div>l</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="krow">
+          <div style="flex:1.4"></div>
+          <button class="key"><div class="sec">(</div>z</button>
+          <button class="key"><div class="sec">)</div>x</button>
+          <button class="key"><div class="sec">[</div>c</button>
+          <button class="key"><div class="sec">]</div>v</button>
+          <button class="key"><div class="sec">{</div>b</button>
+          <button class="key"><div class="sec">}</div>n</button>
+          <button class="key"><div class="sec">&lt;</div>m</button>
+          <button class="key del bs">⌫</button>
+        </div>
+        <div class="krow">
+          <button class="key h46 sym func">!#1</button>
+          <button class="key h46 globe func">🌐</button>
+          <button class="key h46 small-key">,</button>
+          <button class="key h46 space">嘸蝦米</button>
+          <button class="key h46 small-key">.</button>
+          <button class="key h46 enter">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ ROW 2: 匯入匯出流程 + 加字完成 ══ -->
+<div class="row">
+
+  <!-- 匯出中 -->
+  <div>
+    <div class="section-title">📤 匯出資料庫（執行中）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-area">
+        <div class="text-field" style="color:#94a3b8;padding:6px 0">輸入中...<span class="cursor"></span></div>
+      </div>
+      <div class="keyboard">
+        <div class="toolbar">
+          <button class="tb-btn">A中</button><button class="tb-btn">★</button>
+          <button class="tb-btn">✦</button><button class="tb-btn">⎘</button>
+          <button class="tb-btn">⚙</button><button class="tb-btn">♪</button>
+          <button class="tb-btn">⠿</button>
+          <div class="hint" style="color:#34d399">✅ 已匯出：/storage/.../penguin_lime_export.db</div>
+        </div>
+        <div class="cand-bar"></div>
+        <div class="krow">
+          <button class="key"><div class="sec">~</div>q</button><button class="key"><div class="sec">!</div>w</button>
+          <button class="key"><div class="sec">@</div>e</button><button class="key"><div class="sec">#</div>r</button>
+          <button class="key"><div class="sec">$</div>t</button><button class="key"><div class="sec">%</div>y</button>
+          <button class="key"><div class="sec">^</div>u</button><button class="key"><div class="sec">&</div>i</button>
+          <button class="key"><div class="sec">*</div>o</button><button class="key"><div class="sec">+</div>p</button>
+        </div>
+        <div class="krow">
+          <div class="spacer"></div>
+          <button class="key"><div class="sec">=</div>a</button><button class="key"><div class="sec">-</div>s</button>
+          <button class="key"><div class="sec">_</div>d</button><button class="key"><div class="sec">/</div>f</button>
+          <button class="key"><div class="sec">|</div>g</button><button class="key"><div class="sec">:</div>h</button>
+          <button class="key"><div class="sec">"</div>j</button><button class="key"><div class="sec">?</div>k</button>
+          <button class="key"><div class="sec">!</div>l</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="krow">
+          <div style="flex:1.4"></div>
+          <button class="key"><div class="sec">(</div>z</button><button class="key"><div class="sec">)</div>x</button>
+          <button class="key"><div class="sec">[</div>c</button><button class="key"><div class="sec">]</div>v</button>
+          <button class="key"><div class="sec">{</div>b</button><button class="key"><div class="sec">}</div>n</button>
+          <button class="key"><div class="sec">&lt;</div>m</button>
+          <button class="key del bs">⌫</button>
+        </div>
+        <div class="krow">
+          <button class="key h46 sym func">!#1</button><button class="key h46 globe func">🌐</button>
+          <button class="key h46 small-key">,</button><button class="key h46 space">嘸蝦米</button>
+          <button class="key h46 small-key">.</button><button class="key h46 enter">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 匯入完成 -->
+  <div>
+    <div class="section-title">📥 匯入資料庫（完成後）</div>
+    <div class="phone">
+      <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+      <div class="app-area">
+        <div class="text-field" style="color:#94a3b8;padding:6px 0">輸入中...<span class="cursor"></span></div>
+      </div>
+      <div class="keyboard">
+        <div class="toolbar">
+          <button class="tb-btn">A中</button><button class="tb-btn">★</button>
+          <button class="tb-btn">✦</button><button class="tb-btn">⎘</button>
+          <button class="tb-btn">⚙</button><button class="tb-btn">♪</button>
+          <button class="tb-btn">⠿</button>
+          <div class="hint" style="color:#34d399">✅ 匯入完成，共 15,043 筆</div>
+        </div>
+        <!-- 候選列：匯入後立即可用 -->
+        <div class="cand-bar">
+          <div class="comp">ca</div>
+          <div class="divider"></div>
+          <div class="cands">
+            <button class="cand">才</button>
+            <button class="cand">查</button>
+            <button class="cand">茶</button>
+            <button class="cand">差</button>
+            <button class="cand">察</button>
+          </div>
+        </div>
+        <div class="krow">
+          <button class="key"><div class="sec">~</div>q</button><button class="key"><div class="sec">!</div>w</button>
+          <button class="key"><div class="sec">@</div>e</button><button class="key"><div class="sec">#</div>r</button>
+          <button class="key"><div class="sec">$</div>t</button><button class="key"><div class="sec">%</div>y</button>
+          <button class="key"><div class="sec">^</div>u</button><button class="key"><div class="sec">&</div>i</button>
+          <button class="key"><div class="sec">*</div>o</button><button class="key"><div class="sec">+</div>p</button>
+        </div>
+        <div class="krow">
+          <div class="spacer"></div>
+          <button class="key"><div class="sec">=</div>a</button><button class="key"><div class="sec">-</div>s</button>
+          <button class="key"><div class="sec">_</div>d</button><button class="key"><div class="sec">/</div>f</button>
+          <button class="key"><div class="sec">|</div>g</button><button class="key"><div class="sec">:</div>h</button>
+          <button class="key"><div class="sec">"</div>j</button><button class="key"><div class="sec">?</div>k</button>
+          <button class="key"><div class="sec">!</div>l</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="krow">
+          <div style="flex:1.4"></div>
+          <button class="key"><div class="sec">(</div>z</button><button class="key"><div class="sec">)</div>x</button>
+          <button class="key"><div class="sec">[</div>c</button><button class="key"><div class="sec">]</div>v</button>
+          <button class="key"><div class="sec">{</div>b</button><button class="key"><div class="sec">}</div>n</button>
+          <button class="key"><div class="sec">&lt;</div>m</button>
+          <button class="key del bs">⌫</button>
+        </div>
+        <div class="krow">
+          <button class="key h46 sym func">!#1</button><button class="key h46 globe func">🌐</button>
+          <button class="key h46 small-key">,</button><button class="key h46 space">嘸蝦米</button>
+          <button class="key h46 small-key">.</button><button class="key h46 enter">↵</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

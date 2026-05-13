@@ -1,4 +1,4 @@
-﻿package com.weasel.androidime
+﻿package com.penguinInput.androidime
 
 import android.content.ClipData
 import android.content.Intent

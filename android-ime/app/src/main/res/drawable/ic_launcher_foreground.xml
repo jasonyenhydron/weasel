@@ -3,9 +3,40 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:fillColor="#FFFFFF" android:pathData="M20,28h12v52h-12z"/>
-    <path android:fillColor="#FFFFFF" android:pathData="M32,68h22v12h-22z"/>
-    <path android:fillColor="#FFFFFF" android:pathData="M58,28h12v52h-12z"/>
-    <path android:fillColor="#FDE68A" android:pathData="M74,28h14c7,0 12,5 12,12v28c0,7 -5,12 -12,12h-14z"/>
-    <path android:fillColor="#0B1220" android:pathData="M83,40h5c2,0 4,2 4,4v20c0,2 -2,4 -4,4h-5z"/>
+
+    <!-- 底部鍵盤底座 -->
+    <path
+        android:fillColor="#0F766E"
+        android:pathData="M18,66 C18,61 22,57 27,57 L81,57 C86,57 90,61 90,66 L90,90 C90,95 86,99 81,99 L27,99 C22,99 18,95 18,90 Z" />
+
+    <!-- 鍵帽列 -->
+    <path android:fillColor="#CCFDF4" android:pathData="M25,64 H33 V71 H25 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M36,64 H44 V71 H36 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M47,64 H55 V71 H47 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M58,64 H66 V71 H58 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M69,64 H77 V71 H69 Z" />
+
+    <path android:fillColor="#CCFDF4" android:pathData="M25,74 H35 V81 H25 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M38,74 H68 V81 H38 Z" />
+    <path android:fillColor="#CCFDF4" android:pathData="M71,74 H81 V81 H71 Z" />
+
+    <!-- 企鵝頭部 -->
+    <path
+        android:fillColor="#111827"
+        android:pathData="M54,15 C41,15 31,25 31,38 C31,51 41,61 54,61 C67,61 77,51 77,38 C77,25 67,15 54,15 Z" />
+
+    <!-- 臉部 -->
+    <path
+        android:fillColor="#F8FAFC"
+        android:pathData="M54,20 C44,20 37,28 37,38 C37,48 44,56 54,56 C64,56 71,48 71,38 C71,28 64,20 54,20 Z" />
+
+    <!-- 眼睛 -->
+    <path android:fillColor="#111827" android:pathData="M46,33 A2.6,2.6 0 1,0 46,38.2 A2.6,2.6 0 1,0 46,33 Z" />
+    <path android:fillColor="#111827" android:pathData="M59,33 A2.6,2.6 0 1,0 59,38.2 A2.6,2.6 0 1,0 59,33 Z" />
+
+    <!-- 喙 -->
+    <path android:fillColor="#F59E0B" android:pathData="M49,42 L54,46 L59,42 Z" />
+
+    <!-- 小高光 -->
+    <path android:fillColor="#FFFFFF" android:pathData="M64,24 C66,22 69,22 71,24 C69,25 66,26 63,27 Z" />
 </vector>

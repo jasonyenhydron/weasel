@@ -1,12 +1,16 @@
-﻿package com.weasel.androidime
+﻿package com.penguinInput.androidime
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,36 +31,92 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ensureMicrophonePermission()
+        openInputMethodSettingsIfLaunchedFromIcon()
+        requestAllPermissionsIfNeeded()
+        if (intent?.getBooleanExtra("request_record_audio", false) == true) {
+            Toast.makeText(this, "請允許麥克風權限以啟用語音輸入", Toast.LENGTH_SHORT).show()
+        }
+        handleOpenToolIntent()
         loadUiState()
         bindActions()
         refreshScaleLabel()
     }
 
+    private fun openInputMethodSettingsIfLaunchedFromIcon() {
+        val action = intent?.action
+        val fromLauncher = intent?.categories?.contains(Intent.CATEGORY_LAUNCHER) == true
+        if (action == Intent.ACTION_MAIN && fromLauncher) {
+            startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
+            Toast.makeText(this, "請在此啟用或切換小企鵝蝦米輸入法", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun handleOpenToolIntent() {
+        when (intent?.getStringExtra("open_tool")) {
+            "add_word" -> {
+                findViewById<EditText>(R.id.edit_word).requestFocus()
+                Toast.makeText(this, "已開啟：加字加詞", Toast.LENGTH_SHORT).show()
+            }
+            "settings" -> {
+                Toast.makeText(this, "已開啟：輸入法設定頁", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun requestAllPermissionsIfNeeded() {
+        val needed = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED) {
+            needed.add(android.Manifest.permission.RECORD_AUDIO)
+        }
+        if (needed.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, needed.toTypedArray(), requestRecordAudio)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == requestRecordAudio) {
+            val granted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            if (!granted) {
+                Toast.makeText(this, "語音輸入需要麥克風權限", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun bindActions() {
+        // ── 啟用輸入法 ──
         findViewById<Button>(R.id.btn_enable_ime).setOnClickListener {
             startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
         }
-
         findViewById<Button>(R.id.btn_switch_ime).setOnClickListener {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }
 
+        // ── 詞庫管理 ──
         findViewById<Button>(R.id.btn_add_word).setOnClickListener { saveUserWord() }
+        findViewById<Button>(R.id.btn_export_dict).setOnClickListener { exportBackup() }
+        findViewById<Button>(R.id.btn_import_dict).setOnClickListener { importBackup() }
+
+        // ── 外觀 ──
+        // 快捷鍵列開關
+        val toolbarSwitch = findViewById<Switch>(R.id.switch_toolbar)
+        toolbarSwitch.isChecked = uiPrefs.getBoolean("show_toolbar", true)
+        toolbarSwitch.setOnCheckedChangeListener { _: CompoundButton, checked: Boolean ->
+            uiPrefs.edit().putBoolean("show_toolbar", checked).apply()
+            Toast.makeText(this, if (checked) "快捷鍵列已顯示" else "快捷鍵列已隱藏", Toast.LENGTH_SHORT).show()
+        }
 
         findViewById<Button>(R.id.btn_theme_dark).setOnClickListener { setThemePref("dark") }
         findViewById<Button>(R.id.btn_theme_light).setOnClickListener { setThemePref("light") }
         findViewById<Button>(R.id.btn_theme_matcha).setOnClickListener { setThemePref("matcha") }
-
         findViewById<Button>(R.id.btn_key_minus).setOnClickListener { updateScale(deltaKey = -5, deltaText = 0) }
         findViewById<Button>(R.id.btn_key_plus).setOnClickListener { updateScale(deltaKey = 5, deltaText = 0) }
         findViewById<Button>(R.id.btn_text_minus).setOnClickListener { updateScale(deltaKey = 0, deltaText = -5) }
         findViewById<Button>(R.id.btn_text_plus).setOnClickListener { updateScale(deltaKey = 0, deltaText = 5) }
 
-        findViewById<Button>(R.id.btn_export_dict).setOnClickListener { exportBackup() }
-        findViewById<Button>(R.id.btn_import_dict).setOnClickListener { importBackup() }
-
+        // ── AI 設定 ──
         val geminiKeyInput = findViewById<EditText>(R.id.edit_gemini_key)
         geminiKeyInput.setText(aiPrefs.getString("gemini_api_key", ""))
         findViewById<Button>(R.id.btn_save_gemini_key).setOnClickListener {
@@ -66,16 +126,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun ensureMicrophonePermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
-            == PackageManager.PERMISSION_GRANTED
-        ) return
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(android.Manifest.permission.RECORD_AUDIO),
-            requestRecordAudio
-        )
-    }
 
     private fun saveUserWord() {
         val word = findViewById<EditText>(R.id.edit_word).text.toString().trim()
@@ -84,17 +134,46 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "請輸入字/詞與字根", Toast.LENGTH_SHORT).show()
             return
         }
-        if (!code.matches(Regex("^[a-z,.'`/;-]+$"))) {
+        if (!code.matches(Regex("^[a-z,.'`/;\\[\\]\\-]+$"))) {
             Toast.makeText(this, "字根格式不正確", Toast.LENGTH_SHORT).show()
             return
         }
-
-        val file = File(filesDir, "user_dict.tsv")
-        file.parentFile?.mkdirs()
-        file.appendText("$word\t$code\n", Charsets.UTF_8)
-        Toast.makeText(this, "已新增：$word -> $code", Toast.LENGTH_SHORT).show()
-        findViewById<EditText>(R.id.edit_word).text.clear()
-        findViewById<EditText>(R.id.edit_code).text.clear()
+        // 寫入 lime.db custom_user（背景執行）
+        Thread {
+            try {
+                val dbFile = File(filesDir, "rime/lime.db")
+                if (!dbFile.exists()) {
+                    runOnUiThread {
+                        Toast.makeText(this, "詞庫尚未初始化，請先開啟鍵盤", Toast.LENGTH_SHORT).show()
+                    }
+                    return@Thread
+                }
+                val db = SQLiteDatabase.openDatabase(
+                    dbFile.absolutePath, null, SQLiteDatabase.OPEN_READWRITE
+                )
+                db.use {
+                    val maxScore = it.rawQuery(
+                        "SELECT COALESCE(MAX(score),0) FROM custom_user", null
+                    ).use { c -> if (c.moveToFirst()) c.getInt(0) else 0 }
+                    val cv = ContentValues().apply {
+                        put("code", code); put("word", word)
+                        put("score", maxScore + 1); put("basescore", maxScore + 1)
+                    }
+                    it.insertWithOnConflict(
+                        "custom_user", null, cv, SQLiteDatabase.CONFLICT_REPLACE
+                    )
+                }
+                runOnUiThread {
+                    Toast.makeText(this, "已新增：$word → $code", Toast.LENGTH_SHORT).show()
+                    findViewById<EditText>(R.id.edit_word).text.clear()
+                    findViewById<EditText>(R.id.edit_code).text.clear()
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "寫入失敗：${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
     }
 
     private fun setThemePref(theme: String) {
@@ -128,7 +207,9 @@ class MainActivity : AppCompatActivity() {
         obj.put("related_map", JSONObject(related))
         obj.put("ui", JSONObject().put("theme", uiPrefs.getString("theme", "dark")).put("key_scale", keyScale).put("text_scale", textScale))
         outFile.writeText(obj.toString(), Charsets.UTF_8)
-        Toast.makeText(this, "已匯出：${outFile.absolutePath}", Toast.LENGTH_LONG).show()
+        val msg = "已匯出至 ${outFile.name}"
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.txt_dict_path).text = "路徑：${outFile.absolutePath}"
     }
 
     private fun importBackup() {
@@ -156,6 +237,7 @@ class MainActivity : AppCompatActivity() {
             refreshScaleLabel()
         }
 
-        Toast.makeText(this, "已匯入完成，切回鍵盤即可生效", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "已匯入完成，切回鍵盤即可生效", Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.txt_dict_path).text = "已從 ${inFile.name} 匯入"
     }
 }

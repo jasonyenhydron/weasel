@@ -7,43 +7,44 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * 透明 Activity，專門用來讓 IME 能夠啟動圖片選擇器。
- * 選取後將圖片複製到 filesDir/ai/ai_temp_image.jpg，
- * 並透過 PenguinInputMethodService.onImagePickedCallback 通知 IME 面板。
+ * 透明 Activity，讓 IME 能夠開啟系統檔案選取器。
+ * 選取後將檔案複製到 filesDir/rime/import_lime.db，
+ * 並透過 PenguinInputMethodService.onDbPickedCallback 通知 Service。
  */
-class ImagePickerHelperActivity : Activity() {
+class FilePickerHelperActivity : Activity() {
 
     companion object {
-        private const val REQUEST_IMAGE = 2001
+        private const val REQUEST_FILE = 3001
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "image/*"
+            type = "*/*"
             addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_TITLE, "選取 lime.db 資料庫檔")
         }
         @Suppress("DEPRECATION")
-        startActivityForResult(intent, REQUEST_IMAGE)
+        startActivityForResult(intent, REQUEST_FILE)
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
             val uri = data?.data
             if (uri != null) {
                 try {
-                    val targetDir = File(filesDir, "ai")
+                    val targetDir = File(filesDir, "rime")
                     targetDir.mkdirs()
-                    val target = File(targetDir, "ai_temp_image.jpg")
+                    val target = File(targetDir, "import_lime.db")
                     contentResolver.openInputStream(uri)?.use { input ->
                         FileOutputStream(target).use { output -> input.copyTo(output) }
                     }
-                    PenguinInputMethodService.onImagePickedCallback?.invoke(target.absolutePath)
+                    PenguinInputMethodService.onDbPickedCallback?.invoke(target.absolutePath)
                 } catch (_: Exception) {
-                    // 圖片複製失敗時靜默處理
+                    // 複製失敗時靜默處理
                 }
             }
         }

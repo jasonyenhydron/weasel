@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kbd_bg">#17191F</color>
+    <color name="toolbar_bg">#1E2333</color>
+    <color name="key_text">#F2F4FA</color>
+    <color name="key_func_text">#94A3B8</color>
+    <color name="key_space_text">#8096B4</color>
+    <color name="key_bs_text">#E53E3E</color>
+    <color name="key_hint_text">#DDE7FF</color>
+    <color name="composing_text">#DDE7FF</color>
+    <color name="hint_text">#DDE7FF</color>
+</resources>

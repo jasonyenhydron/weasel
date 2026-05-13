@@ -4,11 +4,11 @@
 }
 
 android {
-    namespace = "com.weasel.androidime"
+    namespace = "com.penguinInput.androidime"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.weasel.androidime"
+        applicationId = "com.penguinInput.androidime"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

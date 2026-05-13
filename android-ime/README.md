@@ -21,6 +21,29 @@
 2. 到 Android 設定 > 語言與輸入法 > 啟用 `Weasel IME`
 3. 在任一輸入框切換到 `Weasel IME`
 
+## 基礎可用版 Demo 指南
+1. 建置 debug APK
+- PowerShell 設定 SDK：
+  - `$env:ANDROID_HOME='C:\Users\jason.yen\AppData\Local\Android\Sdk'`
+  - `$env:ANDROID_SDK_ROOT='C:\Users\jason.yen\AppData\Local\Android\Sdk'`
+- 執行：`.\gradlew.bat app:assembleDebug`
+
+2. 手機安裝與啟用
+- 安裝：`app/build/outputs/apk/debug/app-debug.apk`
+- Android 設定 > 語言與輸入法 > 啟用 `小企鵝蝦米輸入法`
+- 在任何輸入框切換到本輸入法
+
+3. 現場展示最小驗證
+- 英數輸入：輸入 `abc123`
+- 編輯鍵：測試 `Space`、`Enter`、`Backspace`
+- 組字與候選字：輸入一段碼後選字
+- 中英切換：切換一次並確認輸出內容改變
+
+4. 建議截圖點
+- 系統「啟用輸入法」頁
+- 聊天或記事本中的實際輸入畫面
+- 候選字列顯示畫面
+
 ## 下一步（建議）
 - 接入 Rime Android（JNI）以沿用 Weasel/Rime 配置。
 - 導入 `rime_user` 方案與詞庫同步流程。

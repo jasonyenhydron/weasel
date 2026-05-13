@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>設定頁預覽</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0a0e1a;
+  font-family: -apple-system, 'Noto Sans TC', sans-serif;
+  display: flex; gap: 32px; padding: 24px;
+  align-items: flex-start; justify-content: center;
+}
+
+/* Phone shell */
+.phone {
+  width: 390px;
+  background: #0D1B2A;
+  border-radius: 40px;
+  border: 2px solid #1e2d3d;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.7);
+}
+.status-bar {
+  background: #0D1B2A;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px 4px;
+  color: #e2e8f0;
+  font-size: 12px;
+}
+.scroll-area {
+  background: #0D1B2A;
+  padding: 0 18px 28px;
+  max-height: 780px;
+  overflow-y: auto;
+}
+.scroll-area::-webkit-scrollbar { width: 4px; }
+.scroll-area::-webkit-scrollbar-track { background: transparent; }
+.scroll-area::-webkit-scrollbar-thumb { background: #1e3a2f; border-radius: 2px; }
+
+/* Header */
+.header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 0 20px;
+}
+.app-icon-wrap {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #0D1B2A;
+}
+.app-title { color: #e2e8f0; font-size: 18px; font-weight: 700; }
+.app-sub   { color: #64748b; font-size: 12px; margin-top: 3px; }
+
+/* Section */
+.section-label {
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.card {
+  background: #131F2E;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.row {
+  display: flex; align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background .1s;
+}
+.row:hover { background: #1a2d3e; }
+.row + .row { border-top: 1px solid #1e2d3d; }
+.row-icon { font-size: 18px; margin-right: 12px; width: 22px; text-align: center; }
+.row-text { flex: 1; }
+.row-title { color: #cbd5e1; font-size: 14px; }
+.row-sub   { color: #475569; font-size: 11px; margin-top: 2px; }
+.row-arrow { color: #334155; font-size: 12px; }
+.row-badge {
+  background: #0f3d2e;
+  color: #34d399;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-right: 8px;
+}
+
+/* Input field */
+.input-wrap { padding: 10px 12px; }
+.field {
+  background: #1E2D3D;
+  border: none; border-radius: 8px;
+  width: 100%; height: 42px;
+  color: #e2e8f0; font-size: 14px;
+  padding: 0 12px;
+  display: flex; align-items: center;
+  margin-bottom: 6px;
+  font-family: inherit;
+}
+.field.placeholder { color: #475569; }
+.btn-green {
+  background: #0f3d2e;
+  color: #34d399;
+  border: none; border-radius: 8px;
+  width: 100%; height: 42px;
+  font-size: 14px; cursor: pointer;
+  font-family: inherit;
+  transition: background .1s;
+}
+.btn-green:hover { background: #163f2f; }
+
+/* Theme buttons */
+.theme-row {
+  display: flex; gap: 6px;
+  padding: 6px 12px 12px;
+}
+.theme-btn {
+  flex: 1; height: 42px;
+  background: #1E2D3D;
+  border: none; border-radius: 8px;
+  color: #e2e8f0; font-size: 13px;
+  cursor: pointer; font-family: inherit;
+}
+.theme-btn.active { background: #0f3d2e; color: #34d399; }
+
+/* Scale row */
+.scale-row {
+  display: flex; gap: 6px;
+  padding: 0 12px 12px;
+}
+.scale-btn {
+  flex: 1; height: 38px;
+  background: #1E2D3D;
+  border: none; border-radius: 6px;
+  color: #94a3b8; font-size: 12px;
+  cursor: pointer; font-family: inherit;
+}
+.scale-label {
+  color: #94a3b8; font-size: 12px;
+  padding: 10px 16px 4px;
+}
+
+/* Version */
+.version { text-align: center; color: #334155; font-size: 11px; padding-top: 4px; }
+
+/* ── Icon Preview ── */
+.icon-section {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+}
+.icon-title { color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 88px);
+  gap: 16px;
+}
+.icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.icon-shape {
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.icon-shape.round { border-radius: 50%; }
+.icon-shape.squircle { border-radius: 22px; }
+.icon-shape.square  { border-radius: 0; }
+.icon-label { color: #64748b; font-size: 10px; }
+
+/* Home screen mockup */
+.homescreen {
+  width: 390px;
+  background: linear-gradient(160deg, #0a1628 0%, #0f2d1f 100%);
+  border-radius: 40px;
+  border: 2px solid #1e2d3d;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.7);
+}
+.hs-status { display: flex; justify-content: space-between; padding: 12px 20px 6px; color: #e2e8f0; font-size: 12px; }
+.hs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 24px 20px;
+}
+.hs-app { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.hs-icon {
+  width: 68px; height: 68px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+}
+.hs-icon.our { background: linear-gradient(135deg, #0D1B2A 0%, #0F3D2E 100%); overflow: hidden; }
+.hs-name { color: #e2e8f0; font-size: 11px; text-align: center; }
+.hs-dock {
+  background: rgba(255,255,255,.06);
+  margin: 0 16px 20px;
+  border-radius: 24px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- 設定頁 -->
+<div class="phone">
+  <div class="status-bar">
+    <span>09:41</span>
+    <span>📶 🔋</span>
+  </div>
+  <div class="scroll-area">
+
+    <!-- 標題 -->
+    <div class="header">
+      <div class="app-icon-wrap">
+        <svg viewBox="0 0 108 108" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+          <rect width="108" height="108" fill="#0D1B2A"/>
+          <path d="M0,0 Q54,0 54,54 Q54,0 108,0 L0,0 Z" fill="#0F3D2E"/>
+          <path d="M0,108 Q54,54 108,108 Z" fill="#092218"/>
+          <!-- 企鵝外套 -->
+          <ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/>
+          <!-- 腹部白 -->
+          <ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/>
+          <!-- 頭 -->
+          <ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/>
+          <!-- 臉白 -->
+          <ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/>
+          <!-- 左眼 -->
+          <circle cx="50" cy="31" r="2.5" fill="#1A2332"/>
+          <circle cx="50.8" cy="30.2" r="0.9" fill="#FFFFFF"/>
+          <!-- 右眼 -->
+          <circle cx="58" cy="31" r="2.5" fill="#1A2332"/>
+          <circle cx="58.8" cy="30.2" r="0.9" fill="#FFFFFF"/>
+          <!-- 嘴 -->
+          <polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/>
+          <!-- 翅膀左 -->
+          <path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/>
+          <!-- 翅膀右 -->
+          <path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/>
+          <!-- 腳 -->
+          <path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/>
+          <path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/>
+          <!-- 鍵盤底座 -->
+          <rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/>
+          <!-- 鍵盤小鍵 -->
+          <rect x="26" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+          <rect x="34" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+          <rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/>
+          <rect x="60" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+          <rect x="68" y="91" width="13" height="4" rx="1" fill="#065f46"/>
+          <!-- 四芒星 -->
+          <path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/>
+        </svg>
+      </div>
+      <div>
+        <div class="app-title">小企鵝嘸蝦米輸入法</div>
+        <div class="app-sub">功能設定</div>
+      </div>
+    </div>
+
+    <!-- 啟用輸入法 -->
+    <div class="section-label">啟用輸入法</div>
+    <div class="card">
+      <div class="row">
+        <span class="row-icon">⚙️</span>
+        <div class="row-text">
+          <div class="row-title">① 前往系統設定 → 開啟本輸入法</div>
+        </div>
+        <span class="row-arrow">›</span>
+      </div>
+      <div class="row">
+        <span class="row-icon">🌐</span>
+        <div class="row-text">
+          <div class="row-title">② 切換至本輸入法</div>
+        </div>
+        <span class="row-arrow">›</span>
+      </div>
+    </div>
+
+    <!-- 詞庫管理 -->
+    <div class="section-label">詞庫管理</div>
+    <div class="card">
+      <div class="input-wrap">
+        <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">造詞 / 加字</div>
+        <div class="field placeholder">字 / 詞（例：測試）</div>
+        <div class="field placeholder">字根（例：cs）</div>
+        <button class="btn-green">加入詞庫（立即生效）</button>
+      </div>
+      <div style="border-top:1px solid #1e2d3d; display:flex;">
+        <div class="row" style="flex:1;justify-content:center;flex-direction:column;align-items:center;padding:14px 8px;">
+          <span style="font-size:22px;margin-bottom:4px;">📤</span>
+          <span style="color:#94a3b8;font-size:13px;">匯出備份</span>
+        </div>
+        <div style="width:1px;background:#1e2d3d;"></div>
+        <div class="row" style="flex:1;justify-content:center;flex-direction:column;align-items:center;padding:14px 8px;">
+          <span style="font-size:22px;margin-bottom:4px;">📥</span>
+          <span style="color:#94a3b8;font-size:13px;">匯入備份</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 鍵盤外觀 -->
+    <div class="section-label">鍵盤外觀</div>
+    <div class="card">
+      <div class="scale-label">主題配色</div>
+      <div class="theme-row">
+        <button class="theme-btn active">🌑 深色</button>
+        <button class="theme-btn">☀️ 淺色</button>
+        <button class="theme-btn">🍵 抹茶</button>
+      </div>
+      <div style="border-top:1px solid #1e2d3d;"></div>
+      <div class="scale-label">按鍵大小　鍵高 100%　字級 100%</div>
+      <div class="scale-row">
+        <button class="scale-btn">鍵高 −</button>
+        <button class="scale-btn">鍵高 +</button>
+        <button class="scale-btn">字級 −</button>
+        <button class="scale-btn">字級 +</button>
+      </div>
+    </div>
+
+    <!-- AI 設定 -->
+    <div class="section-label">AI 問答設定</div>
+    <div class="card">
+      <div style="color:#64748b;font-size:12px;padding:10px 16px 6px;">長按鍵盤 AI✦ 鍵開啟問答面板（支援附圖）</div>
+      <div class="input-wrap" style="padding-top:0;">
+        <div class="field placeholder">Gemini API Key（AIza...）</div>
+        <button class="btn-green">儲存 API Key</button>
+      </div>
+    </div>
+
+    <div class="version">小企鵝嘸蝦米輸入法 v0.1.0</div>
+  </div>
+</div>
+
+<!-- Icon 樣式 + 主畫面模擬 -->
+<div style="display:flex;flex-direction:column;gap:28px;align-items:center;">
+
+  <div class="icon-section">
+    <div class="icon-title">App Icon 形狀預覽</div>
+    <div class="icon-grid">
+      <div class="icon-item">
+        <div class="icon-shape squircle" style="width:88px;height:88px;background:#0D1B2A;">
+          <svg viewBox="0 0 108 108" width="88" height="88" xmlns="http://www.w3.org/2000/svg">
+            <rect width="108" height="108" fill="#0D1B2A"/>
+            <path d="M0,0 Q54,0 54,54 Q54,0 108,0 L0,0 Z" fill="#0F3D2E" opacity=".7"/>
+            <ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/>
+            <ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/>
+            <ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/>
+            <ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/>
+            <circle cx="50" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="58" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/>
+            <circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/>
+            <polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/>
+            <path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/>
+            <path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/>
+            <path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/>
+            <path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/>
+            <rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/>
+            <rect x="26" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+            <rect x="34" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+            <rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/>
+            <rect x="60" y="91" width="6" height="4" rx="1" fill="#065f46"/>
+            <rect x="68" y="91" width="13" height="4" rx="1" fill="#065f46"/>
+            <path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/>
+          </svg>
+        </div>
+        <div class="icon-label">圓角方形</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-shape round" style="width:88px;height:88px;background:#0D1B2A;">
+          <svg viewBox="0 0 108 108" width="88" height="88" xmlns="http://www.w3.org/2000/svg">
+            <rect width="108" height="108" fill="#0D1B2A"/>
+            <ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/>
+            <ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/>
+            <ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/>
+            <ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/>
+            <circle cx="50" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="58" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/>
+            <circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/>
+            <polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/>
+            <path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/>
+            <path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/>
+            <path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/>
+            <path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/>
+            <rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/>
+            <rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/>
+            <path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/>
+          </svg>
+        </div>
+        <div class="icon-label">圓形</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-shape square" style="width:88px;height:88px;background:#0D1B2A;">
+          <svg viewBox="0 0 108 108" width="88" height="88" xmlns="http://www.w3.org/2000/svg">
+            <rect width="108" height="108" fill="#0D1B2A"/>
+            <ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/>
+            <ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/>
+            <ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/>
+            <ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/>
+            <circle cx="50" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="58" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/>
+            <circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/>
+            <polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/>
+            <path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/>
+            <path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/>
+            <path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/>
+            <path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/>
+            <rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/>
+            <rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/>
+            <path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/>
+          </svg>
+        </div>
+        <div class="icon-label">方形</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主畫面模擬 -->
+  <div class="homescreen">
+    <div class="hs-status"><span>09:41</span><span>📶 🔋</span></div>
+    <div style="color:#94a3b8;font-size:11px;text-align:center;padding:4px 0 12px;letter-spacing:.06em;">HOME SCREEN</div>
+    <div class="hs-grid">
+      <div class="hs-app">
+        <div class="hs-icon">📷</div>
+        <div class="hs-name">相機</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon our">
+          <svg viewBox="0 0 108 108" width="68" height="68" xmlns="http://www.w3.org/2000/svg">
+            <rect width="108" height="108" fill="#0D1B2A"/>
+            <path d="M0,0 Q54,0 54,54 Q54,0 108,0 L0,0 Z" fill="#0F3D2E" opacity=".6"/>
+            <ellipse cx="54" cy="58" rx="22" ry="26" fill="#1A2332"/>
+            <ellipse cx="54" cy="60" rx="14" ry="18" fill="#FFFFFF"/>
+            <ellipse cx="54" cy="32" rx="14" ry="14" fill="#1A2332"/>
+            <ellipse cx="54" cy="33" rx="10" ry="10" fill="#FFFFFF"/>
+            <circle cx="50" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="58" cy="31" r="2.5" fill="#1A2332"/>
+            <circle cx="50.8" cy="30.2" r=".9" fill="#FFF"/>
+            <circle cx="58.8" cy="30.2" r=".9" fill="#FFF"/>
+            <polygon points="51.5,36 54,39 56.5,36" fill="#F59E0B"/>
+            <path d="M32,52 C26,50 22,58 25,64 C27,68 31,68 34,64 L36,56 Z" fill="#1A2332"/>
+            <path d="M76,52 C82,50 86,58 83,64 C81,68 77,68 74,64 L72,56 Z" fill="#1A2332"/>
+            <path d="M46,82 L43,90 L47,90 L50,84 Z" fill="#F59E0B"/>
+            <path d="M62,82 L58,84 L61,90 L65,90 Z" fill="#F59E0B"/>
+            <rect x="20" y="88" width="68" height="14" rx="7" fill="#10B981"/>
+            <rect x="26" y="91" width="5" height="4" rx="1" fill="#065f46"/>
+            <rect x="34" y="91" width="5" height="4" rx="1" fill="#065f46"/>
+            <rect x="42" y="91" width="16" height="4" rx="1" fill="#ecfdf5"/>
+            <rect x="61" y="91" width="5" height="4" rx="1" fill="#065f46"/>
+            <rect x="69" y="91" width="12" height="4" rx="1" fill="#065f46"/>
+            <path d="M87,18 L88.5,24 L94,25.5 L88.5,27 L87,33 L85.5,27 L80,25.5 L85.5,24 Z" fill="#34D399"/>
+          </svg>
+        </div>
+        <div class="hs-name">嘸蝦米</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#1e3a5f;">💬</div>
+        <div class="hs-name">訊息</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#1a1a2e;">📧</div>
+        <div class="hs-name">郵件</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#2d1a0e;">🗺️</div>
+        <div class="hs-name">地圖</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#1a0e2d;">🎵</div>
+        <div class="hs-name">音樂</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#0e1a2d;">📰</div>
+        <div class="hs-name">新聞</div>
+      </div>
+      <div class="hs-app">
+        <div class="hs-icon" style="background:#0e2d1a;">📅</div>
+        <div class="hs-name">行事曆</div>
+      </div>
+    </div>
+    <div class="hs-dock">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="hs-icon" style="width:56px;height:56px;border-radius:14px;background:#1e3a5f;font-size:24px;">📞</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="hs-icon" style="width:56px;height:56px;border-radius:14px;background:#1e3a5f;font-size:24px;">💬</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="hs-icon" style="width:56px;height:56px;border-radius:14px;background:#1a0e2d;font-size:24px;">🎵</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="hs-icon" style="width:56px;height:56px;border-radius:14px;background:#1a1a2e;font-size:24px;">🌐</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

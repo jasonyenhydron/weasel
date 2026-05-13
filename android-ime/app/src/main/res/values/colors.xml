@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 鍵盤背景 -->
+    <color name="kbd_bg">#D1D5DB</color>
+    <color name="toolbar_bg">#BEC4CE</color>
+    <!-- 按鍵文字 -->
+    <color name="key_text">#1A2332</color>
+    <color name="key_func_text">#4A5568</color>
+    <color name="key_space_text">#6B7280</color>
+    <color name="key_bs_text">#E53E3E</color>
+    <color name="key_hint_text">#4B5563</color>
+    <!-- 候選列 -->
+    <color name="composing_text">#374151</color>
+    <color name="hint_text">#4B5563</color>
+</resources>

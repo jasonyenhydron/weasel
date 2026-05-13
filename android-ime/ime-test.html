@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>嘸蝦米輸入法 — 功能測試</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0e1a; font-family: -apple-system, 'Noto Sans TC', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px 12px 40px; gap: 16px; }
+
+h2 { color: #34d399; font-size: 16px; font-weight: 600; letter-spacing: .05em; }
+
+/* ── 功能說明 ── */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 420px; }
+.tag { background: #131f2e; color: #94a3b8; font-size: 11px; padding: 4px 10px; border-radius: 20px; }
+.tag b { color: #34d399; }
+
+/* ── 輸入欄（模擬 App） ── */
+.app-area {
+  width: 420px; max-width: 100%;
+  background: #131f2e;
+  border-radius: 14px;
+  padding: 14px;
+}
+.app-label { color: #475569; font-size: 11px; margin-bottom: 6px; letter-spacing: .05em; }
+.text-output {
+  min-height: 64px;
+  background: #1e2d3d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.cursor { display: inline-block; width: 2px; height: 16px; background: #34d399; vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 1px; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── 鍵盤主體 ── */
+.keyboard {
+  width: 420px; max-width: 100%;
+  background: #17191f;
+  border-radius: 16px;
+  padding: 6px 6px 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+
+/* 工具列 */
+.toolbar { display: flex; align-items: center; height: 40px; gap: 0; }
+.tb-btn { width: 30px; height: 30px; border-radius: 50%; background: #252830; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 6px; font-size: 13px; color: #e2e8f0; flex-shrink: 0; }
+.tb-btn.active-mode { background: #0f3d2e; color: #34d399; }
+.hint-area { flex: 1; text-align: right; color: #9aa1b2; font-size: 11px; padding-right: 2px; min-height: 16px; }
+
+/* 組字 / 候選 */
+.composing { color: #b4bdd3; font-size: 12px; padding: 2px 0 0; min-height: 16px; }
+.cand-main { color: #8ed3ff; font-size: 13px; font-weight: bold; padding-top: 1px; min-height: 18px; }
+.cand-row {
+  display: flex; height: 34px; align-items: center;
+  gap: 4px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+}
+.cand-row::-webkit-scrollbar { display: none; }
+.cand-btn {
+  background: #252830; color: #f1f5f9; border: none; border-radius: 6px;
+  padding: 4px 12px; font-size: 14px; cursor: pointer; white-space: nowrap;
+  height: 28px; line-height: 1; flex-shrink: 0; position: relative;
+  transition: background .1s;
+}
+.cand-btn:first-child { background: #0f3d2e; color: #34d399; }
+.cand-btn:hover { background: #34d399; color: #0f1117; }
+.cand-btn .freq-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: #f59e0b; color: #0f1117;
+  font-size: 9px; font-weight: 700; border-radius: 10px;
+  padding: 1px 4px; min-width: 14px; text-align: center;
+  display: none;
+}
+.cand-btn.has-freq .freq-badge { display: block; }
+.cand-btn[data-pinned="1"] { border: 1px solid #34d399; }
+
+/* 按鍵列 */
+.row { display: flex; gap: 4px; margin-top: 4px; }
+.key {
+  flex: 1; height: 44px; background: #2a2d38; color: #f2f4fa;
+  border: none; border-radius: 8px; font-size: 15px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 0 #1a1c22; transition: background .08s, transform .08s;
+  user-select: none; -webkit-user-select: none;
+}
+.key:active { background: #3a3e4e; transform: translateY(1px); box-shadow: none; }
+.key.special { background: #222430; color: #cbd5e1; font-size: 14px; height: 38px; box-shadow: 0 1px 0 #14151a; }
+.key.func { background: #1e2028; }
+.key.space { flex: 4.4; color: #9aa1b2; font-size: 12px; }
+.key.enter { flex: 1.2; color: #8ed3ff; font-size: 18px; }
+.key.bs { flex: 1.4; }
+.key.globe { flex: 0.9; font-size: 16px; }
+.key.punct { flex: 0.8; color: #cbd5e1; }
+.key.shift { flex: 1.4; display: none; }
+.spacer { flex: 0.6; }
+
+/* 長按提示 */
+.long-hint { color: #64748b; font-size: 10px; line-height: 1.2; text-align: center; margin-top: 2px; }
+
+/* 狀態 log */
+.status-log {
+  width: 420px; max-width: 100%;
+  background: #0d1520;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #475569;
+  font-size: 11px;
+  font-family: monospace;
+  max-height: 100px;
+  overflow-y: auto;
+  border: 1px solid #1e2d3d;
+}
+.status-log .entry { padding: 1px 0; }
+.status-log .entry.ok  { color: #34d399; }
+.status-log .entry.warn { color: #f59e0b; }
+.status-log .entry.info { color: #60a5fa; }
+</style>
+</head>
+<body>
+
+<h2>🐧 嘸蝦米輸入法 — 功能測試台</h2>
+
+<div class="legend">
+  <div class="tag"><b>Enter</b> 輸出字根</div>
+  <div class="tag"><b>Space</b> 選第一候選</div>
+  <div class="tag"><b>點候選</b> 選字 + 頻率 +1</div>
+  <div class="tag"><b>長按候選</b> 置頂/取消</div>
+  <div class="tag"><b>雙擊候選</b> 刪除</div>
+  <div class="tag"><b>↵ badge</b> 選用次數</div>
+</div>
+
+<!-- 輸入欄 -->
+<div class="app-area">
+  <div class="app-label">TEXT FIELD</div>
+  <div class="text-output" id="output"><span class="cursor"></span></div>
+</div>
+
+<!-- 鍵盤 -->
+<div class="keyboard">
+  <!-- 工具列 -->
+  <div class="toolbar">
+    <button class="tb-btn" onclick="toggleMode()" title="中/英切換" id="tb-lang">A中</button>
+    <button class="tb-btn" title="符號面板">★</button>
+    <button class="tb-btn" title="AI✦ 問答">✦</button>
+    <button class="tb-btn" title="剪貼簿">⎘</button>
+    <button class="tb-btn" title="設定">⚙</button>
+    <button class="tb-btn" title="語音">♪</button>
+    <button class="tb-btn" title="數字鍵盤">⠿</button>
+    <div class="hint-area" id="hint"></div>
+  </div>
+
+  <!-- 組字 / 候選 -->
+  <div class="composing" id="composing"></div>
+  <div class="cand-main"  id="cand-main"></div>
+  <div class="cand-row"   id="cand-row"></div>
+
+  <!-- 特殊字根列 -->
+  <div class="row" id="row-special">
+    <button class="key special" onclick="pressKey('[')">[</button>
+    <button class="key special" onclick="pressKey(';')"  >;</button>
+    <button class="key special" onclick="pressKey('\'')" >'</button>
+    <button class="key special" onclick="pressKey('/')"  >/</button>
+    <button class="key special" onclick="pressKey(']')"  >]</button>
+    <button class="key special" onclick="pressKey('\\')" >\</button>
+    <button class="key special" onclick="pressKey('-')"  >-</button>
+    <button class="key special" onclick="pressKey('`')"  >`</button>
+  </div>
+
+  <!-- 數字列 -->
+  <div class="row">
+    <button class="key" onclick="pressNum('1')">1</button>
+    <button class="key" onclick="pressNum('2')">2</button>
+    <button class="key" onclick="pressNum('3')">3</button>
+    <button class="key" onclick="pressNum('4')">4</button>
+    <button class="key" onclick="pressNum('5')">5</button>
+    <button class="key" onclick="pressNum('6')">6</button>
+    <button class="key" onclick="pressNum('7')">7</button>
+    <button class="key" onclick="pressNum('8')">8</button>
+    <button class="key" onclick="pressNum('9')">9</button>
+    <button class="key" onclick="pressNum('0')">0</button>
+  </div>
+
+  <!-- QWERTY -->
+  <div class="row">
+    <button class="key" id="kq" onclick="pressKey('q')">q</button>
+    <button class="key" id="kw" onclick="pressKey('w')">w</button>
+    <button class="key" id="ke" onclick="pressKey('e')">e</button>
+    <button class="key" id="kr" onclick="pressKey('r')">r</button>
+    <button class="key" id="kt" onclick="pressKey('t')">t</button>
+    <button class="key" id="ky" onclick="pressKey('y')">y</button>
+    <button class="key" id="ku" onclick="pressKey('u')">u</button>
+    <button class="key" id="ki" onclick="pressKey('i')">i</button>
+    <button class="key" id="ko" onclick="pressKey('o')">o</button>
+    <button class="key" id="kp" onclick="pressKey('p')">p</button>
+  </div>
+
+  <!-- ASDF -->
+  <div class="row">
+    <div class="spacer"></div>
+    <button class="key" id="ka" onclick="pressKey('a')">a</button>
+    <button class="key" id="ks" onclick="pressKey('s')">s</button>
+    <button class="key" id="kd" onclick="pressKey('d')">d</button>
+    <button class="key" id="kf" onclick="pressKey('f')">f</button>
+    <button class="key" id="kg" onclick="pressKey('g')">g</button>
+    <button class="key" id="kh" onclick="pressKey('h')">h</button>
+    <button class="key" id="kj" onclick="pressKey('j')">j</button>
+    <button class="key" id="kk" onclick="pressKey('k')">k</button>
+    <button class="key" id="kl" onclick="pressKey('l')">l</button>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ZXCV -->
+  <div class="row">
+    <button class="key bs func" onclick="pressBackspace()">⌫</button>
+    <button class="key" id="kz" onclick="pressKey('z')">z</button>
+    <button class="key" id="kx" onclick="pressKey('x')">x</button>
+    <button class="key" id="kc" onclick="pressKey('c')">c</button>
+    <button class="key" id="kv" onclick="pressKey('v')">v</button>
+    <button class="key" id="kb" onclick="pressKey('b')">b</button>
+    <button class="key" id="kn" onclick="pressKey('n')">n</button>
+    <button class="key" id="km" onclick="pressKey('m')">m</button>
+    <button class="key bs func" onclick="pressBackspace()">⌫</button>
+  </div>
+
+  <!-- 底列 -->
+  <div class="row">
+    <button class="key func" style="flex:1.1;font-size:12px" onclick="hint('符號面板（demo 未實作）')">!#1</button>
+    <button class="key globe func" onclick="hint('系統鍵盤切換器')">🌐</button>
+    <button class="key punct" onclick="pressKey(',')">，</button>
+    <button class="key space" id="key-space" onclick="pressSpace()">嘸蝦米</button>
+    <button class="key punct" onclick="pressKey('.')">。</button>
+    <button class="key enter func" onclick="pressEnter()">↵</button>
+  </div>
+  <div class="long-hint">候選：點選 ＝ 選字　長按 ＝ 置頂/取消　雙擊 ＝ 刪除</div>
+</div>
+
+<!-- 狀態 log -->
+<div class="status-log" id="log"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// 簡易詞庫（code → [{word, baseScore}]，依 baseScore DESC）
+// ════════════════════════════════════════════════════════════
+const RAW = [
+  // 高頻常用字
+  ["x",   [["有",10289],["系",200],["習",150]]],
+  ["d",   [["的",10018],["大",1753],["點",4171],["人",2058],["日",1114],["對",2445],["照",1704],["中",1795],["一",5176],["了",2816]]],
+  ["ba",  [["不",8342],["把",800],["吧",600]]],
+  ["gz",  [["好",8296],["告",300]]],
+  ["gns", [["你",6557]]],
+  ["ix",  [["我",5781]]],
+  ["dx",  [["要",5230],["做",400]]],
+  ["e",   [["一",5176],["而",500]]],
+  ["tou", [["可以",4912]]],
+  ["hn",  [["很",4820],["還",1091]]],
+  ["th",  [["想",4770],["特",400]]],
+  ["ao",  [["點",4171],["奧",200]]],
+  ["di",  [["那",4023],["個",1767],["出",1121],["地",800],["低",600]]],
+  ["xy",  [["在",3764],["小",3402],["需要",600]]],
+  ["wnu", [["沒",3656]]],
+  ["a",   [["對",2445],["啊",800],["阿",600]]],
+  ["dez", [["是",6013]]],
+  ["gl",  [["就",3180]]],
+  ["da",  [["時",3048],["大",1753],["打",900]]],
+  ["dl",  [["了",2816]]],
+  ["fe",  [["上",2179],["發",600],["費",400]]],
+  ["ln",  [["來",2141],["連",500]]],
+  ["bn",  [["人",2058],["本",800]]],
+  ["yua", [["去",2054],["於",600]]],
+  ["al",  [["也",1956],["按",400]]],
+  ["ey",  [["再",1944],["二",600]]],
+  ["dr",  [["晚",1936],["但",600]]],
+  ["sao", [["給",1892]]],
+  ["du",  [["最",1884],["讀",400]]],
+  ["foo", [["後",1442],["父",400]]],
+  ["nol", [["回",1357],["內",600]]],
+  ["hm",  [["看",1282],["喊",400]]],
+  ["ad",  [["會",3252],["愛",800],["安",600]]],
+  ["ca",  [["才",1532],["查",900],["茶",700],["差",600],["察",500],["叉",400],["採",300]]],
+  ["pj",  [["平",1276],["評",600]]],
+  ["oba", [["只",1265]]],
+  ["ok",  [["跟",1256],["噢",400]]],
+  ["bk",  [["全",1209]]],
+  ["nee", [["當",1162],["能",1098]]],
+  ["kj",  [["開",1112],["看見",800]]],
+  ["li",  [["新",1102],["裡",800],["力",600],["利",400]]],
+  ["ul",  [["能",1098],["使用",600]]],
+  ["eq",  [["家",1124],["二",600]]],
+  ["ha",  [["心",1462],["哈",600]]],
+  ["ng",  [["安",1536],["你",400]]],
+  ["pri", [["到",1971],["不然",400]]],
+  ["ci",  [["中",1795],["次",600],["此",400]]],
+  ["up",  [["才",1532],["以",1039]]],
+  ["u",   [["以",1039],["又",600],["有",400]]],
+  ["te",  [["台",1976],["特",600],["體",400]]],
+  ["to",  [["可",1497],["同",600],["投",400]]],
+  ["ho",  [["和",1610],["好",800],["後",400]]],
+  ["sa",  [["小",3402],["三",600],["事",400]]],
+  ["fa",  [["下",3258],["發",600],["法",400]]],
+  ["de",  [["明",1149],["的",400],["得",600],["地",400]]],
+  ["dn",  [["大",1753],["天",1149],["但",600],["單",400]]],
+  ["do",  [["日",1114],["得",600]]],
+  ["ir",  [["說",1129],["意",600],["而",400]]],
+  ["hi",  [["和",1610],["好",400]]],
+  ["fe",  [["上",2179]]],
+  ["wwnr",[["這",1773],["問",400]]],
+  ["bii", [["個",1767],["比",600]]],
+  ["sna", [["約",2535],["所",400]]],
+  ["ng",  [["安",1536]]],
+  ["tc",  [["台中",1277]]],
+  ["cj",  [["中",1795]]],
+  ["dru", [["最",1884]]],
+  ["jpp", [["才",1532]]],
+  ["hh",  [["哈哈",900],["和好",400]]],
+  ["ll",  [["了了",400]]],
+  ["cs",  [["測試",800],["才是",600]]],
+  ["xm",  [["嘸蝦米",900]]],
+  ["bq",  [["不起",800],["抱歉",600]]],
+  ["gmk", [["感謝",700],["感謝你",400]]],
+  ["sf",  [["什麼",800],["是否",600]]],
+  ["dj",  [["大家",700],["調查",400]]],
+  [",",   [["，",900],["，，",200]]],
+  [".",   [["。",900],["…",300]]],
+];
+
+// ════════════════════════════════════════════════════════════
+// 狀態
+// ════════════════════════════════════════════════════════════
+const dict     = {};  // code → [{word, baseScore}]
+const freq     = JSON.parse(localStorage.getItem('ime_freq') || '{}');
+const pinned   = JSON.parse(localStorage.getItem('ime_pinned') || '{}');
+const removed  = JSON.parse(localStorage.getItem('ime_removed') || '{}');
+
+RAW.forEach(([code, pairs]) => {
+  dict[code] = (dict[code] || []).concat(pairs.map(([w,s]) => ({word:w, baseScore:s})));
+});
+
+let composing = '';
+let outputText = '';
+let langMode   = 'XM'; // XM | EN
+
+// ════════════════════════════════════════════════════════════
+// 候選解析（依: 置頂 > 頻率 > baseScore，穩定排序）
+// ════════════════════════════════════════════════════════════
+function resolveCandidates(code) {
+  if (!code) return [];
+  const entries = dict[code] || [];
+  const rm      = (removed[code] || []);
+  const filtered = entries.filter(e => !rm.includes(e.word));
+  const pin = (pinned[code] || []);
+  const pinnedList  = filtered.filter(e => pin.includes(e.word));
+  const normalList  = filtered.filter(e => !pin.includes(e.word));
+  const freqMap = freq[code] || {};
+  // stable sort: 頻率 DESC，同頻依 baseScore DESC
+  normalList.sort((a, b) => {
+    const fa = freqMap[a.word] || 0;
+    const fb = freqMap[b.word] || 0;
+    if (fb !== fa) return fb - fa;
+    return b.baseScore - a.baseScore;
+  });
+  return [...pinnedList, ...normalList];
+}
+
+// ════════════════════════════════════════════════════════════
+// UI 更新
+// ════════════════════════════════════════════════════════════
+function refreshUI() {
+  const code = composing;
+  const cands = resolveCandidates(code);
+
+  document.getElementById('composing').textContent =
+    code ? '字根: ' + code : '';
+  document.getElementById('cand-main').textContent =
+    cands.length && code ? '候選: ' + cands[0].word : '';
+
+  const row = document.getElementById('cand-row');
+  row.innerHTML = '';
+  const pin = pinned[code] || [];
+  const freqMap = freq[code] || {};
+  cands.slice(0, 10).forEach((e, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'cand-btn';
+    btn.textContent = e.word;
+    const f = freqMap[e.word] || 0;
+    if (f > 0) {
+      btn.classList.add('has-freq');
+      const badge = document.createElement('span');
+      badge.className = 'freq-badge';
+      badge.textContent = f;
+      btn.appendChild(badge);
+    }
+    if (pin.includes(e.word)) btn.dataset.pinned = '1';
+    // 點選 → 選字
+    btn.addEventListener('click', () => selectWord(code, e.word));
+    // 長按 → 置頂/取消
+    let hold;
+    btn.addEventListener('pointerdown', () => {
+      hold = setTimeout(() => { togglePin(code, e.word); hold = null; }, 600);
+    });
+    btn.addEventListener('pointerup', () => clearTimeout(hold));
+    btn.addEventListener('pointerleave', () => clearTimeout(hold));
+    // 雙擊 → 刪除
+    btn.addEventListener('dblclick', (ev) => { ev.stopPropagation(); removeWord(code, e.word); });
+    row.appendChild(btn);
+  });
+
+  // 更新輸出區游標
+  document.getElementById('output').innerHTML =
+    outputText + '<span class="cursor"></span>';
+}
+
+// ════════════════════════════════════════════════════════════
+// 動作
+// ════════════════════════════════════════════════════════════
+function pressKey(k) {
+  if (langMode === 'EN') { commit(k); return; }
+  composing += k;
+  refreshUI();
+}
+function pressNum(n) {
+  if (langMode === 'EN') { commit(n); return; }
+  composing += n;
+  refreshUI();
+}
+function pressBackspace() {
+  if (composing.length) { composing = composing.slice(0, -1); refreshUI(); }
+  else if (outputText.length) { outputText = [...outputText].slice(0, -1).join(''); refreshUI(); }
+}
+function pressSpace() {
+  if (langMode === 'EN') { commit(' '); return; }
+  if (!composing) { commit(' '); return; }
+  const cands = resolveCandidates(composing);
+  if (cands.length) selectWord(composing, cands[0].word);
+  else commitRaw();
+}
+function pressEnter() {
+  if (composing) commitRaw();
+  else { commit('\n'); }
+}
+function commitRaw() {
+  const raw = composing;
+  log('Enter → 輸出字根：' + raw, 'info');
+  commit(raw);
+}
+function commit(text) {
+  outputText += text;
+  composing = '';
+  refreshUI();
+}
+function selectWord(code, word) {
+  // 頻率 +1
+  if (!freq[code]) freq[code] = {};
+  freq[code][word] = (freq[code][word] || 0) + 1;
+  localStorage.setItem('ime_freq', JSON.stringify(freq));
+  log(`選字：${word}（字根:${code}，頻率→${freq[code][word]}）`, 'ok');
+  outputText += word;
+  composing  = '';
+  refreshUI();
+}
+function togglePin(code, word) {
+  if (!pinned[code]) pinned[code] = [];
+  if (pinned[code].includes(word)) {
+    pinned[code] = pinned[code].filter(w => w !== word);
+    log(`取消置頂：${word}`, 'warn');
+  } else {
+    pinned[code].unshift(word);
+    log(`已置頂：${word}（字根:${code}）`, 'warn');
+  }
+  localStorage.setItem('ime_pinned', JSON.stringify(pinned));
+  refreshUI();
+}
+function removeWord(code, word) {
+  if (!removed[code]) removed[code] = [];
+  if (!removed[code].includes(word)) removed[code].push(word);
+  log(`已刪除候選：${word}（字根:${code}）`, 'warn');
+  localStorage.setItem('ime_removed', JSON.stringify(removed));
+  refreshUI();
+}
+function toggleMode() {
+  langMode = langMode === 'XM' ? 'EN' : 'XM';
+  composing = '';
+  const btn = document.getElementById('tb-lang');
+  const sp  = document.getElementById('key-space');
+  const rs  = document.getElementById('row-special');
+  if (langMode === 'EN') {
+    btn.classList.add('active-mode'); btn.textContent = 'A';
+    sp.textContent = 'English';
+    rs.style.display = 'none';
+  } else {
+    btn.classList.remove('active-mode'); btn.textContent = 'A中';
+    sp.textContent = '嘸蝦米';
+    rs.style.display = '';
+  }
+  log('切換模式：' + langMode, 'info');
+  refreshUI();
+}
+function hint(msg) { document.getElementById('hint').textContent = msg; setTimeout(()=>document.getElementById('hint').textContent='', 2000); }
+
+// ════════════════════════════════════════════════════════════
+// Log
+// ════════════════════════════════════════════════════════════
+function log(msg, cls='') {
+  const el = document.getElementById('log');
+  const e = document.createElement('div');
+  e.className = 'entry ' + cls;
+  e.textContent = new Date().toLocaleTimeString('zh-TW', {hour12:false}) + '  ' + msg;
+  el.prepend(e);
+  if (el.children.length > 30) el.lastChild.remove();
+}
+
+// ════════════════════════════════════════════════════════════
+// 鍵盤事件
+// ════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Backspace')  { e.preventDefault(); pressBackspace(); }
+  else if (e.key === 'Enter') { e.preventDefault(); pressEnter(); }
+  else if (e.key === ' ')     { e.preventDefault(); pressSpace(); }
+  else if (e.key.length === 1) { e.preventDefault(); pressKey(e.key); }
+});
+
+// 初始
+log('Demo 啟動。輸入字根試試看，例如 ca / ad / d / cs', 'info');
+refreshUI();
+</script>
+
+</body>
+</html>

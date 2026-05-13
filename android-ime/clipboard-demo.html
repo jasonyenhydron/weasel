@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>剪貼簿面板預覽</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #060b14; font-family: -apple-system, 'Noto Sans TC', sans-serif;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 24px 16px; gap: 20px; flex-wrap: wrap; }
+
+.phone { width: 375px; border-radius: 34px; border: 2px solid #1e2d3d; overflow: hidden;
+  box-shadow: 0 18px 48px rgba(0,0,0,.7); background: #0f1117; }
+.status { background: #0f1117; display: flex; justify-content: space-between;
+  padding: 10px 18px 4px; color: #94a3b8; font-size: 12px; }
+.app-area { background: #1a1f2e; padding: 10px 14px 8px; }
+.app-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.dot { width: 22px; height: 22px; border-radius: 6px; background: #2563eb;
+  color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.app-name { color: #e2e8f0; font-size: 13px; }
+.txt { color: #94a3b8; font-size: 14px; }
+.cursor { display: inline-block; width: 2px; height: 13px; background: #34d399;
+  vertical-align: middle; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.keyboard { background: #1b1e28; padding: 5px; }
+.toolbar { display: flex; align-items: center; height: 38px;
+  background: #1e2333; border-radius: 8px 8px 0 0; padding: 0 8px; margin-bottom: 2px; }
+.tb { width: 26px; height: 26px; border-radius: 50%; background: #252e42; border: none;
+  margin-right: 4px; font-size: 11px; color: #94a3b8; cursor: pointer; }
+.hint { flex: 1; text-align: right; color: #dde7ff; font-size: 10px; }
+
+/* 剪貼簿面板 */
+.clip-panel { background: #1a1d24; border-radius: 8px; overflow: hidden; }
+
+/* 搜尋列 */
+.search-row { display: flex; align-items: center; height: 42px; padding: 4px;
+  gap: 2px; }
+.back-btn { width: 32px; height: 34px; background: transparent; border: none;
+  color: #64748b; font-size: 14px; cursor: pointer; }
+.search-box { flex: 1; height: 34px; background: #252830;
+  border-radius: 8px; border: 2px solid #34d399;
+  display: flex; align-items: center; padding: 0 10px;
+  color: #e2e8f0; font-size: 13px; font-family: inherit; }
+.search-box.empty { color: #64748b; border-color: #34d399; }
+.clear-btn { width: 32px; height: 34px; background: transparent; border: none;
+  color: #64748b; font-size: 13px; cursor: pointer; }
+
+/* 結果 */
+.section-title { font-size: 11px; padding: 5px 10px 2px; }
+.title-fav  { color: #34d399; }
+.title-rec  { color: #64748b; }
+.title-search { color: #60a5fa; }
+
+.clip-row { display: flex; align-items: center; padding: 2px 6px; }
+.clip-main { flex: 1; height: 40px; border-radius: 7px; background: #252830;
+  border: none; color: #e2e8f0; font-size: 13px; text-align: left;
+  padding: 0 10px; cursor: pointer; font-family: inherit;
+  transition: background .1s; }
+.clip-main:active { background: #1a1e28; }
+.clip-main .match { background: #1e3a5f; border-radius: 3px; padding: 0 2px; color: #93c5fd; }
+.clip-time { width: 34px; text-align: center; color: #475569; font-size: 10px; }
+.star-btn { width: 34px; height: 34px; background: transparent; border: none;
+  font-size: 15px; cursor: pointer; }
+.star-on  { color: #f59e0b; }
+.star-off { color: #475569; }
+
+.empty-msg { text-align: center; color: #475569; font-size: 13px; padding: 16px 0; }
+
+/* 底部鍵盤 */
+.krow { display: flex; gap: 3px; margin-top: 4px; }
+.key { flex: 1; height: 44px; background: #fff; border-radius: 7px; border: none;
+  color: #1a2332; font-size: 14px; cursor: pointer; font-family: inherit;
+  box-shadow: 0 2px 0 #b0bccb; display: flex; align-items: center; justify-content: center; }
+.key.func { background: #aeb8ca; color: #2d3a4a; }
+.key.del  { background: #aeb8ca; color: #e53e3e; font-size: 17px; }
+.key.enter { background: #3b82f6; color: #fff; font-size: 19px; flex: 1.4; }
+.key.space { flex: 5; font-size: 12px; color: #8096b4;
+  background: linear-gradient(to bottom, #f0f4fa 0%, #e8edf5 100%); }
+.key.sym { flex: 1.2; font-size: 12px; }
+.key.h42 { height: 42px; }
+.spacer { flex: .5; }
+.sec { font-size: 9px; color: #8090aa; display: block; margin-bottom: -2px; }
+
+.label { color: #64748b; font-size: 10px; text-align: center; margin-top: 8px; letter-spacing: .06em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ── 畫面 1：空搜尋（顯示全部）── -->
+<div>
+<div class="label">預設：顯示全部</div>
+<div class="phone">
+  <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+  <div class="app-area">
+    <div class="app-bar"><div class="dot">M</div><span class="app-name">訊息</span></div>
+    <div class="txt"><span class="cursor"></span></div>
+  </div>
+  <div class="keyboard">
+    <div class="toolbar">
+      <button class="tb">A中</button><button class="tb">★</button><button class="tb">✦</button>
+      <button class="tb">⎘</button><button class="tb">⚙</button><button class="tb">♪</button>
+      <button class="tb">⠿</button>
+      <div class="hint">🔍 輸入關鍵字搜尋剪貼簿</div>
+    </div>
+    <div class="clip-panel">
+      <!-- 搜尋列（空） -->
+      <div class="search-row">
+        <button class="back-btn">←</button>
+        <div class="search-box empty">（用鍵盤輸入關鍵字搜尋）▌</div>
+        <button class="clear-btn">✕</button>
+      </div>
+      <!-- 常用 -->
+      <div class="section-title title-fav">★ 常用（3 筆，不限期）</div>
+      <div class="clip-row">
+        <button class="clip-main">★ 今天的訂單號碼 9923-B…</button>
+        <span class="clip-time">剛才</span>
+        <button class="star-btn star-on">★</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">★ 我的帳號 jason@penguin…</button>
+        <span class="clip-time">2天前</span>
+        <button class="star-btn star-on">★</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">★ 公司地址：台北市信義…</button>
+        <span class="clip-time">5天前</span>
+        <button class="star-btn star-on">★</button>
+      </div>
+      <!-- 最近7天 -->
+      <div class="section-title title-rec">🕐 最近7天（4 筆）</div>
+      <div class="clip-row">
+        <button class="clip-main">今天下午會議記錄…</button>
+        <span class="clip-time">3時前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">報告內容完成後貼上…</button>
+        <span class="clip-time">1天前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">2月訂單明細 #4521…</button>
+        <span class="clip-time">3天前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">歷史訂單查詢結果…</button>
+        <span class="clip-time">5天前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+    </div>
+    <!-- 鍵盤 -->
+    <div class="krow" style="margin-top:5px">
+      <button class="key">q</button><button class="key">w</button><button class="key">e</button>
+      <button class="key">r</button><button class="key">t</button><button class="key">y</button>
+      <button class="key">u</button><button class="key">i</button><button class="key">o</button>
+      <button class="key">p</button>
+    </div>
+    <div class="krow">
+      <div class="spacer"></div>
+      <button class="key">a</button><button class="key">s</button><button class="key">d</button>
+      <button class="key">f</button><button class="key">g</button><button class="key">h</button>
+      <button class="key">j</button><button class="key">k</button><button class="key">l</button>
+      <div class="spacer"></div>
+    </div>
+    <div class="krow">
+      <div style="flex:1.4"></div>
+      <button class="key">z</button><button class="key">x</button><button class="key">c</button>
+      <button class="key">v</button><button class="key">b</button><button class="key">n</button>
+      <button class="key">m</button>
+      <button class="key del" style="flex:1.4">⌫</button>
+    </div>
+    <div class="krow">
+      <button class="key h42 sym func">!#1</button>
+      <button class="key h42 func">🌐</button>
+      <button class="key h42 func">,</button>
+      <button class="key h42 space">嘸蝦米</button>
+      <button class="key h42 func">.</button>
+      <button class="key h42 enter">↵</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── 畫面 2：搜尋「訂單」── -->
+<div>
+<div class="label">輸入「訂單」搜尋</div>
+<div class="phone">
+  <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+  <div class="app-area">
+    <div class="app-bar"><div class="dot">M</div><span class="app-name">訊息</span></div>
+    <div class="txt"><span class="cursor"></span></div>
+  </div>
+  <div class="keyboard">
+    <div class="toolbar">
+      <button class="tb">A中</button><button class="tb">★</button><button class="tb">✦</button>
+      <button class="tb">⎘</button><button class="tb">⚙</button><button class="tb">♪</button>
+      <button class="tb">⠿</button>
+      <div class="hint">🔍 輸入關鍵字搜尋剪貼簿</div>
+    </div>
+    <div class="clip-panel">
+      <!-- 搜尋列（有字） -->
+      <div class="search-row">
+        <button class="back-btn">←</button>
+        <div class="search-box" style="color:#e2e8f0;border-color:#34d399">🔍 訂單▌</div>
+        <button class="clear-btn" style="color:#ef4444">✕</button>
+      </div>
+      <!-- 搜尋結果標題 -->
+      <div class="section-title title-search">🔍 搜尋「訂單」：共 3 筆</div>
+      <!-- 常用命中 -->
+      <div class="section-title title-fav">★ 常用（1 筆）</div>
+      <div class="clip-row">
+        <button class="clip-main">★ 今天的<span class="match">訂單</span>號碼 9923-B…</button>
+        <span class="clip-time">剛才</span>
+        <button class="star-btn star-on">★</button>
+      </div>
+      <!-- 最近命中 -->
+      <div class="section-title title-rec">🕐 最近7天（2 筆）</div>
+      <div class="clip-row">
+        <button class="clip-main">2月<span class="match">訂單</span>明細 #4521…</button>
+        <span class="clip-time">3天前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+      <div class="clip-row">
+        <button class="clip-main">歷史<span class="match">訂單</span>查詢結果…</button>
+        <span class="clip-time">5天前</span>
+        <button class="star-btn star-off">☆</button>
+      </div>
+    </div>
+    <div class="krow" style="margin-top:5px">
+      <button class="key">q</button><button class="key">w</button><button class="key">e</button>
+      <button class="key">r</button><button class="key">t</button><button class="key">y</button>
+      <button class="key">u</button><button class="key">i</button><button class="key">o</button>
+      <button class="key">p</button>
+    </div>
+    <div class="krow">
+      <div class="spacer"></div>
+      <button class="key">a</button><button class="key">s</button><button class="key">d</button>
+      <button class="key">f</button><button class="key">g</button><button class="key">h</button>
+      <button class="key">j</button><button class="key">k</button><button class="key">l</button>
+      <div class="spacer"></div>
+    </div>
+    <div class="krow">
+      <div style="flex:1.4"></div>
+      <button class="key">z</button><button class="key">x</button><button class="key">c</button>
+      <button class="key">v</button><button class="key">b</button><button class="key">n</button>
+      <button class="key">m</button>
+      <button class="key del" style="flex:1.4">⌫</button>
+    </div>
+    <div class="krow">
+      <button class="key h42 sym func">!#1</button>
+      <button class="key h42 func">🌐</button>
+      <button class="key h42 func">,</button>
+      <button class="key h42 space">嘸蝦米</button>
+      <button class="key h42 func">.</button>
+      <button class="key h42 enter">↵</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── 畫面 3：找不到結果 ── -->
+<div>
+<div class="label">無搜尋結果</div>
+<div class="phone">
+  <div class="status"><span>10:49</span><span>📶 🔋</span></div>
+  <div class="app-area">
+    <div class="app-bar"><div class="dot">M</div><span class="app-name">訊息</span></div>
+    <div class="txt"><span class="cursor"></span></div>
+  </div>
+  <div class="keyboard">
+    <div class="toolbar">
+      <button class="tb">A中</button><button class="tb">★</button><button class="tb">✦</button>
+      <button class="tb">⎘</button><button class="tb">⚙</button><button class="tb">♪</button>
+      <button class="tb">⠿</button>
+      <div class="hint">🔍 輸入關鍵字搜尋剪貼簿</div>
+    </div>
+    <div class="clip-panel">
+      <div class="search-row">
+        <button class="back-btn">←</button>
+        <div class="search-box" style="color:#e2e8f0">🔍 penguin▌</div>
+        <button class="clear-btn" style="color:#ef4444">✕</button>
+      </div>
+      <div class="section-title title-search">🔍 搜尋「penguin」：共 0 筆</div>
+      <div class="empty-msg">找不到「penguin」</div>
+    </div>
+    <div class="krow" style="margin-top:5px">
+      <button class="key">q</button><button class="key">w</button><button class="key">e</button>
+      <button class="key">r</button><button class="key">t</button><button class="key">y</button>
+      <button class="key">u</button><button class="key">i</button><button class="key">o</button>
+      <button class="key">p</button>
+    </div>
+    <div class="krow">
+      <div class="spacer"></div>
+      <button class="key">a</button><button class="key">s</button><button class="key">d</button>
+      <button class="key">f</button><button class="key">g</button><button class="key">h</button>
+      <button class="key">j</button><button class="key">k</button><button class="key">l</button>
+      <div class="spacer"></div>
+    </div>
+    <div class="krow">
+      <div style="flex:1.4"></div>
+      <button class="key">z</button><button class="key">x</button><button class="key">c</button>
+      <button class="key">v</button><button class="key">b</button><button class="key">n</button>
+      <button class="key">m</button>
+      <button class="key del" style="flex:1.4">⌫</button>
+    </div>
+    <div class="krow">
+      <button class="key h42 sym func">!#1</button>
+      <button class="key h42 func">🌐</button>
+      <button class="key h42 func">,</button>
+      <button class="key h42 space">嘸蝦米</button>
+      <button class="key h42 func">.</button>
+      <button class="key h42 enter">↵</button>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>
