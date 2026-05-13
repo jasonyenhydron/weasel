@@ -1,0 +1,21 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Fri Mar 27 15:44:01 2026"
+  rime_version: 1.13.1
+patch:
+  # 關閉常見桌面程式的 inline preedit，避免上屏後文字仍被前端選取。
+  "style/inline_preedit": false
+  "style/preedit_type": composition
+  "app_options/firefox.exe/inline_preedit": false
+  "app_options/chrome.exe/inline_preedit": false
+  "app_options/msedge.exe/inline_preedit": false
+  "app_options/code.exe/inline_preedit": false
+  "app_options/cursor.exe/inline_preedit": false
+  "app_options/line.exe/inline_preedit": false
+  "app_options/explorer.exe/inline_preedit": false
+  "style/color_scheme": dark_temple
+  "style/candidate_abbreviate_length": 5
+  "style/hover_type": none
+  "style/paging_on_scroll": true

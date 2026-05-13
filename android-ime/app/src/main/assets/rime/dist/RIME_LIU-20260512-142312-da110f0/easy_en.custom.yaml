@@ -1,0 +1,5 @@
+# easy_en.custom.yaml
+patch:
+  key_binder/bindings/+:
+    - { when: always, accept: 'Control+slash', select: liur_lite }
+    - { when: always, accept: 'Control+Tab', select: liur_lite }

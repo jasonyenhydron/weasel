@@ -1,0 +1,11 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Fri Mar 27 15:44:01 2026"
+  rime_version: 1.13.1
+patch:
+  "style/color_scheme": dark_temple
+  "style/candidate_abbreviate_length": 5
+  "style/hover_type": none
+  "style/paging_on_scroll": true

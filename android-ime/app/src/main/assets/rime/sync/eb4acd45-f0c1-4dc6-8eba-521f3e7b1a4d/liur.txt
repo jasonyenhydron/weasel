@@ -1,0 +1,2624 @@
+# Rime table
+#@/db_name	liur
+#@/db_type	tabledb
+#@/rime_version	1.13.1
+#@/tick	2237
+，	,	119
+＇	,'	2
+「	,,	3
+《	,,c	4
+→	,ez	8
+（	,g	1
+）	,gg	1
+О	,o	1
+〇	,o	1
+」	,v	2
+╳	,x	1
+：	..	18
+…	...	3
+対	a	1
+對	a	15
+寸	aa	1
+鋃	aan	1
+鎮	ab	1
+會	ad	16
+金	ae	5
+鍵	aew	3
+華	aj	1
+主	ake	5
+也	al	12
+矣	an	1
+點	ao	6
+拿	aoh	2
+合	aoo	6
+錢	aq	4
+劃	aqr	2
+錯	ard	3
+書	asj	1
+鎖	asmb	1
+式	axi	23
+銙	axk	1
+成	ay	30
+含	ayo	2
+今	ayy	2
+不	ba	49
+冷	bat	2
+除	bat	3
+資	bb	12
+凃	bbh	2
+除	bbh	5
+貧	bdmb	1
+分	bdp	8
+剪	bdp	2
+並	be	4
+為	bf	12
+防	bfy	2
+前	bi	15
+次	bin	3
+全	bk	9
+差	bkpi	1
+比	bl	6
+陪	blo	4
+叛	blu	1
+人	bn	8
+否	boo	7
+入	bp	20
+院	br	1
+判	bri	1
+阿	bto	1
+公	bua	5
+冰	bwn	1
+義	bx	3
+七	c	2
+！	c.	6
+蝓	cai	2
+輸	cai	12
+層	cbo	1
+屬	cc	1
+多	cca	4
+切	cdp	2
+遣	cebw	2
+軒	cgj	1
+中	ci	39
+輔	cij	1
+軟	cin	3
+屆	ciq	1
+車	cj	1
+居	cjo	1
+暫	ckd	1
+較	clx	3
+尾	cml	1
+西	co	1
+蝦	cox	2
+外	cpa	2
+東	csn	1
+連	cwn	9
+轉	cxa	8
+局	cyo	2
+的	d	99
+歹	da	4
+時	daa	2
+顯	db	19
+辦	dba	2
+色	dcl	5
+映	dcn	4
+昌	ddo	1
+留	ddq	2
+量	deq	3
+是	dez	2
+照	df	11
+早	djj	3
+影	dm	3
+負	dmb	2
+大	dn	5
+日	do	1
+賀	domb	1
+加	doo	16
+架	dot	2
+刀	dp	2
+晚	dr	1
+列	dri	5
+最	dru	10
+殊	dsb	1
+星	dse	6
+殊	dss	1
+題	dt	5
+頭	dta	1
+明	due	4
+昨	dvf	3
+晤	dwo	2
+力	dx	2
+一	e	42
+與	ea	5
+兔	eaa	2
+岑	eay	1
+兩	eb	2
+村	ebi	1
+那	ebi	20
+融	ec	4
+爬	ecl	1
+習	ed	2
+天	edn	52
+書	edo	1
+出	eei	15
+盡	eff	1
+配	efl	1
+酸	ehx	2
+山	ei	2
+尋	eioa	4
+免	el	2
+屯	el	2
+夷	en	2
+爪	en	1
+管	enb	2
+爪	env	1
+邁	enw	1
+司	eo	7
+翮	eone	1
+印	epi	1
+醋	erd	2
+勁	esid	1
+酷	eso	1
+段	eu	1
+為	ewf	1
+建	ewn	8
+再	ey	19
+酬	eyv	1
+正	ez	17
+政	ezp	1
+下	fa	27
+於	fbb	2
+幫	fbn	21
+帮	fbnv	2
+上	fe	14
+北	ffl	1
+房	ffy	2
+罰	fir	1
+斷	fk	1
+所	fki	4
+已	fll	1
+改	flp	16
+帶	fnn	1
+曲	fo	1
+戶	fp	7
+卡	fpa	9
+啟	fpo	2
+放	fpx	5
+業	fr	2
+煩	fta	6
+區	fv	4
+醫	fvd	1
+匯	fwv	8
+發	fx	2
+方	fy	12
+署	fyd	1
+署	fypd	3
+機	g	1
+瓜	ga	1
+狀	gad	1
+動	gd	8
+己	gg	2
+即	gi	2
+千	gj	1
+姊	gjp	2
+裝	gk	6
+就	gl	9
+嫲	gltt	1
+媽	gm	2
+夾	gn	2
+婭	goe	1
+亂	gol	6
+如	goo	13
+婵	gooj	3
+教	gp	1
+姪	gpe	1
+收	gpx	6
+重	gq	8
+舅	gqd	2
+娌	gqe	1
+鼠	gsl	2
+將	gua	11
+努	gud	1
+始	guo	2
+収	gux	1
+女	gx	1
+娃	gyy	2
+好	gz	39
+時	h	13
+心	ha	22
+ハ	ha.	1
+程	hc	19
+移	hcc	3
+或	he	8
+拜	hfj	1
+忋	hfl	1
+忙	hfl	3
+秘	hhp	1
+情	hhu	1
+手	hj	2
+快	hjn	1
+表	hkn	4
+看	hmo	34
+慢	hmx	3
+很	hn	4
+和	hoo	9
+必	hp	3
+怕	hpd	1
+稍	hsu	1
+慘	hum	1
+道	hwn	8
+愛	hx	1
+憶	hzl	1
+後	i	16
+應	ia	15
+論	iam	1
+讀	ib	7
+診	ibm	1
+認	ibn	1
+說	ibor	2
+議	ibx	6
+誤	id	2
+兒	idr	1
+功	idx	18
+工	ie	1
+詞	ieo	14
+記	ifl	1
+話	igo	9
+恐	ih	2
+請	ihu	25
+申	ii	1
+計	ijj	1
+讓	ik	6
+該	ilh	10
+詢	ind	4
+調	ino	5
+誤	iokd	1
+郵	iqb	2
+由	iqo	1
+說	ir	5
+説	ir	2
+敢	irp	1
+設	iru	13
+謝	isa	20
+讚	isrb	1
+訂	iti	4
+護	iu	6
+試	iv	5
+汞	iwn	3
+这	iwn	1
+這	iwn	33
+語	iwo	9
+我	ix	89
+訊	izj	3
+十	j	1
+找	jaq	3
+真	jba	4
+事	jce	1
+把	jcl	7
+換	jd	10
+直	je	5
+然	jfa	10
+指	jfd	4
+拒	jff	1
+擇	jfy	5
+幹	jg	2
+搜	jgu	4
+控	ji	1
+提	jjn	1
+折	jki	2
+接	jlg	9
+是	jn	69
+按	jng	1
+古	joo	1
+操	joot	1
+協	jq	3
+惠	jqh	2
+搞	jqo	1
+排	js	11
+打	jti	19
+支	jux	1
+掉	jzdj	1
+瑜	kai	2
+其	kba	5
+開	kj	18
+環	kk	5
+氣	km	1
+現	kmr	7
+長	kn	3
+コ	ko.	1
+理	kq	7
+型	kry	2
+近	kwn	2
+班	kyk	5
+六	l	1
+症	lbez	1
+療	lbl	2
+鹿	lbl	1
+庫	lcj	2
+意	ldh	3
+端	ldi	2
+辦	ldl	6
+立	le	1
+新	li	10
+ぃ	li,	1
+廣	lka	3
+來	ln	12
+市	lni	2
+部	lob	7
+碼	lomf	9
+毫	lonm	1
+度	lru	2
+麻	ltt	6
+厲	lu	1
+反	lux	1
+確	lv	2
+麼	lw	9
+交	lxx	3
+店	lzov	1
+満	m	1
+滿	m	1
+買	ma	4
+瞼	mac	1
+類	mb	2
+粉	mbd	1
+購	mbj	5
+敗	mbp	5
+賺	mbq	1
+則	mbr	1
+貼	mbzo	2
+料	mdj	8
+間	mdo	5
+助	mdx	4
+且	me	2
+具	meb	1
+関	mf	2
+關	mf	14
+馳	mfa	1
+釋	mfy	1
+睡	mge	2
+数	mgp	2
+數	mgp	6
+門	mi	7
+毛	ml	1
+米	mn	2
+目	mo	12
+問	moo	9
+務	mpd	2
+眨	mpz	1
+刞	mri	2
+删	mri	1
+刪	mri	3
+見	mrl	1
+行	mv	9
+邊	mw	2
+從	mz	1
+南	n	2
+免	ncr	1
+突	nd	1
+解	nds	5
+同	neo	3
+家	neq	5
+寫	nf	8
+它	nfl	1
+安	ng	9
+寫	ngnf	2
+案	ngt	15
+害	nho	1
+巾	nj	1
+審	nmq	1
+周	no	1
+の	no,	1
+實	noa	1
+幗	noae	2
+句	noo	4
+客	npo	5
+用	nqj	31
+剛	nr	1
+帆	nra	1
+空	nri	3
+寬	nrma	1
+窒	nrp	1
+窗	nrpo	1
+完	nrr	8
+穿	nrx	2
+勾	nua	1
+幃	nwj	1
+週	nwn	1
+定	nz	7
+字	nzj	58
+只	oba	15
+呢	ocf	2
+吧	ocl	1
+喔	ocp	1
+雖	ocv	1
+因	od	1
+另	odx	2
+哪	oeb	13
+嘸	oek	3
+叫	ogi	2
+啊	oh	12
+國	ohe	3
+呼	ohj	1
+啦	ojl	2
+園	ok	1
+號	ol	2
+員	omb	2
+嗎	omf	12
+別	onr	1
+回	oov	10
+圖	ot	3
+品	ov	3
+唯	ove	1
+吃	ovz	12
+選	ow	24
+囦	own	1
+還	own	13
+嚴	ox	1
+跪	oznp	1
+跳	ozr	3
+備	p	1
+付	paa	1
+住	pak	1
+他	pal	12
+代	pax	3
+貨	pb	6
+份	pbd	1
+使	pc	11
+僳	pcm	2
+候	pd	12
+但	pde	8
+的	pdna	13
+白	pdo	1
+例	pdr	11
+至	pe	5
+健	pew	2
+化	pfl	3
+僑	pgo	1
+信	pio	2
+平	pj	1
+值	pje	4
+什	pjj	2
+做	pjx	10
+依	pk	11
+優	pk	1
+任	pke	5
+位	ple	3
+自	pm	8
+條	pn	2
+像	pnn	2
+你	pns	63
+您	pnsh	1
+個	po	46
+囪	poc	2
+各	poo	2
+保	pot	2
+修	pp	19
+致	ppx	1
+到	pri	14
+係	ps	1
+件	psj	2
+何	pto	9
+便	ptx	2
+似	pub	3
+及	pux	7
+作	pvf	2
+傳	pxa	3
+佈	pxn	3
+優	pyx	2
+佔	pzo	1
+高	q	1
+狼	qan	1
+體	qd	8
+黑	qfa	2
+思	qha	2
+甲	qi	4
+引	qii	3
+規	ql	3
+們	qm	8
+過	qow	10
+界	qr	1
+褁	qtk	1
+果	qtn	7
+顆	qtt	2
+跟	qz	5
+二	r	4
+臥	rbn	2
+英	rcn	1
+鞋	rcyy	1
+草	rdj	1
+聯	rf	13
+監	rfe	4
+夢	rfnc	4
+蘿	rfsv	2
+著	rho	2
+而	ri	1
+考	rk	1
+勞	rnd	1
+職	rob	2
+福	rq	1
+視	rr	2
+元	rrl	1
+藥	rrn	4
+韭	rrse	2
+非	rs	1
+示	rsa	17
+禮	rsl	1
+祐	rsxo	1
+苡	rub	1
+取	rux	4
+堅	ruy	1
+舊	rvg	1
+微	rz	2
+三	s	8
+？	s.	51
+小	sa	5
+射	saa	1
+給	sao	11
+續	sb	5
+生	se	15
+純	sel	1
+光	ser	1
+綁	sfb	1
+編	sfm	1
+紅	sie	2
+製	sk	2
+世	sl	1
+省	sm	1
+常	sn	7
+約	sna	4
+網	snbf	1
+絕	snc	1
+失	snn	8
+當	snoq	4
+學	snz	5
+當	so	8
+告	soo	6
+造	sow	2
+少	sp	2
+終	spb	2
+細	sqo	2
+覺	sr	1
+先	srl	4
+順	sta	1
+統	stl	1
+經	sui	1
+線	sv	2
+維	sve	5
+繼	sw	3
+身	sx	2
+堂	sy	2
+特	sya	4
+結	syo	4
+通	t	1
+頁	ta	1
+欄	tbs	3
+夢	tc	1
+查	tde	5
+根	tdk	10
+臺	te	2
+本	tej	2
+樓	tg	1
+想	th	25
+面	tj	10
+椊	tjj	1
+極	tk	1
+析	tki	4
+充	tl	1
+相	tm	7
+頁	tmb	2
+櫢	tmgp	1
+想	tmh	1
+可	to	3
+檢	toa	1
+可	too	45
+弟	tp	2
+棉	tpj	1
+格	tpo	4
+標	ts	2
+梏	tso	3
+檔	tso	34
+森	ttt	1
+樣	tu	11
+育	tue	2
+材	tup	1
+禁	tw	1
+更	tx	3
+以	u	37
+對	uaa	3
+預	ub	2
+勝	ud	1
+腫	ugq	1
+能	ul	28
+參	um	2
+台	uo	15
+才	up	4
+霧	upd	2
+服	upu	1
+電	uql	9
+脫	ur	1
+需	uri	5
+腦	uso	3
+遙	uw	1
+腳	uwp	7
+又	ux	3
+要	v	48
+智	vd	1
+知	vdo	7
+智	vdod	1
+初	vdp	1
+佳	ve	3
+無	vf	2
+焦	vfa	2
+怎	vh	7
+個	vii	1
+補	vij	1
+每	vm	4
+費	vmb	2
+售	voo	1
+複	vp	1
+襖	vpnd	1
+被	vpx	1
+裡	vq	18
+繁	vsa	2
+年	vsj	2
+、	vv	7
+速	vw	1
+五	w	1
+顏	wb	1
+幾	wba	1
+溜	wddq	1
+浮	wez	1
+活	wgo	1
+濾	wh	3
+齊	whe	5
+港	whl	1
+了	wi	16
+產	wls	2
+沒	wnu	41
+溝	wnu	2
+況	wor	1
+卻	wpi	2
+灣	wq	2
+滑	wqu	2
+測	wr	4
+流	wts	5
+法	wu	23
+浖	wua	1
+缺	wuj	1
+治	wuo	3
+文	wx	13
+有	x	67
+密	xe	1
+升	xj	1
+響	xld	6
+食	xn	1
+館	xnb	2
+右	xoo	1
+飭	xvd	1
+在	xy	33
+饐	xynd	3
+存	xz	3
+原	ya	4
+地	yal	2
+都	yb	6
+增	ybo	5
+勢	yd	1
+款	yi	1
+填	yjb	1
+起	yl	4
+境	yldr	2
+賣	yma	1
+超	yo	5
+未	ysn	1
+去	yua	18
+遠	yw	3
+坳	ywd	1
+執	yz	4
+走	yzn	2
+整	z	12
+答	zao	1
+範	zcp	10
+止	ze	2
+笑	zed	2
+筆	zej	1
+此	zfl	1
+些	zfr	4
+笑	zgn	4
+慮	zh	2
+子	zj	2
+簡	zmd	3
+算	zmr	2
+簽	zoa	1
+第	zp	8
+筏	zpaq	2
+笑	zpd	2
+舶	zpd	1
+節	zpi	1
+盧	zqf	1
+虎	zrl	2
+般	zru	2
+步	zsp	4
+處	zv	3
+簿	zwia	2
+等	zya	1
+」，	enc,,,,	0
+」，請修正	enc,,ie	0
+」，請	enc,,ii	0
+」，請修	enc,,ip	0
+，不	enc,bbb	0
+，還	enc,bbb	0
+，不是	enc,bdd	0
+，不是打	enc,bdj	0
+，不是打字	enc,bdn	0
+，不是打字根做	enc,bdp	0
+，不是打字根做夢	enc,bdr	0
+，不是打字根	enc,bdt	0
+，不是打字根做夢	enc,bdt	0
+，不是	enc,bjj	0
+，不是打	enc,bjj	0
+，不是打字	enc,bjn	0
+，不是打字根做	enc,bjp	0
+，不是打字根做夢	enc,bjr	0
+，不是打字根	enc,bjt	0
+，不是打字根做夢	enc,bjt	0
+，不體	enc,bpp	0
+，不體	enc,bqq	0
+，還	enc,fff	0
+，請	enc,iii	0
+，請修正依該中	enc,ipc	0
+，請修正	enc,ipe	0
+，請修正依該	enc,ipi	0
+，請修正依該中文字	enc,ipn	0
+，請修	enc,ipp	0
+，請修正依	enc,ipp	0
+，請修正依該中文	enc,ipw	0
+，還	enc,ooo	0
+「們」	enc,p,,	0
+「們」，	enc,p,,	0
+「們」，請修正	enc,p,e	0
+「們」，請	enc,p,i	0
+「們」，請修	enc,p,p	0
+「們」，	enc,p],	0
+「們」	enc,p]]	0
+「們」，請	enc,p]i	0
+「們」，請修	enc,p]p	0
+「們	enc,ppp	0
+「們」	enc,q,,	0
+「們」	enc,q]]	0
+「們	enc,qqq	0
+「們」	enc[p,,	0
+「們」	enc[p]]	0
+「們	enc[ppp	0
+「們	enc[qqq	0
+」，	enc],,,	0
+」，請	enc],ii	0
+」，請修	enc],ip	0
+會對	encaaaa	0
+會會	encaaaa	0
+會對除	encaabb	0
+對除	encabbb	0
+會會	encabbb	0
+劃一	encaeee	0
+劃一下功能是否	encaefb	0
+劃一下功能是	encaefd	0
+劃一下	encaeff	0
+劃一下功能是否和	encaefh	0
+劃一下功	encaefi	0
+劃一下功能是	encaefj	0
+劃一下功能	encaefu	0
+會對除	encafbb	0
+會對	encafff	0
+會跳出	encaoee	0
+會跳出監	encaoer	0
+會跳	encaooo	0
+會跳出	encaorr	0
+會跳出監	encaorr	0
+發黑色	encaqdd	0
+發黑色	encaqnn	0
+發黑	encaqqq	0
+會對除	encaubb	0
+會對	encauuu	0
+也知道	encavbb	0
+也知道你的	encavbd	0
+也知道你的想法是	encavbd	0
+也知道你的想法是	encavbj	0
+也知道你	encavbp	0
+也知道你的	encavbp	0
+也知道你的想	encavbt	0
+也知道你的想法	encavbw	0
+也知道你的	encavhd	0
+也知道你的想法是	encavhd	0
+也知道	encavhh	0
+也知道你的想法是	encavhj	0
+也知道你	encavhp	0
+也知道你的	encavhp	0
+也知道你的想	encavht	0
+也知道你的想法	encavhw	0
+也知	encavvv	0
+會對除	encawbb	0
+會對	encawww	0
+會對	encbaaa	0
+會會	encbaaa	0
+比劃	encbaaa	0
+陪主	encbaaa	0
+比劃一下功能是否	encbaeb	0
+比劃一下功能是	encbaed	0
+比劃一	encbaee	0
+比劃一下	encbaef	0
+比劃一下功能是否和	encbaeh	0
+比劃一下功	encbaei	0
+比劃一下功能是	encbaej	0
+比劃一下功能	encbaeu	0
+會會	encbbbb	0
+前是否	encbdbb	0
+前是否我只要	encbdbc	0
+前是否我	encbdbi	0
+前是否我只要走行	encbdbm	0
+前是否我只	encbdbo	0
+前是否我只要	encbdbv	0
+前是否我只要走	encbdby	0
+不是	encbddd	0
+不負	encbddd	0
+前是	encbddd	0
+不是真的想要	encbdfc	0
+不是真的	encbdfd	0
+不是真的想要這樣的	encbdfd	0
+不是真	encbdff	0
+不是真的想要這	encbdfi	0
+不是真的	encbdfp	0
+不是真的想要這樣的	encbdfp	0
+不是真的想要這樣的結	encbdfs	0
+不是真的想	encbdft	0
+不是真的想要這樣	encbdft	0
+不是真的想要	encbdfv	0
+不是真的想要這	encbdfw	0
+不是真的想要	encbdjc	0
+不是真的	encbdjd	0
+不是真的想要這	encbdji	0
+不是打	encbdjj	0
+不是真	encbdjj	0
+不是打字	encbdjn	0
+不是打字根做	encbdjp	0
+不是真的	encbdjp	0
+不是打字根做夢	encbdjr	0
+不是打字根	encbdjt	0
+不是打字根做夢	encbdjt	0
+不是真的想	encbdjt	0
+不是真的想要	encbdjv	0
+不是真的想要這	encbdjw	0
+不負響	encbdoo	0
+不負響	encbdww	0
+不負響	encbdxx	0
+比劃一下功能是否	encbeeb	0
+比劃一下功能是	encbeed	0
+比劃	encbeee	0
+比劃一	encbeee	0
+比劃一下	encbeef	0
+比劃一下功能是否和	encbeeh	0
+比劃一下功	encbeei	0
+比劃一下功能是	encbeej	0
+比劃一下功能	encbeeu	0
+會對	encbfff	0
+否和	encbhhh	0
+前我	encbiii	0
+否我	encbiii	0
+前我只要	encbioc	0
+否我只要	encbioc	0
+前我只要重	encbiog	0
+否我只要走行	encbiom	0
+前我只	encbioo	0
+否我只	encbioo	0
+前我只要	encbiov	0
+否我只要	encbiov	0
+否我只要走	encbioy	0
+前是否	encbjbb	0
+前是否我只要	encbjbc	0
+前是否我	encbjbi	0
+前是否我只要走行	encbjbm	0
+前是否我只	encbjbo	0
+前是否我只要	encbjbv	0
+前是否我只要走	encbjby	0
+不是真的	encbjfd	0
+不是真	encbjff	0
+不是真的	encbjfp	0
+不是真的想	encbjft	0
+不是真的	encbjjd	0
+不是	encbjjj	0
+不是打	encbjjj	0
+不是真	encbjjj	0
+前是	encbjjj	0
+不是打字	encbjjn	0
+不是打字根做	encbjjp	0
+不是真的	encbjjp	0
+不是打字根做夢	encbjjr	0
+不是打字根	encbjjt	0
+不是打字根做夢	encbjjt	0
+不是真的想	encbjjt	0
+冷門	encbmmm	0
+冷門字排在前面，	encbmn,	0
+冷門字排在前	encbmnb	0
+冷門字排在前面，請	encbmni	0
+冷門字排	encbmnj	0
+冷門字	encbmnn	0
+冷門字排在前面，請修	encbmnp	0
+冷門字排在前面	encbmnt	0
+冷門字排在	encbmnx	0
+不用	encbnnn	0
+不負	encbnnn	0
+不負響	encbnoo	0
+不用做匯入	encbnpb	0
+不用做匯	encbnpf	0
+不用做	encbnpp	0
+不用做匯	encbnpw	0
+不負響	encbnww	0
+不負響	encbnxx	0
+會跳出	encboee	0
+會跳	encbooo	0
+會跳出	encborr	0
+道你的	encbpdd	0
+道你的想法是	encbpdd	0
+道你的想法是	encbpdj	0
+道你的想	encbpdt	0
+道你的想法	encbpdw	0
+道你的想法是	encbppd	0
+道你的想法是	encbppj	0
+不體	encbppp	0
+道你	encbppp	0
+道你的	encbppp	0
+道你的想	encbppt	0
+道你的想法	encbppw	0
+不體	encbqqq	0
+前面，	encbt,,	0
+前面，請修正	encbt,e	0
+前面，請	encbt,i	0
+前面，請修	encbt,p	0
+比劃一	encbtee	0
+比劃一下	encbtef	0
+比劃一下功	encbtei	0
+比劃一下功能	encbteu	0
+全頁南	encbtjj	0
+全頁南	encbtnn	0
+全頁	encbttt	0
+前面	encbttt	0
+比劃	encbttt	0
+會對	encbuuu	0
+會對	encbwww	0
+否有不	encbxbb	0
+否有	encbxxx	0
+輸出中文字後再聯想，	enccec,	0
+中一中	enccecc	0
+輸出中	enccecc	0
+輸出中文字後再	enccece	0
+輸出中文字後	enccecf	0
+輸出中文字後	encceci	0
+輸出中文字後	enccecm	0
+輸出中文字	enccecn	0
+中一中監	enccecr	0
+輸出中文字後再聯	enccecr	0
+中一中監想	enccect	0
+輸出中文字後再	enccect	0
+輸出中文字後再聯想	enccect	0
+輸出中文	enccecw	0
+中一	encceee	0
+輸出	encceee	0
+要重	enccggg	0
+要這	encciii	0
+要這樣的	enccitd	0
+要這樣的	enccitp	0
+要這樣的結果	enccitq	0
+要這樣的結果	enccitr	0
+要這樣的結	enccits	0
+要這樣	enccitt	0
+輸出中	enccrcc	0
+輸出中文字後	enccrcf	0
+輸出中文字後	enccrci	0
+輸出中文字後	enccrcm	0
+輸出中文字	enccrcn	0
+輸出中文	enccrcw	0
+中監	enccrrr	0
+輸出	enccrrr	0
+中監想	enccrtt	0
+中文字後再聯想，	enccwn,	0
+中文字後再聯想，不	enccwnb	0
+中文字後再聯想，不是	enccwnd	0
+中文字後再	enccwne	0
+中文字後	enccwnf	0
+中文字後	enccwni	0
+中文字後再聯想，不是	enccwnj	0
+中文字後	enccwnm	0
+中文字	enccwnn	0
+中文字後再聯	enccwnr	0
+中文字後再	enccwnt	0
+中文字後再聯想	enccwnt	0
+要這樣的	enccwtd	0
+要這樣的	enccwtp	0
+要這樣的結果	enccwtq	0
+要這樣的結果	enccwtr	0
+要這樣的結	enccwts	0
+要這樣	enccwtt	0
+中文	enccwww	0
+要這	enccwww	0
+要走行	enccymm	0
+要走	enccyyy	0
+是不	encdbbb	0
+是否	encdbbb	0
+是不是真的想要	encdbdc	0
+是不是	encdbdd	0
+是不是真的	encdbdd	0
+是不是真的想要這樣的	encdbdd	0
+是不是真	encdbdf	0
+是不是真的想要這	encdbdi	0
+是不是真	encdbdj	0
+是不是真的	encdbdp	0
+是不是真的想要這樣的	encdbdp	0
+是不是真的想	encdbdt	0
+是不是真的想要這樣	encdbdt	0
+是不是真的想要	encdbdv	0
+是不是真的想要這	encdbdw	0
+是否和	encdbhh	0
+是否我只要	encdbic	0
+是否我	encdbii	0
+是否我只要走行	encdbim	0
+是否我只	encdbio	0
+是否我只要	encdbiv	0
+是否我只要走	encdbiy	0
+是不是真的	encdbjd	0
+是不是真	encdbjf	0
+是不是	encdbjj	0
+是不是真	encdbjj	0
+是不是真的	encdbjp	0
+是不是真的想	encdbjt	0
+是否有不	encdbxb	0
+是否有	encdbxx	0
+歹天	encdeee	0
+的建	encdeee	0
+的建議怎麼樣可能好	encdeig	0
+的建議	encdeii	0
+的建議怎麼	encdeil	0
+的建議怎麼	encdeip	0
+的建議怎麼樣可能好佈	encdeip	0
+的建議怎麼樣	encdeit	0
+的建議怎麼樣可	encdeit	0
+的建議怎麼樣可能	encdeiu	0
+的建議怎	encdeiv	0
+是真的想要	encdfdc	0
+是真的	encdfdd	0
+是真的想要這樣的	encdfdd	0
+是真的想要這	encdfdi	0
+是真的想要這樣的	encdfdp	0
+是真的想要這樣的結果	encdfdq	0
+是真的想要這樣的結果	encdfdr	0
+是真的想要這樣的結	encdfds	0
+是真的想	encdfdt	0
+是真的想要這樣	encdfdt	0
+是真的想要	encdfdv	0
+是真的想要這	encdfdw	0
+早上	encdfff	0
+是真	encdfff	0
+是真的想要	encdfpc	0
+早上各一	encdfpe	0
+是真的想要這	encdfpi	0
+早上各	encdfpp	0
+是真的	encdfpp	0
+早上各一顆	encdfpq	0
+是真的想	encdfpt	0
+是真的想要	encdfpv	0
+是真的想要這	encdfpw	0
+歹天	encdggg	0
+列表會	encdhaa	0
+列表會對	encdhaa	0
+列表會對除	encdhab	0
+列表會對	encdhaf	0
+列表會對	encdhau	0
+列表會對	encdhaw	0
+列表會對	encdhba	0
+列表會	encdhbb	0
+列表會對	encdhbf	0
+列表會對	encdhbu	0
+列表會對	encdhbw	0
+列表	encdhhh	0
+的功	encdiii	0
+的功能是否	encdiub	0
+的功能是否有不	encdiub	0
+的功能是	encdiud	0
+的功能是	encdiuj	0
+的功能	encdiuu	0
+的功能是否有	encdiux	0
+是真的想要	encdjdc	0
+是真的	encdjdd	0
+是真的想要這	encdjdi	0
+是真的想	encdjdt	0
+是真的想要	encdjdv	0
+是真的想要這	encdjdw	0
+是打	encdjjj	0
+是真	encdjjj	0
+是打字	encdjnn	0
+是打字根做	encdjnp	0
+是打字根做夢	encdjnr	0
+是打字根	encdjnt	0
+是打字根做夢	encdjnt	0
+是真的想要	encdjpc	0
+是真的	encdjpp	0
+是真的想	encdjpt	0
+是真的想要	encdjpv	0
+是打了	encdjww	0
+是打了笑	encdjwz	0
+力環	encdkkk	0
+影響	encdooo	0
+是吃	encdooo	0
+負響	encdooo	0
+是吃腳	encdouu	0
+照你方法下一	encdpfe	0
+照你方	encdpff	0
+照你方法下	encdpff	0
+照你方法	encdpfw	0
+照你方法下一步	encdpfz	0
+照你	encdppp	0
+色藥	encdrrr	0
+照常吃不	encdsob	0
+照常吃不負	encdsod	0
+照常吃不負	encdson	0
+照常吃	encdsoo	0
+照常吃不負響	encdsoo	0
+照常吃不負響	encdsow	0
+照常吃不負響	encdsox	0
+的結果	encdsqq	0
+的結果	encdsrr	0
+照告	encdsss	0
+照常	encdsss	0
+的結	encdsss	0
+的想要	encdtcc	0
+的想要這樣的	encdtcd	0
+的想要這	encdtci	0
+的想要這樣的	encdtcp	0
+的想要這樣的結果	encdtcq	0
+的想要這樣的結果	encdtcr	0
+的想要這樣的結	encdtcs	0
+的想要這樣	encdtct	0
+的想要這	encdtcw	0
+即可	encdttt	0
+的想	encdttt	0
+即可能使	encdtup	0
+即可能	encdtuu	0
+的想要這樣的	encdtvd	0
+的想要這	encdtvi	0
+的想要這樣的	encdtvp	0
+的想要這樣的結	encdtvs	0
+的想要這樣	encdtvt	0
+的想要	encdtvv	0
+的想要這	encdtvw	0
+的想法是	encdtwd	0
+的想法是	encdtwj	0
+的想法	encdtww	0
+列表會	encdvaa	0
+列表會對	encdvaa	0
+列表會對	encdvaf	0
+列表會	encdvbb	0
+列表	encdvvv	0
+辦法直說	encdwji	0
+辦法直	encdwjj	0
+影響	encdwww	0
+的沒	encdwww	0
+負響	encdwww	0
+辦法	encdwww	0
+的沒有治腳指	encdwxj	0
+的沒有治腳指甲	encdwxq	0
+的沒有治腳	encdwxu	0
+的沒有治	encdwxw	0
+的沒有	encdwxx	0
+影響	encdxxx	0
+負響	encdxxx	0
+一中	enceccc	0
+出中	enceccc	0
+一中監	encecrr	0
+一中監想	encecrt	0
+出中文字後再聯想，	encecw,	0
+出中文字後再聯想，不	encecwb	0
+出中文字後再	encecwe	0
+出中文字後	encecwf	0
+出中文字後	encecwi	0
+出中文字後	encecwm	0
+出中文字	encecwn	0
+出中文字後再聯	encecwr	0
+出中文字後再	encecwt	0
+出中文字後再聯想	encecwt	0
+出中文	encecww	0
+那是	enceddd	0
+那是吃	encedoo	0
+那是吃腳	encedou	0
+劃一	enceeee	0
+天天	enceeee	0
+那天	enceeee	0
+那那	enceeee	0
+那那天	enceeee	0
+劃一下功能是否	enceefb	0
+劃一下功能是	enceefd	0
+劃一下	enceeff	0
+劃一下功能是否和	enceefh	0
+劃一下功	enceefi	0
+劃一下功能是	enceefj	0
+劃一下功能	enceefu	0
+那那天	enceegg	0
+天天開心天	enceeke	0
+天天開心天天	enceeke	0
+天天開心天天笑啊那	enceeke	0
+天天開心天天笑啊那那	enceeke	0
+天天開心天天開心天	enceeke	0
+天天開心天天開心天天	enceeke	0
+天天開心天	enceekg	0
+天天開心天天	enceekg	0
+天天開心天天開心天	enceekg	0
+天天開心天天開心天天	enceekg	0
+天天開心	enceekh	0
+天天開心天天開心	enceekh	0
+天天開	enceekk	0
+天天開心天天開	enceekk	0
+天天開心天天開	enceekm	0
+天天開心天天笑啊	enceeko	0
+天天開心天天笑	enceekz	0
+天天開心天	enceeme	0
+天天開心天天	enceeme	0
+天天開心天天開心天	enceeme	0
+天天開心天	enceemg	0
+天天開心天天	enceemg	0
+天天開心天天開心天	enceemg	0
+天天開心	enceemh	0
+天天開心天天開心	enceemh	0
+天天開心天天開	enceemk	0
+天天開	enceemm	0
+天天開心天天開	enceemm	0
+天天開心天天笑	enceemz	0
+天天笑啊那	enceeze	0
+天天笑啊那那	enceeze	0
+天天笑啊那那天	enceeze	0
+天天笑啊那那天	enceezg	0
+天天笑啊	enceezo	0
+天天笑	enceezz	0
+一下	encefff	0
+一下功能是否	encefib	0
+一下功能是	encefid	0
+一下功能是否和	encefih	0
+一下功	encefii	0
+一下功能是	encefij	0
+一下功能	encefiu	0
+天天	enceggg	0
+那天	enceggg	0
+天天開心天	encegke	0
+天天開心天天	encegke	0
+天天開心天	encegkg	0
+天天開心天天	encegkg	0
+天天開心	encegkh	0
+天天開心天天開心	encegkh	0
+天天開	encegkk	0
+天天開心天天開	encegkk	0
+天天開心天天開	encegkm	0
+天天開心天	encegme	0
+天天開心天天	encegme	0
+天天開心天	encegmg	0
+天天開心天天	encegmg	0
+天天開心	encegmh	0
+天天開心天天開心	encegmh	0
+天天開心天天開	encegmk	0
+天天開	encegmm	0
+天天開心天天開	encegmm	0
+天天笑啊那	encegze	0
+天天笑啊那那	encegze	0
+天天笑啊	encegzo	0
+天天笑	encegzz	0
+一電	enceiii	0
+建議	enceiii	0
+一電腦力環	enceiuk	0
+一電腦	enceiuu	0
+建議怎麼樣可能好佈署	enceivf	0
+建議怎麼樣可能好	enceivg	0
+建議怎麼	enceivl	0
+建議怎麼	enceivp	0
+建議怎麼樣可能好佈	enceivp	0
+建議怎麼樣	enceivt	0
+建議怎麼樣可	enceivt	0
+建議怎麼樣可能	enceivu	0
+建議怎	enceivv	0
+那是	encejjj	0
+那是吃	encejoo	0
+那是吃腳	encejou	0
+天開心天	encekhe	0
+天開心天天	encekhe	0
+天開心天天笑啊那	encekhe	0
+天開心天天笑啊那那	encekhe	0
+天開心天天笑啊那那天	encekhe	0
+天開心天天開心天	encekhe	0
+天開心天天開心天天	encekhe	0
+天開心天	encekhg	0
+天開心天天	encekhg	0
+天開心天天笑啊那那天	encekhg	0
+天開心天天開心天	encekhg	0
+天開心天天開心天天	encekhg	0
+天開心	encekhh	0
+天開心天天開心	encekhh	0
+天開心天天開	encekhk	0
+天開心天天開	encekhm	0
+天開心天天笑啊	encekho	0
+天開心天天笑	encekhz	0
+天開心天天開心天天笑	encekhz	0
+天開	encekkk	0
+再麻煩陪主	encelfa	0
+再麻煩陪	encelfb	0
+再麻煩	encelff	0
+再麻煩協	encelfj	0
+再麻煩協助	encelfm	0
+再麻	encelll	0
+那目前	encembb	0
+那目前我只要	encembc	0
+那目前我只要重	encembg	0
+那目前我	encembi	0
+那目前我只	encembo	0
+那目前我只要	encembv	0
+天開心天	encemhe	0
+天開心天天	encemhe	0
+天開心天天開心天	encemhe	0
+天開心天	encemhg	0
+天開心天天	encemhg	0
+天開心天天開心天	encemhg	0
+天開心	encemhh	0
+天開心天天開心	encemhh	0
+天開心天天開	encemhk	0
+天開心天天開	encemhm	0
+天開心天天笑	encemhz	0
+天開	encemmm	0
+那目	encemmm	0
+一品	enceooo	0
+管吃	enceooo	0
+一品堂	enceoss	0
+再任免	encepdd	0
+再任免	encepee	0
+正依該中	encepic	0
+正依該	encepii	0
+正依該中文字	encepin	0
+正依該中文	encepiw	0
+再任免	encepnn	0
+再任	enceppp	0
+正依	enceppp	0
+一顆	enceqqq	0
+再聯	encerrr	0
+出監	encerrr	0
+再聯想，	encert,	0
+再聯想，不	encertb	0
+再聯想，不是	encertd	0
+再聯想，不是	encertj	0
+再聯想，不是打	encertj	0
+再聯想，不是打字	encertn	0
+再聯想，不是打字根做	encertp	0
+再聯想	encertt	0
+再聯想，不是打字根	encertt	0
+一電	enceuuu	0
+一電腦	enceuuu	0
+天笑啊那	encezoe	0
+天笑啊那那	encezoe	0
+天笑啊那那天	encezoe	0
+天笑啊那那天	encezog	0
+天笑啊	encezoo	0
+一步	encezzz	0
+天笑	encezzz	0
+煩陪主	encfbaa	0
+匯入	encfbbb	0
+對除	encfbbb	0
+煩陪	encfbbb	0
+真的	encfddd	0
+真的想要	encfdtc	0
+真的想要這樣的	encfdtd	0
+真的想要這	encfdti	0
+真的想要這樣的	encfdtp	0
+真的想要這樣的結果	encfdtq	0
+真的想要這樣的結果	encfdtr	0
+真的想要這樣的結	encfdts	0
+真的想	encfdtt	0
+真的想要這樣	encfdtt	0
+真的想要	encfdtv	0
+真的想要這	encfdtw	0
+下一	encfeee	0
+後再	encfeee	0
+後再聯想，	encfer,	0
+後再聯想，不	encferb	0
+後再聯想，不是	encferd	0
+後再聯想，不是	encferj	0
+後再聯想，不是打	encferj	0
+後再聯想，不是打字	encfern	0
+後再聯	encferr	0
+後再聯想	encfert	0
+後再聯想，不是打字根	encfert	0
+下一步	encfezz	0
+下功	encfiii	0
+下功能是否	encfiub	0
+下功能是	encfiud	0
+下功能是否和	encfiuh	0
+下功能是	encfiuj	0
+下功能	encfiuu	0
+煩協	encfjjj	0
+煩協助	encfjmm	0
+選字	encfnnn	0
+選字例	encfnpp	0
+上各一	encfpee	0
+上各一顆	encfpeq	0
+上各	encfppp	0
+真的	encfppp	0
+真的想要	encfptc	0
+真的想要這	encfpti	0
+真的想	encfptt	0
+真的想要	encfptv	0
+真的想要這	encfptw	0
+發黑色	encfqdd	0
+發黑色	encfqnn	0
+發黑	encfqqq	0
+後再聯	encftrr	0
+後再聯想	encftrt	0
+後再	encfttt	0
+署又好	encfugg	0
+署又好維護	encfugi	0
+署又好維護	encfugj	0
+署又好維護	encfugr	0
+署又好維	encfugs	0
+署又好維護？	encfugs	0
+署又	encfuuu	0
+方法下一	encfwfe	0
+方法下	encfwff	0
+方法下一步	encfwfz	0
+方法	encfwww	0
+好的	encgddd	0
+天天	encgeee	0
+天天開心天	encgeke	0
+天天開心天天	encgeke	0
+天天開心天	encgekg	0
+天天開心天天	encgekg	0
+天天開心	encgekh	0
+天天開	encgekk	0
+天天開心天	encgeme	0
+天天開心天天	encgeme	0
+天天開心天	encgemg	0
+天天開心天天	encgemg	0
+天天開心	encgemh	0
+天天開	encgemm	0
+天天笑	encgezz	0
+天天	encgggg	0
+天天開心天	encggke	0
+天天開心天天	encggke	0
+天天開心天	encggkg	0
+天天開心天天	encggkg	0
+天天開心	encggkh	0
+天天開	encggkk	0
+天天開心天	encggme	0
+天天開心天天	encggme	0
+天天開心天	encggmg	0
+天天開心天天	encggmg	0
+天天開心	encggmh	0
+天天開	encggmm	0
+天天笑	encggzz	0
+天開心天	encgkhe	0
+天開心天天	encgkhe	0
+天開心天	encgkhg	0
+天開心天天	encgkhg	0
+天開心	encgkhh	0
+天開心天天開心	encgkhh	0
+天開心天天開	encgkhk	0
+天開心天天開	encgkhm	0
+天開	encgkkk	0
+天開心天	encgmhe	0
+天開心天天	encgmhe	0
+天開心天	encgmhg	0
+天開心天天	encgmhg	0
+天開心	encgmhh	0
+天開心天天開心	encgmhh	0
+天開心天天開	encgmhk	0
+天開心天天開	encgmhm	0
+天開	encgmmm	0
+好佈署	encgpff	0
+好佈署又好	encgpfg	0
+好佈署又好維護	encgpfi	0
+好佈署又好維護	encgpfj	0
+好佈署又好維護	encgpfr	0
+好佈署又好維	encgpfs	0
+好佈署又好維護？	encgpfs	0
+好佈署又	encgpfu	0
+好佈	encgppp	0
+好的	encgppp	0
+好維護	encgsii	0
+好維護？	encgsis	0
+好維護	encgsjj	0
+好維護？	encgsjs	0
+好維護	encgsrr	0
+好維護？	encgsrs	0
+好維	encgsss	0
+裝檔就可能再任免	encgtgd	0
+裝檔就可能再	encgtge	0
+裝檔就可能再任免	encgtge	0
+裝檔就	encgtgg	0
+裝檔就可能再任免	encgtgn	0
+裝檔就可能再任	encgtgp	0
+裝檔就可	encgtgt	0
+裝檔就可能再	encgtgt	0
+裝檔就可能	encgtgu	0
+裝檔就可能再	encgtle	0
+裝檔就	encgtll	0
+裝檔就可能再任	encgtlp	0
+裝檔就可	encgtlt	0
+裝檔就可能再	encgtlt	0
+裝檔就可能	encgtlu	0
+即可	encgttt	0
+就可	encgttt	0
+裝檔	encgttt	0
+就可能再任免	encgtud	0
+就可能再	encgtue	0
+就可能再任免	encgtue	0
+就可能再任免	encgtun	0
+即可能使	encgtup	0
+就可能再任	encgtup	0
+就可能再	encgtut	0
+即可能	encgtuu	0
+就可能	encgtuu	0
+好了解	encgwnn	0
+好了	encgwww	0
+天笑啊那	encgzoe	0
+天笑啊那那	encgzoe	0
+天笑啊	encgzoo	0
+天笑	encgzzz	0
+表會	enchaaa	0
+表會對	enchaaa	0
+表會對除	enchaab	0
+表會對除	enchafb	0
+表會對	enchaff	0
+表會對除	enchaub	0
+表會對	enchauu	0
+表會對除	enchawb	0
+表會對	enchaww	0
+表會對	enchbaa	0
+表會	enchbbb	0
+表會對	enchbff	0
+表會對	enchbuu	0
+表會對	enchbww	0
+心天	encheee	0
+心天天	encheee	0
+心天天笑啊那	encheee	0
+心天天笑啊那那	encheee	0
+心天天笑啊那那天	encheee	0
+心天天開心天	encheee	0
+心天天開心天天	encheee	0
+心天天開心天天笑啊那	encheee	0
+心天天笑啊那那天	encheeg	0
+心天天開心天	encheeg	0
+心天天開心天天	encheeg	0
+心天天開心	encheeh	0
+心天天開	encheek	0
+心天天開	encheem	0
+心天天笑啊	encheeo	0
+心天天開心天天笑啊	encheeo	0
+心天天笑	encheez	0
+心天天開心天天笑	encheez	0
+心天天笑啊那	enchege	0
+心天天笑啊那那	enchege	0
+心天天開心天	enchege	0
+心天天開心天天	enchege	0
+心天天	enchegg	0
+心天天開心天	enchegg	0
+心天天開心天天	enchegg	0
+心天天開心	enchegh	0
+心天天開	enchegk	0
+心天天開	enchegm	0
+心天天笑啊	enchego	0
+心天天笑	enchegz	0
+心天天	enchgee	0
+心天天開心天	enchgee	0
+心天天開心天天	enchgee	0
+心天天開心天	enchgeg	0
+心天天開心天天	enchgeg	0
+心天天開心	enchgeh	0
+心天天開	enchgek	0
+心天天開	enchgem	0
+心天天笑	enchgez	0
+心天天開心天	enchgge	0
+心天天開心天天	enchgge	0
+心天	enchggg	0
+心天天	enchggg	0
+心天天開心天	enchggg	0
+心天天開心天天	enchggg	0
+心天天開心	enchggh	0
+心天天開	enchggk	0
+心天天開	enchggm	0
+心天天笑	enchggz	0
+道你的	enchpdd	0
+道你的想法是	enchpdd	0
+道你的想法是	enchpdj	0
+道你的想	enchpdt	0
+道你的想法	enchpdw	0
+道你的想法是	enchppd	0
+道你的想法是	enchppj	0
+道你	enchppp	0
+道你的	enchppp	0
+道你的想	enchppt	0
+道你的想法	enchppw	0
+我也	enciaaa	0
+我會	enciaaa	0
+我會會	enciaaa	0
+我會會	enciabb	0
+我也知道	enciavb	0
+我也知道你的	enciavd	0
+我也知道你的想法是	enciavd	0
+我也知道	enciavh	0
+我也知道你的想法是	enciavj	0
+我也知道你	enciavp	0
+我也知道你的	enciavp	0
+我也知道你的想	enciavt	0
+我也知	enciavv	0
+我也知道你的想法	enciavw	0
+我會會	encibaa	0
+我會	encibbb	0
+我會會	encibbb	0
+該中	enciccc	0
+該中文字	encicwn	0
+該中文	encicww	0
+説那是	enciedd	0
+説那是吃	enciedo	0
+説那是吃腳	enciedu	0
+後再	encieee	0
+説那	encieee	0
+説那是	enciejj	0
+説那是吃	enciejo	0
+説那是吃腳	encieju	0
+後再聯	encierr	0
+我打	encijjj	0
+我只要	enciocc	0
+我只要重	enciocg	0
+我只要走行	enciocm	0
+我只要走	enciocy	0
+我只	enciooo	0
+我只要重	enciovg	0
+我只要走行	enciovm	0
+我只要	enciovv	0
+我只要走	enciovy	0
+我們是不	encipdb	0
+我們是不是真的想要	encipdc	0
+我們是	encipdd	0
+我們是不是	encipdd	0
+我們是不是真的	encipdd	0
+我們是不是真	encipdf	0
+我們是不是真的想要這	encipdi	0
+我們是不是	encipdj	0
+我們是不是真	encipdj	0
+我們是不是真的	encipdp	0
+我們是不是真的想	encipdt	0
+我們是不是真的想要	encipdv	0
+我們是不是真的想要這	encipdw	0
+請修正依該中	encipec	0
+請修正	encipee	0
+請修正依該	encipei	0
+請修正依該中文字	encipen	0
+請修正依	encipep	0
+請修正依該中文	encipew	0
+誤你好	encipgg	0
+我們是不	encipjb	0
+我們是不是	encipjd	0
+我們是不是真的	encipjd	0
+我們是不是真	encipjf	0
+我們是	encipjj	0
+我們是不是	encipjj	0
+我們是不是真	encipjj	0
+我們是不是真的	encipjp	0
+我們	encippp	0
+詞你	encippp	0
+誤你	encippp	0
+請修	encippp	0
+我們是不	enciqdb	0
+我們是	enciqdd	0
+我們是不是	enciqdd	0
+我們是不是	enciqdj	0
+我們是不	enciqjb	0
+我們是不是	enciqjd	0
+我們是	enciqjj	0
+我們是不是	enciqjj	0
+我們	enciqqq	0
+讀取	encirrr	0
+請特助改	encismf	0
+請特助	encismm	0
+請特	encisss	0
+護？	encisss	0
+這樣的	encitdd	0
+這樣的結果	encitdq	0
+這樣的結果	encitdr	0
+這樣的結	encitds	0
+這樣的	encitpp	0
+這樣的結果	encitpq	0
+這樣的結果	encitpr	0
+這樣的結	encitps	0
+後再	encittt	0
+這樣	encittt	0
+功能，	enciu,,	0
+功能，還	enciu,b	0
+功能，還	enciu,f	0
+功能，還	enciu,o	0
+功能是否	enciudb	0
+功能是否有不	enciudb	0
+功能是	enciudd	0
+功能是否和	enciudh	0
+功能是打	enciudj	0
+電腦力環	enciudk	0
+功能是打了	enciudw	0
+功能是否有	enciudx	0
+功能是打了笑	enciudz	0
+功能是否	enciujb	0
+功能是否有不	enciujb	0
+功能是否和	enciujh	0
+功能是	enciujj	0
+功能是打	enciujj	0
+功能是打了	enciujw	0
+功能是否有	enciujx	0
+功能是打了笑	enciujz	0
+功能	enciuuu	0
+電腦	enciuuu	0
+議怎麼樣可能好佈署	encivlf	0
+議怎麼樣可能好	encivlg	0
+議怎麼	encivll	0
+議怎麼樣可能好佈	encivlp	0
+議怎麼樣	encivlt	0
+議怎麼樣可	encivlt	0
+議怎麼樣可能	encivlu	0
+議怎麼樣可能好佈署又	encivlu	0
+議怎麼	encivpp	0
+議怎麼樣	encivpt	0
+議怎	encivvv	0
+是不	encjbbb	0
+是否	encjbbb	0
+是不是	encjbdd	0
+是不是真的	encjbdd	0
+是不是真	encjbdf	0
+是不是真	encjbdj	0
+是不是真的	encjbdp	0
+是否和	encjbhh	0
+是否我只要	encjbic	0
+是否我	encjbii	0
+是否我只要走行	encjbim	0
+是否我只	encjbio	0
+是否我只要	encjbiv	0
+是否我只要走	encjbiy	0
+是不是真的	encjbjd	0
+是不是真	encjbjf	0
+是不是	encjbjj	0
+是不是真	encjbjj	0
+是不是真的	encjbjp	0
+是否有不	encjbxb	0
+是否有	encjbxx	0
+真的	encjddd	0
+真的想要	encjdtc	0
+真的想要這	encjdti	0
+真的想	encjdtt	0
+真的想要	encjdtv	0
+真的想要這	encjdtw	0
+是真的	encjfdd	0
+是真的想	encjfdt	0
+是真	encjfff	0
+是真的	encjfpp	0
+是真的想	encjfpt	0
+接讀	encjiii	0
+直說	encjiii	0
+接讀取	encjirr	0
+是真的	encjjdd	0
+是真的想	encjjdt	0
+是打	encjjjj	0
+是真	encjjjj	0
+是打字	encjjnn	0
+是打字根做	encjjnp	0
+是打字根做夢	encjjnr	0
+是打字根	encjjnt	0
+是打字根做夢	encjjnt	0
+是真的	encjjpp	0
+是真的想	encjjpt	0
+是打了	encjjww	0
+是打了笑	encjjwz	0
+協助	encjmmm	0
+執行	encjmmm	0
+執行寫裝	encjmng	0
+執行寫	encjmnn	0
+打字	encjnnn	0
+打字根做	encjntp	0
+打字根做夢	encjntr	0
+打字根	encjntt	0
+打字根做夢	encjntt	0
+是吃	encjooo	0
+是吃腳	encjouu	0
+真的	encjppp	0
+真的想要	encjptc	0
+真的想	encjptt	0
+真的想要	encjptv	0
+發黑色	encjqdd	0
+發黑色	encjqnn	0
+指引	encjqqq	0
+指甲	encjqqq	0
+發黑	encjqqq	0
+護？	encjsss	0
+打了	encjwww	0
+打了笑	encjwzz	0
+排在前面，	encjxb,	0
+排在前	encjxbb	0
+排在前面，請修正	encjxbe	0
+排在前面，請	encjxbi	0
+排在前面，請修	encjxbp	0
+排在前面	encjxbt	0
+排在	encjxxx	0
+開心天	enckhee	0
+開心天天	enckhee	0
+開心天天笑啊那	enckhee	0
+開心天天笑啊那那	enckhee	0
+開心天天笑啊那那天	enckhee	0
+開心天天開心天	enckhee	0
+開心天天開心天天	enckhee	0
+開心天天	enckheg	0
+開心天天笑啊那那天	enckheg	0
+開心天天開心天	enckheg	0
+開心天天開心天天	enckheg	0
+開心天天開心	enckheh	0
+開心天天開	enckhek	0
+開心天天開	enckhem	0
+開心天天笑啊	enckheo	0
+開心天天開心天天笑啊	enckheo	0
+開心天天笑	enckhez	0
+開心天天開心天天笑	enckhez	0
+開心天天	enckhge	0
+開心天天開心天	enckhge	0
+開心天天開心天天	enckhge	0
+開心天	enckhgg	0
+開心天天	enckhgg	0
+開心天天開心天	enckhgg	0
+開心天天開心天天	enckhgg	0
+開心天天開心	enckhgh	0
+開心天天開	enckhgk	0
+開心天天開	enckhgm	0
+開心天天笑	enckhgz	0
+開心	enckhhh	0
+麻煩陪主	enclfba	0
+麻煩陪	enclfbb	0
+麻煩	enclfff	0
+麻煩協	enclfjj	0
+麻煩協助	enclfjm	0
+麼樣可能好佈署	enclttf	0
+麼樣可能好	enclttg	0
+麼樣可能好佈署又好	enclttg	0
+麼樣可能好佈	enclttp	0
+麼樣可能好佈署又好維	encltts	0
+就可	enclttt	0
+麼樣	enclttt	0
+麼樣可	enclttt	0
+麼樣可能	enclttu	0
+麼樣可能好佈署又	enclttu	0
+就可能再	encltue	0
+就可能再任	encltup	0
+就可能再	encltut	0
+就可能	encltuu	0
+辦法直說	enclwji	0
+辦法直	enclwjj	0
+辦法	enclwww	0
+目前	encmbbb	0
+目前是否	encmbdb	0
+目前是否我只要	encmbdc	0
+目前是	encmbdd	0
+目前是否我	encmbdi	0
+目前是否我只要走行	encmbdm	0
+目前是否我只	encmbdo	0
+目前是否我只要	encmbdv	0
+目前是否我只要走	encmbdy	0
+目前我只要	encmbic	0
+目前我只要重	encmbig	0
+目前我	encmbii	0
+目前我只	encmbio	0
+目前我只要	encmbiv	0
+目前是否	encmbjb	0
+目前是否我只要	encmbjc	0
+目前是否我	encmbji	0
+目前是	encmbjj	0
+目前是否我只要走行	encmbjm	0
+目前是否我只	encmbjo	0
+目前是否我只要	encmbjv	0
+目前是否我只要走	encmbjy	0
+後再	encmeee	0
+助改	encmfff	0
+開心天	encmhee	0
+開心天天	encmhee	0
+開心天天開心天	encmhee	0
+開心天天	encmheg	0
+開心天天開心天	encmheg	0
+開心天天開心	encmheh	0
+開心天天開	encmhek	0
+開心天天開	encmhem	0
+開心天天笑	encmhez	0
+開心天天	encmhge	0
+開心天天開心天	encmhge	0
+開心天	encmhgg	0
+開心天天	encmhgg	0
+開心天天開心天	encmhgg	0
+開心天天開心	encmhgh	0
+開心天天開	encmhgk	0
+開心天天開	encmhgm	0
+開心天天笑	encmhgz	0
+開心	encmhhh	0
+行寫裝	encmngg	0
+門字排在前面，	encmnj,	0
+門字排在前	encmnjb	0
+門字排在前面，請修正	encmnje	0
+門字排在前面，請	encmnji	0
+門字排	encmnjj	0
+門字排在前面，請修	encmnjp	0
+門字排在前面	encmnjt	0
+門字排在	encmnjx	0
+行寫	encmnnn	0
+門字	encmnnn	0
+後再	encmttt	0
+同，	encn,,,	0
+完全	encnbbb	0
+完全頁南	encnbtj	0
+完全頁南	encnbtn	0
+完全頁	encnbtt	0
+字後再聯想，	encnfe,	0
+字後再聯想，不	encnfeb	0
+字後再聯想，不是	encnfed	0
+字後再	encnfee	0
+字後再聯想，不是	encnfej	0
+字後再聯想，不是打	encnfej	0
+字後再聯想，不是打字	encnfen	0
+字後再聯	encnfer	0
+字後再聯想	encnfet	0
+字後	encnfff	0
+字後再聯	encnftr	0
+字後再	encnftt	0
+字後再聯想	encnftt	0
+安裝	encnggg	0
+寫裝	encnggg	0
+安裝檔就可能再任免	encngtd	0
+安裝檔就可能再	encngte	0
+安裝檔就可能再任免	encngte	0
+安裝檔就	encngtg	0
+安裝檔就	encngtl	0
+安裝檔就可能再任免	encngtn	0
+安裝檔就可能再任	encngtp	0
+安裝檔	encngtt	0
+安裝檔就可	encngtt	0
+安裝檔就可能再	encngtt	0
+安裝檔就可能	encngtu	0
+字後再	encniee	0
+字後再聯	encnier	0
+字後	encniii	0
+當我	encniii	0
+當我打	encnijj	0
+字後再	encnitt	0
+字排	encnjjj	0
+字排在前面，	encnjx,	0
+字排在前	encnjxb	0
+字排在前面，請修正	encnjxe	0
+字排在前面，請	encnjxi	0
+字排在前面，請修	encnjxp	0
+字排在前面	encnjxt	0
+字排在	encnjxx	0
+字後再	encnmee	0
+字後	encnmmm	0
+字後再	encnmtt	0
+當吃，	encno,,	0
+當吃	encnooo	0
+負響	encnooo	0
+用做匯入	encnpfb	0
+用做匯	encnpff	0
+字例	encnppp	0
+用做	encnppp	0
+用做匯入	encnpwb	0
+用做匯	encnpww	0
+色藥	encnrrr	0
+用？	encnsss	0
+字根做	encntpp	0
+字根做夢	encntpr	0
+字根做夢	encntpt	0
+字根	encnttt	0
+負響	encnwww	0
+負響	encnxxx	0
+吃，	enco,,,	0
+吃不	encobbb	0
+吃不負	encobdd	0
+吃不負響	encobdo	0
+吃不負響	encobdw	0
+吃不負響	encobdx	0
+吃不負	encobnn	0
+吃不負響	encobno	0
+吃不負響	encobnw	0
+吃不負響	encobnx	0
+只要	encoccc	0
+只要重	encocgg	0
+只要走行	encocym	0
+只要走	encocyy	0
+啊那	encoeee	0
+啊那那	encoeee	0
+啊那那天	encoeee	0
+跳出	encoeee	0
+啊那那天	encoeeg	0
+跳出監	encoerr	0
+選字	enconnn	0
+選字例	enconpp	0
+跟他説那是	encopid	0
+跟他説那	encopie	0
+跟他説	encopii	0
+跟他説那是	encopij	0
+跟他説那是吃	encopio	0
+跟他説那是吃腳	encopiu	0
+跟他	encoppp	0
+跳出	encorrr	0
+跳出監	encorrr	0
+品堂	encosss	0
+吃腳	encouuu	0
+只要重	encovgg	0
+只要	encovvv	0
+只要走行	encovym	0
+只要走	encovyy	0
+們」	encp,,,	0
+們」，	encp,,,	0
+們」，請修正	encp,,e	0
+們」，請	encp,,i	0
+們」，請修	encp,,p	0
+們」，	encp],,	0
+們」，請	encp],i	0
+們」，請修	encp],p	0
+們」	encp]]]	0
+們是不	encpdbb	0
+們是不是真的想要	encpdbc	0
+們是不是	encpdbd	0
+們是不是真的	encpdbd	0
+們是不是真	encpdbf	0
+們是不是真的想要這	encpdbi	0
+們是不是	encpdbj	0
+們是不是真	encpdbj	0
+們是不是真的	encpdbp	0
+們是不是真的想	encpdbt	0
+們是不是真的想要這樣	encpdbt	0
+們是不是真的想要	encpdbv	0
+們是不是真的想要這	encpdbw	0
+任免	encpddd	0
+你的	encpddd	0
+們是	encpddd	0
+你的建	encpdee	0
+你的建議怎麼樣可能好	encpdeg	0
+你的建議	encpdei	0
+你的建議怎麼	encpdel	0
+你的建議怎麼	encpdep	0
+你的建議怎麼樣	encpdet	0
+你的建議怎麼樣可	encpdet	0
+你的建議怎麼樣可能	encpdeu	0
+你的建議怎	encpdev	0
+你的想法是	encpdtd	0
+你的想法是	encpdtj	0
+你的想	encpdtt	0
+你的想法	encpdtw	0
+任免	encpeee	0
+修正	encpeee	0
+各一	encpeee	0
+的建	encpeee	0
+的建議	encpeii	0
+的建議怎	encpeiv	0
+修正依該中	encpepc	0
+修正依該	encpepi	0
+修正依該中文字	encpepn	0
+修正依	encpepp	0
+修正依該中文	encpepw	0
+各一顆	encpeqq	0
+做匯入	encpfbb	0
+佈署	encpfff	0
+你方	encpfff	0
+候選	encpfff	0
+做匯	encpfff	0
+候選字	encpfnn	0
+候選字例	encpfnp	0
+佈署又好	encpfug	0
+佈署又好維護	encpfui	0
+佈署又好維護	encpfuj	0
+佈署又好維護	encpfur	0
+佈署又好維	encpfus	0
+佈署又好維護？	encpfus	0
+佈署又	encpfuu	0
+你方法下一	encpfwe	0
+你方法下	encpfwf	0
+你方法	encpfww	0
+你方法下一步	encpfwz	0
+你好	encpggg	0
+依該中	encpicc	0
+依該中文字	encpicn	0
+依該中文	encpicw	0
+他説那是	encpied	0
+他説那	encpiee	0
+他説那是	encpiej	0
+他説那是吃	encpieo	0
+他説那是吃腳	encpieu	0
+他説	encpiii	0
+依該	encpiii	0
+的功	encpiii	0
+的功能是否	encpiub	0
+的功能是否有不	encpiub	0
+的功能是	encpiud	0
+的功能是	encpiuj	0
+的功能	encpiuu	0
+的功能是否有	encpiux	0
+們是不	encpjbb	0
+們是不是	encpjbd	0
+們是不是真的	encpjbd	0
+們是不是真	encpjbf	0
+們是不是	encpjbj	0
+們是不是真	encpjbj	0
+們是不是真的	encpjbp	0
+們是	encpjjj	0
+任免	encpnnn	0
+使用	encpnnn	0
+使用？	encpnss	0
+候選字	encponn	0
+候選字例	encponp	0
+候選	encpooo	0
+你的建	encppee	0
+你的建議	encppei	0
+你的建議怎	encppev	0
+你的	encpppp	0
+你的想法是	encpptd	0
+你的想法是	encpptj	0
+你的想	encpptt	0
+你的想法	encpptw	0
+做夢	encprrr	0
+候選字	encpsnn	0
+候選字例	encpsnp	0
+的結果	encpsqq	0
+的結果	encpsrr	0
+候選	encpsss	0
+的結	encpsss	0
+的想要	encptcc	0
+的想要這	encptci	0
+的想要這	encptcw	0
+做夢	encpttt	0
+的想	encpttt	0
+麼樣	encpttt	0
+的想要這	encptvi	0
+的想要	encptvv	0
+的想要這	encptvw	0
+的想法是	encptwd	0
+的想法是	encptwj	0
+的想法	encptww	0
+做匯入	encpwbb	0
+做匯	encpwww	0
+的沒	encpwww	0
+的沒有治腳指	encpwxj	0
+的沒有治腳	encpwxu	0
+的沒有治	encpwxw	0
+的沒有	encpwxx	0
+們」	encq,,,	0
+們」	encq]]]	0
+甲發	encqaaa	0
+甲發黑色	encqaqd	0
+甲發黑色	encqaqn	0
+甲發黑	encqaqq	0
+們是不	encqdbb	0
+們是不是	encqdbd	0
+們是不是	encqdbj	0
+們是	encqddd	0
+黑色	encqddd	0
+甲發	encqfff	0
+甲發黑色	encqfqd	0
+甲發黑色	encqfqn	0
+甲發黑	encqfqq	0
+們是不	encqjbb	0
+們是不是	encqjbd	0
+們是不是	encqjbj	0
+們是	encqjjj	0
+甲發	encqjjj	0
+甲發黑色	encqjqd	0
+甲發黑色	encqjqn	0
+甲發黑	encqjqq	0
+黑色	encqnnn	0
+跟他説那是	encqpid	0
+跟他説那	encqpie	0
+跟他説	encqpii	0
+跟他説那是	encqpij	0
+跟他説那是吃	encqpio	0
+跟他	encqppp	0
+出中	encrccc	0
+出中文字後	encrcwf	0
+出中文字後	encrcwi	0
+出中文字後	encrcwm	0
+出中文字	encrcwn	0
+出中文	encrcww	0
+出監	encrrrr	0
+蘿韭	encrrrr	0
+護？	encrsss	0
+聯想，	encrt,,	0
+聯想，不	encrt,b	0
+聯想，請修正依該中	encrt,c	0
+聯想，不是	encrt,d	0
+聯想，請修正	encrt,e	0
+聯想，請	encrt,i	0
+聯想，請修正依該	encrt,i	0
+聯想，不是	encrt,j	0
+聯想，不是打	encrt,j	0
+聯想，不是打字	encrt,n	0
+聯想，不是打字根做	encrt,p	0
+聯想，請修	encrt,p	0
+聯想，請修正依	encrt,p	0
+聯想，不是打字根做夢	encrt,r	0
+聯想，不是打字根	encrt,t	0
+聯想，不是打字根做夢	encrt,t	0
+聯想，請修正依該中文	encrt,w	0
+聯想功能是	encrtid	0
+聯想功	encrtii	0
+聯想詞	encrtii	0
+聯想功能是	encrtij	0
+聯想功能是打	encrtij	0
+聯想詞你	encrtip	0
+聯想功能	encrtiu	0
+聯想功能是打了	encrtiw	0
+聯想功能是打了笑	encrtiz	0
+監想	encrttt	0
+聯想	encrttt	0
+臥虎	encrzzz	0
+告我	encsiii	0
+當我	encsiii	0
+維護	encsiii	0
+當我打	encsijj	0
+維護？	encsiss	0
+維護	encsjjj	0
+維護？	encsjss	0
+特助改	encsmff	0
+特助	encsmmm	0
+選字	encsnnn	0
+選字例	encsnpp	0
+當吃，	encso,,	0
+常吃不	encsobb	0
+常吃不負	encsobd	0
+常吃不負	encsobn	0
+常吃不負響	encsobo	0
+常吃不負響	encsobw	0
+常吃不負響	encsobx	0
+常吃	encsooo	0
+當吃	encsooo	0
+結果	encsqqq	0
+結果	encsrrr	0
+維護	encsrrr	0
+維護？	encsrss	0
+想，	enct,,,	0
+面，	enct,,,	0
+想，不	enct,bb	0
+想，不是	enct,bd	0
+想，不是	enct,bj	0
+想，不是打	enct,bj	0
+想，不是打字	enct,bn	0
+想，不是打字根做	enct,bp	0
+想，不是打字根做夢	enct,br	0
+想，不是打字根	enct,bt	0
+想，不是打字根做夢	enct,bt	0
+想，請修正依該中	enct,ic	0
+想，請修正	enct,ie	0
+面，請修正	enct,ie	0
+想，請	enct,ii	0
+想，請修正依該	enct,ii	0
+面，請	enct,ii	0
+想，請修正依該中文字	enct,in	0
+想，請修	enct,ip	0
+想，請修正依	enct,ip	0
+面，請修	enct,ip	0
+想，請修正依該中文	enct,iw	0
+想要	enctccc	0
+臺中	enctccc	0
+臺中一中	enctcec	0
+臺中一	enctcee	0
+臺中一中監	enctcer	0
+臺中一中監想	enctcet	0
+想要這樣的	enctcid	0
+想要這	enctcii	0
+想要這樣的	enctcip	0
+想要這樣的結果	enctciq	0
+想要這樣的結果	enctcir	0
+想要這樣的結	enctcis	0
+想要這樣	enctcit	0
+想要這樣的	enctcwd	0
+想要這樣的	enctcwp	0
+想要這樣的結果	enctcwq	0
+想要這樣的結果	enctcwr	0
+想要這樣的結	enctcws	0
+想要這樣	enctcwt	0
+想要這	enctcww	0
+樣的	enctddd	0
+樣的結果	enctdsq	0
+樣的結果	enctdsr	0
+樣的結	enctdss	0
+劃一	encteee	0
+劃一下	encteff	0
+劃一下功	enctefi	0
+劃一下功能	enctefu	0
+檔就	enctggg	0
+檔就可能再任免	enctgtd	0
+檔就可能再	enctgte	0
+檔就可能再任免	enctgte	0
+檔就可能再任免	enctgtn	0
+檔就可能再任	enctgtp	0
+檔就可	enctgtt	0
+檔就可能再	enctgtt	0
+檔就可能	enctgtu	0
+想功	enctiii	0
+想詞	enctiii	0
+想詞你	enctipp	0
+想功能是	enctiud	0
+想功能是	enctiuj	0
+想功能是打	enctiuj	0
+想功能	enctiuu	0
+想功能是打了	enctiuw	0
+想功能是打了笑	enctiuz	0
+頁南	enctjjj	0
+再麻煩陪主	enctlfa	0
+再麻煩陪	enctlfb	0
+再麻煩	enctlff	0
+再麻煩協	enctlfj	0
+再麻	enctlll	0
+檔就	enctlll	0
+檔就可能再	enctlte	0
+檔就可能再任	enctltp	0
+檔就可	enctltt	0
+檔就可能再	enctltt	0
+檔就可能	enctltu	0
+相同，	enctn,,	0
+相同	enctnnn	0
+頁南	enctnnn	0
+再任免	enctpdd	0
+再任免	enctpee	0
+再任免	enctpnn	0
+再任	enctppp	0
+根做	enctppp	0
+樣的	enctppp	0
+根做夢	enctprr	0
+樣的結果	enctpsq	0
+樣的結果	enctpsr	0
+樣的結	enctpss	0
+根做夢	enctptt	0
+再聯	enctrrr	0
+再聯想	enctrtt	0
+樣可	enctttt	0
+樣可能好佈署	encttuf	0
+樣可能好	encttug	0
+樣可能好佈署又好	encttug	0
+樣可能好佈署又好維護	encttui	0
+樣可能好佈署又好維護	encttuj	0
+樣可能好佈	encttup	0
+樣可能好佈署又好維護	encttur	0
+樣可能好佈署又好維	encttus	0
+樣可能	encttuu	0
+樣可能好佈署又	encttuu	0
+可能再任免	enctued	0
+可能再	enctuee	0
+可能再任免	enctuee	0
+可能再任免	enctuen	0
+可能再任	enctuep	0
+可能好佈署	enctugf	0
+可能好	enctugg	0
+可能好佈署又好	enctugg	0
+可能好佈署又好維護	enctugi	0
+可能好佈署又好維護	enctugj	0
+可能好佈	enctugp	0
+可能好佈署又好維護	enctugr	0
+可能好佈署又好維	enctugs	0
+可能好佈署又好維護？	enctugs	0
+可能好佈署又	enctugu	0
+可能使	enctupp	0
+可能再任免	enctutd	0
+可能再任免	enctute	0
+可能再任免	enctutn	0
+可能再任	enctutp	0
+可能再	enctutt	0
+可能	enctuuu	0
+想要這樣的	enctvid	0
+想要這	enctvii	0
+想要這樣的	enctvip	0
+想要這樣的結	enctvis	0
+想要這樣	enctvit	0
+想要	enctvvv	0
+想要這樣	enctvwt	0
+想要這	enctvww	0
+想法是	enctwdd	0
+想法是	enctwjj	0
+想法	enctwww	0
+臺灣	enctwww	0
+能，	encu,,,	0
+能，還	encu,bb	0
+能，還	encu,ff	0
+能，還	encu,oo	0
+以冷	encubbb	0
+對除	encubbb	0
+以冷門字排在前面，	encubm,	0
+以冷門字排在前	encubmb	0
+以冷門字排在前面，請	encubmi	0
+以冷門字排	encubmj	0
+以冷門	encubmm	0
+以冷門字	encubmn	0
+以冷門字排在前面	encubmt	0
+以冷門字排在	encubmx	0
+台中	encuccc	0
+能是否	encudbb	0
+能是否有不	encudbb	0
+能是否和	encudbh	0
+能是否有	encudbx	0
+能是	encuddd	0
+能是打	encudjj	0
+能是打了	encudjw	0
+能是打了笑	encudjz	0
+腦力環	encudkk	0
+能再	encueee	0
+能再任免	encuepd	0
+能再任免	encuepe	0
+能再任免	encuepn	0
+能再任	encuepp	0
+又好	encuggg	0
+能好	encuggg	0
+能好佈署	encugpf	0
+能好佈署又好	encugpg	0
+能好佈署又好維護	encugpi	0
+能好佈署又好維護	encugpj	0
+能好佈	encugpp	0
+能好佈署又好維護	encugpr	0
+能好佈署又好維	encugps	0
+能好佈署又好維護？	encugps	0
+能好佈署又	encugpu	0
+又好維護	encugsi	0
+又好維護	encugsj	0
+又好維護	encugsr	0
+又好維	encugss	0
+又好維護？	encugss	0
+能是否	encujbb	0
+能是否有不	encujbb	0
+能是否和	encujbh	0
+能是否有	encujbx	0
+能是	encujjj	0
+能是打	encujjj	0
+腳指	encujjj	0
+能是打了	encujjw	0
+能是打了笑	encujjz	0
+腳指引	encujqq	0
+腳指甲	encujqq	0
+能使	encuppp	0
+能再任免	encutpd	0
+能再任免	encutpe	0
+能再任免	encutpn	0
+能再任	encutpp	0
+能再	encuttt	0
+電腦	encuuuu	0
+表會	encvaaa	0
+表會對	encvaaa	0
+表會對	encvaff	0
+知道	encvbbb	0
+表會	encvbbb	0
+知道你的	encvbpd	0
+知道你的想法是	encvbpd	0
+知道你的想法是	encvbpj	0
+知道你	encvbpp	0
+知道你的	encvbpp	0
+知道你的想	encvbpt	0
+知道你的想法	encvbpw	0
+要重	encvggg	0
+知道	encvhhh	0
+知道你的	encvhpd	0
+知道你的想法是	encvhpd	0
+知道你的想法是	encvhpj	0
+知道你	encvhpp	0
+知道你的	encvhpp	0
+知道你的想	encvhpt	0
+知道你的想法	encvhpw	0
+要這	encviii	0
+要這樣的	encvitd	0
+要這樣的	encvitp	0
+要這樣的結	encvits	0
+要這樣	encvitt	0
+怎麼	encvlll	0
+怎麼樣可能好佈署	encvltf	0
+怎麼樣可能好	encvltg	0
+怎麼樣可能好佈署又好	encvltg	0
+怎麼樣可能好佈	encvltp	0
+怎麼樣	encvltt	0
+怎麼樣可	encvltt	0
+怎麼樣可能	encvltu	0
+怎麼樣可能好佈署又	encvltu	0
+怎麼	encvppp	0
+怎麼樣	encvptt	0
+要這樣	encvwtt	0
+要這	encvwww	0
+要走行	encvymm	0
+要走	encvyyy	0
+匯入	encwbbb	0
+對除	encwbbb	0
+法是	encwddd	0
+法下一	encwfee	0
+法下一步	encwfez	0
+法下	encwfff	0
+法直說	encwjii	0
+法是	encwjjj	0
+法直	encwjjj	0
+文字後再聯想，	encwnf,	0
+文字後再聯想，不	encwnfb	0
+文字後再聯想，不是	encwnfd	0
+文字後再	encwnfe	0
+文字後	encwnff	0
+文字後再聯想，不是	encwnfj	0
+文字後再聯想，不是打	encwnfj	0
+文字後再聯	encwnfr	0
+文字後再	encwnft	0
+文字後再聯想	encwnft	0
+文字後再	encwnie	0
+文字後	encwnii	0
+文字後再聯	encwnir	0
+文字後再	encwnit	0
+文字後再	encwnme	0
+文字後	encwnmm	0
+文字後再	encwnmt	0
+了解	encwnnn	0
+文字	encwnnn	0
+這樣的	encwtdd	0
+這樣的結果	encwtdq	0
+這樣的結果	encwtdr	0
+這樣的結	encwtds	0
+這樣的	encwtpp	0
+這樣的結果	encwtpq	0
+這樣的結果	encwtpr	0
+這樣的結	encwtps	0
+這樣	encwttt	0
+治腳指	encwujj	0
+治腳指甲	encwujq	0
+治腳	encwuuu	0
+沒有治腳指	encwxwj	0
+沒有治腳指甲	encwxwq	0
+沒有治腳	encwxwu	0
+沒有治	encwxww	0
+沒有	encwxxx	0
+溝有	encwxxx	0
+了笑	encwzzz	0
+在前	encxbbb	0
+有不	encxbbb	0
+在前面，	encxbt,	0
+在前面，請修正	encxbte	0
+在前面，請	encxbti	0
+在前面，請修	encxbtp	0
+在前面	encxbtt	0
+在辦	encxddd	0
+有辦	encxddd	0
+有辦法直說	encxdwi	0
+有辦法直	encxdwj	0
+有辦法	encxdww	0
+在辦	encxlll	0
+有辦	encxlll	0
+有辦法直說	encxlwi	0
+有辦法直	encxlwj	0
+有辦法	encxlww	0
+有治腳指	encxwuj	0
+有治腳指甲	encxwuq	0
+有治腳	encxwuu	0
+有治	encxwww	0
+臺中	encyccc	0
+臺中一中	encycec	0
+臺中一	encycee	0
+臺中一中監	encycer	0
+執行	encymmm	0
+走行	encymmm	0
+執行寫	encymnn	0
+臺灣	encywww	0
+第輸	enczccc	0
+第輸出中	enczcec	0
+第輸出	enczcee	0
+第輸出中文字後再	enczcee	0
+第輸出中文字後	enczcef	0
+第輸出中文字後	enczcei	0
+第輸出中文字後	enczcem	0
+第輸出中文字	enczcen	0
+第輸出中文字後再聯	enczcer	0
+第輸出中文字後再	enczcet	0
+第輸出中文字後再聯想	enczcet	0
+第輸出中文	enczcew	0
+第輸出中	enczcrc	0
+第輸出中文字後	enczcrf	0
+第輸出中文字後	enczcri	0
+第輸出中文字後	enczcrm	0
+第輸出中文字	enczcrn	0
+第輸出	enczcrr	0
+第輸出中文	enczcrw	0
+笑啊那	enczoee	0
+笑啊那那	enczoee	0
+笑啊那那天	enczoee	0
+笑啊那那天	enczoeg	0
+笑啊	enczooo	0
+管吃	enczooo	0

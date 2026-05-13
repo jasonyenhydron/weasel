@@ -1,0 +1,4 @@
+﻿Package: RIME_LIU
+BuiltAt: 20260512-142312
+Commit: da110f0
+SourceRoot: D:\APP\rime-liur-lua-master

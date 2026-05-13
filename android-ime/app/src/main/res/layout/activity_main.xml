@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小企鵝蝦米輸入法"
+            android:textColor="#E2E8F0"
+            android:textStyle="bold"
+            android:textSize="26sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="嘸蝦米核心 + Android 客製功能"
+            android:textColor="#94A3B8"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_enable_ime"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:text="1. 開啟輸入法設定" />
+
+        <Button
+            android:id="@+id/btn_switch_ime"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:text="2. 顯示鍵盤切換器" />
+
+        <EditText
+            android:id="@+id/edit_word"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:hint="要新增的字/詞（例：測試）"
+            android:background="#FFFFFF" />
+
+        <EditText
+            android:id="@+id/edit_code"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:hint="字根（例：cs）"
+            android:background="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_add_word"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="3. 加字加詞（立即生效）" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="外觀設定"
+            android:textColor="#E2E8F0"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+            <Button android:id="@+id/btn_theme_dark" android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="深色" />
+            <Button android:id="@+id/btn_theme_light" android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="淺色" />
+            <Button android:id="@+id/btn_theme_matcha" android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="抹茶" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_scale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#CBD5E1"
+            android:text="鍵高 100% / 字級 100%" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+            <Button android:id="@+id/btn_key_minus" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp" android:text="鍵高-" />
+            <Button android:id="@+id/btn_key_plus" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp" android:text="鍵高+" />
+            <Button android:id="@+id/btn_text_minus" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp" android:text="字級-" />
+            <Button android:id="@+id/btn_text_plus" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp" android:text="字級+" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="詞庫匯入 / 匯出"
+            android:textColor="#E2E8F0"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_export_dict"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="匯出詞庫備份" />
+
+        <Button
+            android:id="@+id/btn_import_dict"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="匯入詞庫備份" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="AI 問答設定"
+            android:textColor="#E2E8F0"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="長按鍵盤 AI 按鈕開啟內建問答面板（支援附圖）"
+            android:textColor="#94A3B8"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/edit_gemini_key"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:hint="Gemini API Key（AIza...）"
+            android:inputType="textPassword"
+            android:background="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_save_gemini_key"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="儲存 Gemini API Key" />
+
+    </LinearLayout>
+</ScrollView>

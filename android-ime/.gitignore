@@ -1,0 +1,35 @@
+# Android build artifacts
+/app/build/
+/build/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# Local configuration (machine-specific)
+local.properties
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Kotlin / Android Studio caches
+.kotlin/
+.local-tools/
+
+# Claude Code session data
+.claude/
+
+# APK / AAB / keystore
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Captures / profiling
+/captures
+.externalNativeBuild
+.cxx

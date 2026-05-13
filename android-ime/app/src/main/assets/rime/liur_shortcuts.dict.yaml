@@ -1,0 +1,67 @@
+# Rime schema 中州輸入法的字碼檔
+# encoding: utf-8
+#
+# liur 單碼常用簡碼
+# 來源：openxiami_TCJP 的單碼條目
+#
+---
+name: liur_shortcuts
+version: "1"
+sort: original
+...
+對	a
+八	b
+七	c
+的	d
+一	e
+四	f
+機	g
+時	h
+时	h
+後	i
+十	j
+九	k
+六	l
+滿	m
+満	m
+南	n
+備	p
+高	q
+二	r
+三	s
+通	t
+以	u
+要	v
+五	w
+有	x
+益	y
+整	z
+对	a
+机	g
+○	o
+〇	o
+，	,
+。	.
+、	'
+．	'
+‧	'
+〶	'
+＂	'
+＇	'
+·	'
+「	[
+（	[
+﹁	[
+﹃	[
+【	[
+︻	[
+︵	[
+〈	[
+」	]
+）	]
+﹂	]
+﹄	]
+】	]
+︼	]
+︶	]
+〉	]

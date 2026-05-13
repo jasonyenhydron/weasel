@@ -1,0 +1,42 @@
+-- liu_help.lua
+-- 按鍵說明（,,h）：顯示所有功能的快捷鍵說明
+
+local M = {}
+
+M.help_items = {
+    "同音選字 ▸ 字尾 + 同音鍵（或上滑L鍵 '）",
+    -- "注音輸入 ▸ ';",
+    -- "注音直出 ▸ ';'",
+    "讀音查詢 ▸ 上滑K鍵2次 ;;",
+    "造詞功能 ▸ 上滑K鍵 ;",
+    "拼音輸入 ▸ 上滑K鍵 +上滑L鍵 ;'",
+    -- "符號清單 ▸ `",
+    -- "簡繁切換 ▸ Ctrl + .",
+    -- "查碼功能 ▸ Ctrl + '",
+    -- "英文輸入 ▸ Ctrl + /",
+    "變體數字 ▸ `' + 01 ~ 50 (單獨)",
+    "數字變體 ▸ `/' (連續輸入)",
+    "英文變體 ▸ `/ (首字母大寫)",
+    "英文變體 ▸ `// (全小寫)",
+    "英文變體 ▸ `/// (全大寫)",
+    -- "日期時間 ▸ ``/",
+    -- "字母變化 ▸ `` + a~z",
+    ",,sp ▸ 快打提示",
+    ",,sf ▸ 強制快打",
+    -- "萬用查字 ▸ ,,wc",
+    "擴充字集 ▸ 空白鍵上滑",
+    "完整說明 ▸ ryanwuson.github.io/rime-liur-ios",
+}
+
+function M.translator(input, seg, env)
+    -- 直接檢查完整輸入是否為 ,,h
+    local context_input = env.engine.context.input
+    if context_input ~= ",,h" then return end
+    
+    -- 顯示說明
+    for _, item in ipairs(M.help_items) do
+        yield(Candidate("help", seg.start, seg._end, item, ""))
+    end
+end
+
+return M

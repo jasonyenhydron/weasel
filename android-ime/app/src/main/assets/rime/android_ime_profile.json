@@ -1,0 +1,6 @@
+﻿{
+  "active_schema": "liur",
+  "candidate_schemas": ["liur", "liur_lite", "liur_full", "easy_en", "allbpm", "terra_pinyin_onion"],
+  "source": "D:\\APP\\rime-liur-lua-master",
+  "synced_at": "2026-05-12 14:45:30"
+}
