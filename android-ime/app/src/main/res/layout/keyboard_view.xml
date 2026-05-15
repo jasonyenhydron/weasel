@@ -110,7 +110,7 @@
             android:layout_width="0dp" android:layout_weight="1.4" android:layout_height="48dp"
             android:background="@drawable/bg_key_func" android:textColor="@color/key_func_text" android:textSize="16sp"
             android:layout_marginEnd="3dp" android:visibility="gone"/>
-        <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1.4"/>
+        <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1.5"/>
         <Button android:id="@+id/key_z" android:text="z" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:background="@drawable/bg_key_modern" android:textColor="@color/key_text" android:textSize="16sp" android:lines="2" android:gravity="center" android:layout_marginEnd="3dp"/>
         <Button android:id="@+id/key_x" android:text="x" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:background="@drawable/bg_key_modern" android:textColor="@color/key_text" android:textSize="16sp" android:lines="2" android:gravity="center" android:layout_marginEnd="3dp"/>
         <Button android:id="@+id/key_c" android:text="c" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:background="@drawable/bg_key_modern" android:textColor="@color/key_text" android:textSize="16sp" android:lines="2" android:gravity="center" android:layout_marginEnd="3dp"/>
@@ -119,7 +119,7 @@
         <Button android:id="@+id/key_n" android:text="n" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:background="@drawable/bg_key_modern" android:textColor="@color/key_text" android:textSize="16sp" android:lines="2" android:gravity="center" android:layout_marginEnd="3dp"/>
         <Button android:id="@+id/key_m" android:text="m" android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp" android:background="@drawable/bg_key_modern" android:textColor="@color/key_text" android:textSize="16sp" android:lines="2" android:gravity="center" android:layout_marginEnd="3dp"/>
         <Button android:id="@+id/key_backspace" android:text="⌫"
-            android:layout_width="0dp" android:layout_weight="1.4" android:layout_height="48dp"
+            android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="48dp"
             android:background="@drawable/bg_key_func" android:textColor="@color/key_bs_text" android:textSize="18sp"/>
     </LinearLayout>
 
@@ -151,4 +151,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
 

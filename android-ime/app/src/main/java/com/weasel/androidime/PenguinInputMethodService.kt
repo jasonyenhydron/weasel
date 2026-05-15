@@ -121,8 +121,12 @@ class PenguinInputMethodService : InputMethodService() {
 
     // ── 加字加詞面板 ────────────────────────────────────────────
     private var isAddWordPanelActive = false
+    private var pendingCandidateWord = ""
+    private var pendingCandidateCode = ""
+    private val CAND_MAX_DISPLAY = 5  // 候選最多顯示幾個字，超過截斷顯示 …
     private var isClipboardSearchActive = false
-    private val clipboardSearchBuf = StringBuilder()
+    private val clipboardSearchBuf = StringBuilder()       // 已 commit 的搜尋文字
+    // clipboardSearchBuf 現在只存已確認的中文，composing buffer 用於嘸蝦米組字
     private var clipboardSearchView: TextView? = null
     private var clipboardResultsContainer: LinearLayout? = null
     private var addWordFocus = "CODE"  // "CODE" | "WORD"
@@ -176,6 +180,11 @@ class PenguinInputMethodService : InputMethodService() {
             "負" to "负","輕" to "轻","臺" to "台","讚" to "赞",
             "幣" to "币","劃" to "划","鬧" to "闹","韓" to "韩",
         )
+
+        /** 簡→繁反向表（由 TW_TO_CN 自動生成） */
+        val CN_TO_TW: Map<String, String> by lazy {
+            TW_TO_CN.entries.associate { it.value to it.key }
+        }
 
         // ── 羅馬字→平假名對照 ─────────────────────────────────
         val ROMAJI_KANA = mapOf(
@@ -763,12 +772,8 @@ class PenguinInputMethodService : InputMethodService() {
                 }
                 val lp = view.layoutParams
                 if (lp != null && lp.height > 0) {
-                    val minHeight = if (isKeyButton) 54 else 30
+                    val minHeight = if (isKeyButton) 48 else 30
                     lp.height = (lp.height * keyScale).toInt().coerceAtLeast(minHeight)
-                    if (isKeyButton) {
-                        // 防重疊保守版：鍵高再增加 4dp，避免不同字型渲染造成兩行擠壓
-                        lp.height += 4.dpToPx()
-                    }
                 }
                 view.layoutParams = lp
             }
@@ -797,22 +802,19 @@ class PenguinInputMethodService : InputMethodService() {
 
     private fun onLetterPressed(letter: String) {
         haptic()
+        // ── 面板模式優先（不論語言模式）──────────────────────────
+        // 剪貼簿搜尋：字母走 composing 組字，選字後 commit 進搜尋緩衝
+        if (isAddWordPanelActive) { appendToAddWord(letter); return }
+        if (isAiPanelActive) { aiQuestionBuffer.append(letter); updateAiQuestionDisplay(); return }
+        // ─────────────────────────────────────────────────────────
         if (currentLanguageMode == "EN") {
             val out = if (isEnglishUppercase) letter.uppercase() else letter.lowercase()
             currentInputConnection?.commitText(out, 1)
             recordCommit(out)
-            // 一次性大寫：輸出 1 個大寫字後自動回到小寫；Caps Lock 則保持
             if (isEnglishUppercase && !isEnglishCapsLock) {
                 isEnglishUppercase = false
                 keyboardRootView?.let { refreshEnglishKeyCaps(it) }
             }
-            return
-        }
-        if (isClipboardSearchActive) { clipboardSearchBuf.append(letter); refreshClipboardSearch(); return }
-        if (isAddWordPanelActive) { appendToAddWord(letter); return }
-        if (isAiPanelActive) {
-            aiQuestionBuffer.append(letter)
-            updateAiQuestionDisplay()
             return
         }
         composing.append(letter)
@@ -822,7 +824,14 @@ class PenguinInputMethodService : InputMethodService() {
     private fun onBackspacePressed() {
         haptic()
         if (isClipboardSearchActive) {
-            if (clipboardSearchBuf.isNotEmpty()) { clipboardSearchBuf.deleteCharAt(clipboardSearchBuf.length - 1); refreshClipboardSearch() }
+            if (composing.isNotEmpty()) {
+                composing.deleteCharAt(composing.length - 1)
+                refreshCompositionUi()
+                refreshClipboardSearch()
+            } else if (clipboardSearchBuf.isNotEmpty()) {
+                clipboardSearchBuf.deleteCharAt(clipboardSearchBuf.length - 1)
+                refreshClipboardSearch()
+            }
             return
         }
         if (isAddWordPanelActive) { deleteFromAddWord(); return }
@@ -842,9 +851,28 @@ class PenguinInputMethodService : InputMethodService() {
     }
 
     private fun commitOrSpace() {
-        if (isClipboardSearchActive) { clipboardSearchBuf.append(" "); refreshClipboardSearch(); return }
         if (isAddWordPanelActive) {
-            if (addWordFocus == "WORD") { addWordWordBuf.append(" "); refreshAddWordDisplay() }
+            if (addWordFocus == "WORD") {
+                if (composing.isNotEmpty()) {
+                    // 選第一候選 commit 到詞句緩衝
+                    val cands = resolveCandidatesForCode(composing.toString())
+                    val w = when {
+                        cands.isNotEmpty() -> when (inputLangMode) {
+                            "ZH_CN" -> convertToSimplified(cands.first())
+                            "ZH_TW" -> convertToTraditional(cands.first())
+                            else    -> cands.first()
+                        }
+                        else -> composing.toString()
+                    }
+                    addWordWordBuf.append(w)
+                    composing.clear()
+                    refreshCompositionUi()
+                    refreshAddWordDisplay()
+                } else {
+                    addWordWordBuf.append(" ")
+                    refreshAddWordDisplay()
+                }
+            }
             return
         }
         if (isAiPanelActive) {
@@ -860,16 +888,11 @@ class PenguinInputMethodService : InputMethodService() {
 
     private fun onNumberPressed(number: String) {
         haptic()
+        if (isAddWordPanelActive) { appendToAddWord(number); return }
+        if (isAiPanelActive) { aiQuestionBuffer.append(number); updateAiQuestionDisplay(); return }
         if (currentLanguageMode == "EN") {
             currentInputConnection?.commitText(number, 1)
             recordCommit(number)
-            return
-        }
-        if (isClipboardSearchActive) { clipboardSearchBuf.append(number); refreshClipboardSearch(); return }
-        if (isAddWordPanelActive) { appendToAddWord(number); return }
-        if (isAiPanelActive) {
-            aiQuestionBuffer.append(number)
-            updateAiQuestionDisplay()
             return
         }
         composing.append(number)
@@ -882,8 +905,24 @@ class PenguinInputMethodService : InputMethodService() {
             val raw = composing.toString()
             val output = when (inputLangMode) {
                 "JA"    -> convertRomaji(raw)
-                "ZH_CN" -> raw  // Enter 輸出字根（不轉換）
+                "ZH_CN" -> raw
                 else    -> raw
+            }
+            // 加字加詞詞句欄：Enter 把原始字根 append
+            if (isAddWordPanelActive && addWordFocus == "WORD") {
+                addWordWordBuf.append(output)
+                composing.clear()
+                refreshCompositionUi()
+                refreshAddWordDisplay()
+                return
+            }
+            // 搜尋模式：Enter 把原始字根 append 到搜尋緩衝
+            if (isClipboardSearchActive) {
+                clipboardSearchBuf.append(output)
+                composing.clear()
+                refreshCompositionUi()
+                refreshClipboardSearch()
+                return
             }
             currentInputConnection?.commitText(output, 1)
             recordCommit(output)
@@ -913,7 +952,32 @@ class PenguinInputMethodService : InputMethodService() {
         val candidates = resolveCandidatesForCode(code)
         val candidate = candidates.firstOrNull()
         val raw = candidate ?: code
-        val output = if (inputLangMode == "ZH_CN") convertToSimplified(raw) else raw
+        val output = when (inputLangMode) {
+            "ZH_CN" -> convertToSimplified(raw)
+            "ZH_TW" -> if (candidate != null) convertToTraditional(candidate) else raw
+            else    -> raw
+        }
+
+        // 加字加詞詞句欄：commit 到詞句緩衝
+        if (isAddWordPanelActive && addWordFocus == "WORD") {
+            addWordWordBuf.append(output)
+            if (candidate != null) incrementFreq(code, candidate)
+            composing.clear()
+            refreshCompositionUi()
+            refreshAddWordDisplay()
+            return true
+        }
+
+        // 剪貼簿搜尋模式：commit 到搜尋緩衝，不輸出至輸入欄
+        if (isClipboardSearchActive) {
+            clipboardSearchBuf.append(output)
+            if (candidate != null) incrementFreq(code, candidate)
+            composing.clear()
+            refreshCompositionUi()
+            refreshClipboardSearch()
+            return true
+        }
+
         currentInputConnection?.commitText(output, 1)
         recordCommit(output)
         if (candidate != null) incrementFreq(code, candidate)
@@ -953,10 +1017,12 @@ class PenguinInputMethodService : InputMethodService() {
         val related = relatedMap[lastCommittedText].orEmpty()
         val activeList = if (code.isEmpty()) related else candidates
 
-        // 簡體模式：候選顯示繁體，commit 時轉換（在 renderCandidates 顯示簡體）
-        val displayList = if (inputLangMode == "ZH_CN")
-            activeList.map { convertToSimplified(it) }
-        else activeList
+        // 依語言模式轉換候選顯示
+        val displayList = when (inputLangMode) {
+            "ZH_CN" -> activeList.map { convertToSimplified(it) }.distinct()
+            "ZH_TW" -> activeList.map { convertToTraditional(it) }.distinct()
+            else    -> activeList
+        }
 
         composingView.text = code
         composingDivider.visibility = if (code.isNotEmpty()) View.VISIBLE else View.GONE
@@ -966,19 +1032,28 @@ class PenguinInputMethodService : InputMethodService() {
 
         val topCandidate = displayList.firstOrNull().orEmpty()
         if (code.isEmpty()) currentInputConnection?.finishComposingText()
-        else currentInputConnection?.setComposingText(topCandidate.ifEmpty { code }, 1)
+        else if (!isClipboardSearchActive) {
+            // 搜尋模式不對背景輸入欄設 composing text
+            currentInputConnection?.setComposingText(topCandidate.ifEmpty { code }, 1)
+        }
+
+        // 搜尋模式：組字變動時同步更新搜尋框預覽
+        if (isClipboardSearchActive) refreshClipboardSearch()
+        // 加字加詞詞句欄：組字變動時同步預覽
+        if (isAddWordPanelActive && addWordFocus == "WORD") refreshAddWordDisplay()
     }
 
     private fun renderCandidates(candidates: List<String>) {
+        val dp = resources.displayMetrics.density
+        val fixedWidth = (52 * dp).toInt()   // 固定 52dp 寬度
         val maxCount = minOf(8, candidates.size)
         // 擴展 pool
         while (candidateButtonPool.size < maxCount) {
             val btn = Button(this).apply {
                 textSize = 13f
-                setPadding(10, 0, 10, 0)
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
+                setPadding((6 * dp).toInt(), 0, (6 * dp).toInt(), 0)
+                layoutParams = LinearLayout.LayoutParams(fixedWidth, LinearLayout.LayoutParams.MATCH_PARENT)
+                    .also { it.setMargins(0, 0, (3 * dp).toInt(), 0) }
             }
             candidateContainer.addView(btn)
             candidateButtonPool.add(btn)
@@ -987,17 +1062,27 @@ class PenguinInputMethodService : InputMethodService() {
             val btn = candidateButtonPool[i]
             if (i < maxCount) {
                 val word = candidates[i]
-                btn.text = word
+                // 截斷顯示：超過 CAND_MAX_DISPLAY 個字用 …
+                val isLong = word.length > CAND_MAX_DISPLAY
+                val display = if (isLong) word.substring(0, CAND_MAX_DISPLAY) + "…" else word
+                btn.text = display
                 btn.visibility = View.VISIBLE
+                // 確保固定寬度（pool 內按鈕可能已有不同 lp）
+                btn.layoutParams = LinearLayout.LayoutParams(fixedWidth, LinearLayout.LayoutParams.MATCH_PARENT)
+                    .also { it.setMargins(0, 0, (3 * dp).toInt(), 0) }
+
                 btn.setOnClickListener {
                     val code = composing.toString()
-                    // displayWord 已是 ZH_CN 模式下的簡體字（renderCandidates 傳入的就是 displayList）
-                    currentInputConnection?.commitText(word, 1)
-                    recordCommit(word)
-                    // 頻率記錄用原始字根 + 反轉換找原詞（或直接記 displayWord）
-                    incrementFreq(code, word)
-                    composing.clear()
-                    refreshCompositionUi()
+                    if (isLong) {
+                        // 長詞：先顯示全文確認 popup
+                        showCandidateFullTextPopup(word, code)
+                    } else {
+                        currentInputConnection?.commitText(word, 1)
+                        recordCommit(word)
+                        incrementFreq(code, word)
+                        composing.clear()
+                        refreshCompositionUi()
+                    }
                 }
                 btn.setOnLongClickListener {
                     handleCandidateLongPress(word)
@@ -1023,6 +1108,65 @@ class PenguinInputMethodService : InputMethodService() {
                 btn.visibility = View.GONE
             }
         }
+    }
+
+    /** 長候選詞全文確認 popup */
+    private fun showCandidateFullTextPopup(word: String, code: String) {
+        pendingCandidateWord = word
+        pendingCandidateCode = code
+        extraPanel.removeAllViews()
+        extraScroll.visibility = View.VISIBLE
+        currentExtraPanel = "CANDIDATE_POPUP"
+        setMainKeyboardVisible(true)
+
+        val isLight = resolveThemeMode() == "light"
+        val bg   = if (isLight) 0xFFEDF1F7.toInt() else 0xFF1A1D24.toInt()
+        val txt  = if (isLight) 0xFF1F2937.toInt() else 0xFFE2E8F0.toInt()
+        val sec  = if (isLight) 0xFF6B7280.toInt() else 0xFF64748B.toInt()
+        val dp   = resources.displayMetrics.density
+        extraPanel.setBackgroundColor(bg)
+
+        // 標題
+        extraPanel.addView(TextView(this).apply {
+            text = "候選全文"; textSize = 12f; setTextColor(sec)
+            setPadding((12*dp).toInt(), (8*dp).toInt(), (12*dp).toInt(), 4)
+        })
+        // 全文內容
+        extraPanel.addView(TextView(this).apply {
+            text = word; textSize = 16f; setTextColor(txt)
+            setPadding((14*dp).toInt(), (8*dp).toInt(), (14*dp).toInt(), (10*dp).toInt())
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(if (isLight) 0xFFFFFFFF.toInt() else 0xFF252830.toInt())
+                cornerRadius = 8*dp; setStroke(1, if (isLight) 0xFFD1D5DB.toInt() else 0xFF374151.toInt())
+            }
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                .also { it.setMargins((10*dp).toInt(), 0, (10*dp).toInt(), (8*dp).toInt()) }
+            isSingleLine = false; maxLines = 6
+        })
+        // 按鈕列
+        val btnRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.END
+            setPadding((8*dp).toInt(), 0, (8*dp).toInt(), (10*dp).toInt())
+        }
+        btnRow.addView(Button(this).apply {
+            text = "✖ 取消"; textSize = 13f; setTextColor(0xFFEF4444.toInt())
+            setBackgroundColor(0x00000000)
+            setOnClickListener { hideExtraPanelAndShowMainKeyboard() }
+        })
+        btnRow.addView(Button(this).apply {
+            text = "✔ 插入"; textSize = 13f; setTextColor(if (isLight) 0xFF2563EB.toInt() else 0xFF34D399.toInt())
+            setBackgroundColor(0x00000000)
+            setOnClickListener {
+                val w = pendingCandidateWord; val c = pendingCandidateCode
+                currentInputConnection?.commitText(w, 1)
+                recordCommit(w); incrementFreq(c, w)
+                composing.clear()
+                hideExtraPanelAndShowMainKeyboard()
+                refreshCompositionUi()
+            }
+        })
+        extraPanel.addView(btnRow)
     }
 
     private fun resolveCandidatesForCode(code: String): List<String> {
@@ -1646,6 +1790,8 @@ class PenguinInputMethodService : InputMethodService() {
         val keyTxt  = when (theme) { "light" -> 0xFF1F2937.toInt(); "matcha" -> 0xFFD1FAE5.toInt(); else -> 0xFFE2E8F0.toInt() }
         val accent  = when (theme) { "light" -> 0xFF2563EB.toInt(); else -> 0xFF34D399.toInt() }
         val lbl     = when (theme) { "light" -> 0xFF4B5563.toInt(); else -> 0xFF64748B.toInt() }
+        val btnBg   = when (theme) { "light" -> 0xFFF3F4F6.toInt(); "matcha" -> 0xFF183228.toInt(); else -> 0xFF2A2F3A.toInt() }
+        val btnTxt  = keyTxt
         extraPanel.setBackgroundColor(bgColor)
 
         fun row(block: LinearLayout.() -> Unit): LinearLayout {
@@ -1653,6 +1799,24 @@ class PenguinInputMethodService : InputMethodService() {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 block()
+            }
+        }
+        fun panelBtn(label: String, onClick: () -> Unit): Button {
+            val dp = resources.displayMetrics.density
+            return Button(this).apply {
+                text = label
+                textSize = 12f
+                isAllCaps = false
+                setTextColor(btnTxt)
+                minHeight = 0
+                minimumHeight = 0
+                background = android.graphics.drawable.GradientDrawable().apply {
+                    cornerRadius = 12 * dp
+                    setColor(btnBg)
+                    setStroke((1.2f * dp).toInt().coerceAtLeast(1), accent)
+                }
+                setPadding((12 * dp).toInt(), (6 * dp).toInt(), (12 * dp).toInt(), (6 * dp).toInt())
+                setOnClickListener { onClick() }
             }
         }
 
@@ -1664,10 +1828,7 @@ class PenguinInputMethodService : InputMethodService() {
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                 setPadding(12, 10, 0, 6)
             })
-            addView(Button(this@PenguinInputMethodService).apply {
-                text = "✕ 關閉"; textSize = 11f
-                setOnClickListener { hideAddWordPanel() }
-            })
+            addView(panelBtn("✕ 關閉") { hideAddWordPanel() }.apply { textSize = 11f })
         }
         extraPanel.addView(header)
 
@@ -1687,9 +1848,12 @@ class PenguinInputMethodService : InputMethodService() {
                 setOnClickListener { addWordFocus = "CODE"; refreshAddWordDisplay() }
             }
             addView(addWordCodeView)
-            addView(Button(this@PenguinInputMethodService).apply {
-                text = "查詢"; textSize = 11f
-                setOnClickListener { queryAddWordCode() }
+            addView(panelBtn("查詢") { queryAddWordCode() }.apply {
+                textSize = 11f
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).also { it.setMargins(0, 4, 0, 4) }
             })
         }
         extraPanel.addView(codeRow)
@@ -1724,7 +1888,12 @@ class PenguinInputMethodService : InputMethodService() {
         // 操作按鈕列
         val btnRow = row {
             fun mkBtn(label: String, action: () -> Unit) = Button(this@PenguinInputMethodService).apply {
-                text = label; textSize = 12f
+                text = label; textSize = 12f; isAllCaps = false; setTextColor(btnTxt)
+                background = android.graphics.drawable.GradientDrawable().apply {
+                    cornerRadius = 12 * resources.displayMetrics.density
+                    setColor(btnBg)
+                    setStroke((1.2f * resources.displayMetrics.density).toInt().coerceAtLeast(1), accent)
+                }
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).also { it.setMargins(4, 0, 4, 6) }
                 setOnClickListener { action() }
             }
@@ -1741,42 +1910,71 @@ class PenguinInputMethodService : InputMethodService() {
     private fun hideAddWordPanel() {
         isAddWordPanelActive = false
         addWordCodeBuf.clear(); addWordWordBuf.clear()
+        composing.clear()  // 清除可能殘留的組字
         addWordCodeView = null; addWordWordView = null; addWordResultView = null
         hideExtraPanelAndShowMainKeyboard()
+        refreshCompositionUi()
     }
 
     private fun appendToAddWord(ch: String) {
-        if (addWordFocus == "CODE") addWordCodeBuf.append(ch)
-        else addWordWordBuf.append(ch)
-        refreshAddWordDisplay()
+        if (addWordFocus == "CODE") {
+            addWordCodeBuf.append(ch)
+            refreshAddWordDisplay()
+            // 中文註解：字根輸入時即時查詢，避免「key in 後查不到」的體感問題
+            queryAddWordCode(showEmptyHint = false)
+        } else {
+            // 詞句欄：字母進 composing 走嘸蝦米組字，不直接 append
+            composing.append(ch)
+            refreshCompositionUi()
+        }
     }
 
     private fun deleteFromAddWord() {
-        if (addWordFocus == "CODE") { if (addWordCodeBuf.isNotEmpty()) addWordCodeBuf.deleteCharAt(addWordCodeBuf.length - 1) }
-        else { if (addWordWordBuf.isNotEmpty()) addWordWordBuf.deleteCharAt(addWordWordBuf.length - 1) }
-        refreshAddWordDisplay()
+        if (addWordFocus == "CODE") {
+            if (addWordCodeBuf.isNotEmpty()) addWordCodeBuf.deleteCharAt(addWordCodeBuf.length - 1)
+            refreshAddWordDisplay()
+            queryAddWordCode(showEmptyHint = false)
+        } else {
+            // 詞句欄：有 composing 先刪組字，否則刪已確認字
+            if (composing.isNotEmpty()) {
+                composing.deleteCharAt(composing.length - 1)
+                refreshCompositionUi()
+            } else if (addWordWordBuf.isNotEmpty()) {
+                addWordWordBuf.deleteCharAt(addWordWordBuf.length - 1)
+                refreshAddWordDisplay()
+            }
+        }
     }
 
     private fun refreshAddWordDisplay() {
-        val codeStr = addWordCodeBuf.toString()
-        val wordStr = addWordWordBuf.toString()
-        // 高亮目前焦點的輸入框
+        val codeStr    = addWordCodeBuf.toString()
+        val wordStr    = addWordWordBuf.toString()
+        val composingPreview = if (addWordFocus == "WORD" && composing.isNotEmpty()) "[${composing}]" else ""
         val accent  = 0xFF34D399.toInt()
         val neutral = 0x66888888.toInt()
         addWordCodeView?.apply {
-            text = if (codeStr.isEmpty()) if (addWordFocus == "CODE") "▌" else "…" else codeStr + if (addWordFocus == "CODE") "▌" else ""
-            (background as? android.graphics.drawable.GradientDrawable)?.setStroke(2, if (addWordFocus == "CODE") accent else neutral)
+            text = if (codeStr.isEmpty()) if (addWordFocus == "CODE") "▌" else "…"
+                   else codeStr + if (addWordFocus == "CODE") "▌" else ""
+            (background as? android.graphics.drawable.GradientDrawable)
+                ?.setStroke(2, if (addWordFocus == "CODE") accent else neutral)
         }
         addWordWordView?.apply {
-            text = if (wordStr.isEmpty()) if (addWordFocus == "WORD") "▌" else "…" else wordStr + if (addWordFocus == "WORD") "▌" else ""
-            (background as? android.graphics.drawable.GradientDrawable)?.setStroke(2, if (addWordFocus == "WORD") accent else neutral)
+            // 顯示：已確認字 + 組字預覽（如 "測試[ca]"）
+            val display = wordStr + composingPreview + if (addWordFocus == "WORD") "▌" else ""
+            text = if (display.isEmpty()) if (addWordFocus == "WORD") "▌" else "…" else display
+            (background as? android.graphics.drawable.GradientDrawable)
+                ?.setStroke(2, if (addWordFocus == "WORD") accent else neutral)
         }
-        topHintView.text = "目前輸入：${if (addWordFocus == "CODE") "字根" else "詞句"}"
+        topHintView.text = if (addWordFocus == "CODE") "目前輸入：字根（字母）"
+                           else "目前輸入：詞句（嘸蝦米→中文）"
     }
 
-    private fun queryAddWordCode() {
+    private fun queryAddWordCode(showEmptyHint: Boolean = true) {
         val code = addWordCodeBuf.toString().trim()
-        if (code.isEmpty()) { addWordResultView?.text = "請先輸入字根"; return }
+        if (code.isEmpty()) {
+            if (showEmptyHint) addWordResultView?.text = "請先輸入字根"
+            return
+        }
         val candidates = resolveCandidatesForCode(code)
         addWordResultView?.text = if (candidates.isEmpty()) "查無「$code」對應詞條"
         else "已有 ${candidates.size} 筆：${candidates.take(8).joinToString(" ")}"
@@ -1971,9 +2169,14 @@ class PenguinInputMethodService : InputMethodService() {
     /** 繁→簡轉換：對字串中每個字逐一查表 */
     private fun convertToSimplified(text: String): String {
         val sb = StringBuilder(text.length)
-        for (ch in text) {
-            sb.append(TW_TO_CN[ch.toString()] ?: ch.toString())
-        }
+        for (ch in text) { sb.append(TW_TO_CN[ch.toString()] ?: ch.toString()) }
+        return sb.toString()
+    }
+
+    /** 簡→繁：將候選中的簡體字元替換為對應繁體（ZH_TW 模式用）*/
+    private fun convertToTraditional(text: String): String {
+        val sb = StringBuilder(text.length)
+        for (ch in text) { sb.append(CN_TO_TW[ch.toString()] ?: ch.toString()) }
         return sb.toString()
     }
 
@@ -2353,13 +2556,29 @@ class PenguinInputMethodService : InputMethodService() {
         val secTxt  = if (theme == "light") 0xFF6B7280.toInt() else 0xFF64748B.toInt()
         val accentG = if (theme == "light") 0xFF059669.toInt() else 0xFF34D399.toInt()
         val dp      = resources.displayMetrics.density
-        val query   = clipboardSearchBuf.toString().trim()
+        val committed    = clipboardSearchBuf.toString()
+        val composingNow = composing.toString()         // 組字中的字根（尚未確認）
+        // 中文註解：搜尋要同時涵蓋「已確認文字 + 組字中的即時候選」，才能做到 key in 即搜
+        val composingQuery = if (composingNow.isEmpty()) ""
+        else {
+            val cands = resolveCandidatesForCode(composingNow)
+            val raw = cands.firstOrNull() ?: composingNow
+            when (inputLangMode) {
+                "ZH_CN" -> convertToSimplified(raw)
+                "ZH_TW" -> if (cands.isNotEmpty()) convertToTraditional(raw) else raw
+                else    -> raw
+            }
+        }
+        val query        = (committed + composingQuery).trim()
+        val displayQuery = committed + if (composingNow.isNotEmpty()) "[$composingNow]" else ""
 
-        // 更新搜尋框顯示
+        // 更新搜尋框顯示（確認文字 + 組字預覽）
         clipboardSearchView?.apply {
-            text = if (query.isEmpty()) "（用鍵盤輸入關鍵字搜尋）▌"
-                   else "🔍 $query▌"
-            setTextColor(if (query.isEmpty()) secTxt else keyTxt)
+            text = when {
+                displayQuery.isEmpty() -> "（用嘸蝦米輸入中文，Space 確認）▌"
+                else                   -> "🔍 $displayQuery▌"
+            }
+            setTextColor(if (committed.isEmpty() && composingNow.isEmpty()) secTxt else keyTxt)
         }
 
         val filtered = if (query.isEmpty()) clipboardItems
@@ -2376,12 +2595,25 @@ class PenguinInputMethodService : InputMethodService() {
             })
         }
 
+        // 輔助：建立 chip 橫向捲動列
+        fun chipRow(items: List<ClipboardItem>): android.widget.HorizontalScrollView {
+            val inner = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding((6*dp).toInt(), (4*dp).toInt(), (6*dp).toInt(), (4*dp).toInt())
+            }
+            items.forEach { inner.addView(buildClipChip(it, keyBg, keyTxt, secTxt, dp)) }
+            return android.widget.HorizontalScrollView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                isHorizontalScrollBarEnabled = false; addView(inner)
+            }
+        }
+
         if (favorites.isNotEmpty()) {
             container.addView(TextView(this).apply {
                 text = "★ 常用（${favorites.size} 筆）"; textSize = 12f; setTextColor(accentG)
                 setPadding((10*dp).toInt(), (6*dp).toInt(), (10*dp).toInt(), 2)
             })
-            favorites.forEach { item -> container.addView(buildClipRow(item, keyBg, keyTxt, secTxt, dp)) }
+            container.addView(chipRow(favorites))
         }
 
         if (recent.isNotEmpty()) {
@@ -2389,7 +2621,7 @@ class PenguinInputMethodService : InputMethodService() {
                 text = "🕐 最近7天（${recent.size} 筆）"; textSize = 12f; setTextColor(secTxt)
                 setPadding((10*dp).toInt(), (8*dp).toInt(), (10*dp).toInt(), 2)
             })
-            recent.forEach { item -> container.addView(buildClipRow(item, keyBg, keyTxt, secTxt, dp)) }
+            container.addView(chipRow(recent))
         }
 
         if (filtered.isEmpty()) {
@@ -2405,56 +2637,128 @@ class PenguinInputMethodService : InputMethodService() {
         })
     }
 
-    /** 建立單筆剪貼簿列 */
-    private fun buildClipRow(item: ClipboardItem, keyBg: Int, keyTxt: Int, secTxt: Int, dp: Float): LinearLayout {
-        val row = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            setPadding((6*dp).toInt(), (2*dp).toInt(), (6*dp).toInt(), (2*dp).toInt())
-        }
-        val preview = if (item.text.length > 20) item.text.substring(0, 20) + "…" else item.text
+    /**
+     * 建立單筆剪貼簿 chip（仿候選字 UX）。
+     * - 固定 68dp 寬，文字超過 CAND_MAX_DISPLAY 字截斷顯示 …
+     * - 點擊短文字 → 直接貼入；點擊長文字 → 全文確認 popup
+     * - 長按 → 刪除
+     * - ★ 按鈕 → 切換常用
+     */
+    private fun buildClipChip(item: ClipboardItem, keyBg: Int, keyTxt: Int, secTxt: Int, dp: Float): View {
+        val isLong = item.text.length > CAND_MAX_DISPLAY
+        val display = if (isLong) item.text.substring(0, CAND_MAX_DISPLAY) + "…" else item.text
         val timeStr = formatRelativeTime(item.createdAt)
+        val chipW = (68 * dp).toInt()
 
-        // 主文字按鈕
-        val mainBtn = Button(this).apply {
-            text = preview; textSize = 13f
-            setTextColor(keyTxt); gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
-            setPadding((10*dp).toInt(), 0, (8*dp).toInt(), 0)
+        val wrap = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(chipW, LinearLayout.LayoutParams.WRAP_CONTENT)
+                .also { it.setMargins(0, 0, (4*dp).toInt(), 0) }
+            gravity = android.view.Gravity.CENTER_HORIZONTAL
+        }
+
+        // 主 chip 按鈕
+        val btn = Button(this).apply {
+            text = display; textSize = 13f; setTextColor(keyTxt)
+            setPadding((4*dp).toInt(), 0, (4*dp).toInt(), 0)
             background = android.graphics.drawable.GradientDrawable().apply {
                 setColor(keyBg); cornerRadius = 8*dp
             }
-            layoutParams = LinearLayout.LayoutParams(0, (44*dp).toInt(), 1f).also { it.setMargins(0,0,(4*dp).toInt(),0) }
+            layoutParams = LinearLayout.LayoutParams(chipW, (40*dp).toInt())
             setOnClickListener {
-                currentInputConnection?.commitText(item.text, 1); recordCommit(item.text)
-                addClipboardItemToDb(item.text)
+                if (isLong) {
+                    showClipboardFullTextPopup(item)
+                } else {
+                    currentInputConnection?.commitText(item.text, 1); recordCommit(item.text)
+                    addClipboardItemToDb(item.text)
+                }
             }
-            // 長按刪除
             setOnLongClickListener {
                 deleteClipboardItemFromDb(item.text)
-                showClipboardPanel()
+                refreshClipboardSearch()
                 true
             }
         }
-        // 時間標記
-        val timeTv = TextView(this).apply {
-            text = timeStr; textSize = 10f; setTextColor(secTxt)
+        wrap.addView(btn)
+
+        // 底部：時間 + ★ 橫排
+        val meta = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(chipW, LinearLayout.LayoutParams.WRAP_CONTENT)
             gravity = android.view.Gravity.CENTER
-            layoutParams = LinearLayout.LayoutParams((36*dp).toInt(), (44*dp).toInt())
         }
-        // ★ 切換常用
-        val starBtn = Button(this).apply {
+        meta.addView(TextView(this).apply {
+            text = timeStr; textSize = 9f; setTextColor(secTxt)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            gravity = android.view.Gravity.CENTER
+        })
+        meta.addView(Button(this).apply {
             text = if (item.isFavorite) "★" else "☆"
-            textSize = 16f
+            textSize = 13f
             setTextColor(if (item.isFavorite) 0xFFF59E0B.toInt() else secTxt)
             setBackgroundColor(0x00000000)
-            layoutParams = LinearLayout.LayoutParams((38*dp).toInt(), (44*dp).toInt())
+            layoutParams = LinearLayout.LayoutParams((28*dp).toInt(), (24*dp).toInt())
+            setPadding(0,0,0,0)
+            setOnClickListener { toggleClipboardFavoriteInDb(item.text); refreshClipboardSearch() }
+        })
+        wrap.addView(meta)
+        return wrap
+    }
+
+    /** 剪貼簿長文字全文確認 popup（同候選字 popup 風格）*/
+    private fun showClipboardFullTextPopup(item: ClipboardItem) {
+        extraPanel.removeAllViews()
+        extraScroll.visibility = View.VISIBLE
+        currentExtraPanel = "CLIPBOARD_POPUP"
+        setMainKeyboardVisible(true)
+        isClipboardSearchActive = false  // popup 時暫停搜尋輸入
+
+        val isLight = resolveThemeMode() == "light"
+        val bg  = if (isLight) 0xFFEDF1F7.toInt() else 0xFF1A1D24.toInt()
+        val txt = if (isLight) 0xFF1F2937.toInt() else 0xFFE2E8F0.toInt()
+        val sec = if (isLight) 0xFF6B7280.toInt() else 0xFF64748B.toInt()
+        val dp  = resources.displayMetrics.density
+        extraPanel.setBackgroundColor(bg)
+
+        extraPanel.addView(TextView(this).apply {
+            text = "剪貼簿全文"; textSize = 12f; setTextColor(sec)
+            setPadding((12*dp).toInt(), (8*dp).toInt(), (12*dp).toInt(), 4)
+        })
+        extraPanel.addView(TextView(this).apply {
+            text = item.text; textSize = 15f; setTextColor(txt)
+            setPadding((14*dp).toInt(), (8*dp).toInt(), (14*dp).toInt(), (10*dp).toInt())
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(if (isLight) 0xFFFFFFFF.toInt() else 0xFF252830.toInt())
+                cornerRadius = 8*dp; setStroke(1, if (isLight) 0xFFD1D5DB.toInt() else 0xFF374151.toInt())
+            }
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                .also { it.setMargins((10*dp).toInt(), 0, (10*dp).toInt(), (8*dp).toInt()) }
+            isSingleLine = false; maxLines = 8
+        })
+        val btnRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL; gravity = android.view.Gravity.END
+            setPadding((8*dp).toInt(), 0, (8*dp).toInt(), (10*dp).toInt())
+        }
+        btnRow.addView(Button(this).apply {
+            text = "✖ 取消"; textSize = 13f; setTextColor(0xFFEF4444.toInt())
+            setBackgroundColor(0x00000000)
             setOnClickListener {
-                toggleClipboardFavoriteInDb(item.text)
+                isClipboardSearchActive = true  // 恢復搜尋
+                hideExtraPanelAndShowMainKeyboard()
                 showClipboardPanel()
             }
-        }
-        row.addView(mainBtn); row.addView(timeTv); row.addView(starBtn)
-        return row
+        })
+        btnRow.addView(Button(this).apply {
+            text = "✔ 插入"; textSize = 13f
+            setTextColor(if (isLight) 0xFF2563EB.toInt() else 0xFF34D399.toInt())
+            setBackgroundColor(0x00000000)
+            setOnClickListener {
+                currentInputConnection?.commitText(item.text, 1); recordCommit(item.text)
+                addClipboardItemToDb(item.text)
+                hideExtraPanelAndShowMainKeyboard()
+            }
+        })
+        extraPanel.addView(btnRow)
     }
 
     private fun showNumpadPanel() {
